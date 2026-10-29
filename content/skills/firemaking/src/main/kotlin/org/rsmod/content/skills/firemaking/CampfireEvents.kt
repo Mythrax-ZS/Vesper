@@ -5,6 +5,7 @@ import dev.openrune.rscm.RSCM.asRSCM
 import dev.openrune.rscm.RSCMType
 import dev.openrune.types.aconverted.SpotanimType
 import jakarta.inject.Inject
+import java.util.WeakHashMap
 import kotlin.math.abs
 import org.rsmod.api.controller.vars.intVarCon
 import org.rsmod.api.player.events.interact.LocUEvents
@@ -32,6 +33,7 @@ import org.rsmod.game.entity.Controller
 import org.rsmod.game.loc.BoundLocInfo
 import org.rsmod.game.loc.LocAngle
 import org.rsmod.game.obj.Obj
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.PluginScript
 import org.rsmod.plugin.scripts.ScriptContext
@@ -44,6 +46,8 @@ class CampfireEvents @Inject constructor(
     private val objRegistry: ObjRegistry,
     private val xpMods: XpModifiers,
 ) : PluginScript() {
+
+    private val campfireModes = WeakHashMap<Controller, WorldType>()
 
     private val coloredLogRows = FiremakingColoredLogsRow.all()
 
@@ -98,7 +102,8 @@ class CampfireEvents @Inject constructor(
         spawnCampfire(
             fire,
             fireObject,
-            log.foresterInitialTicks.coerceAtLeast(1)
+            log.foresterInitialTicks.coerceAtLeast(1),
+            player.worldType,
         )
 
         spotanimMap(worldRepo, smokeSpotForAngle(fire.angleId), tile)
@@ -128,7 +133,7 @@ class CampfireEvents @Inject constructor(
 
         task.log.foresterAnimation?.internalName?.let(::anim)
 
-        extendCampfire(camp, task.log.foresterLogTicks)
+        extendCampfire(camp, task.log.foresterLogTicks, player.worldType)
 
         val xpModifier = xpMods.get(player, "stat.firemaking")
         val xp = task.log.xp * xpModifier
@@ -200,13 +205,13 @@ class CampfireEvents @Inject constructor(
             player.firemakingLvl >= it.statReq.first().t1 && inv.count(it.input.internalName) > 0
         }
 
-
-    private fun spawnCampfire(template: BoundLocInfo, id: String, duration: Int) {
+    private fun spawnCampfire(template: BoundLocInfo, id: String, duration: Int, worldType: WorldType) {
         val coords = template.coords
 
-        ensureController(coords).apply {
+        val controller = ensureController(coords).apply {
             firemakingCampfireExpiryCycle = mapClock + duration
         }
+        val originMode = campfireModes.getOrPut(controller) { worldType }
 
         locRepo.add(
             coords,
@@ -216,15 +221,16 @@ class CampfireEvents @Inject constructor(
             template.shape,
             onDespawn = {
                 conRepo.findExact(coords, "controller.firemaking_campfire")?.let(conRepo::del)
-                objRegistry.add(Obj.fromServer(mapClock, coords, "obj.ashes", 1))
+                campfireModes.remove(controller)
+                objRegistry.add(Obj.fromServer(mapClock, coords, "obj.ashes", 1, worldType = originMode))
             }
         )
     }
 
-    private fun extendCampfire(camp: BoundLocInfo, add: Int) {
+    private fun extendCampfire(camp: BoundLocInfo, add: Int, worldType: WorldType) {
         val newDuration = (campfireRemainingTicks(camp) + add).coerceIn(1, 300)
         locRepo.del(camp, Int.MAX_VALUE)
-        spawnCampfire(camp, camp.internalName, newDuration)
+        spawnCampfire(camp, camp.internalName, newDuration, worldType)
     }
 
     private fun campfireRemainingTicks(camp: BoundLocInfo): Int {

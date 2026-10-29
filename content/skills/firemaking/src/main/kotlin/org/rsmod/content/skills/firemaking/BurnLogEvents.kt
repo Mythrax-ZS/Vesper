@@ -27,7 +27,6 @@ import org.rsmod.plugin.scripts.PluginScript
 import org.rsmod.plugin.scripts.ScriptContext
 import skillSuccess
 
-
 public class BurnLogEvents @Inject constructor(
     private val objRepo: ObjRegistry,
     private val objRegistry: ObjRegistry,
@@ -81,7 +80,7 @@ public class BurnLogEvents @Inject constructor(
 
         if (obj == null) {
             invDel(player.inv, log.input.internalName)
-            obj = Obj.fromServer(worldClock, coords, log.input.internalName, 1)
+            obj = Obj.fromServer(worldClock, coords, log.input.internalName, 1, worldType = player.worldType)
             objRegistry.add(obj)
         }
 
@@ -163,7 +162,7 @@ public class BurnLogEvents @Inject constructor(
             LocAngle.West,
             LocShape.CentrepieceStraight,
             onDespawn = {
-                val ashes = Obj.fromServer(worldClock, fireCoords, "obj.ashes", 1)
+                val ashes = Obj.fromServer(worldClock, fireCoords, "obj.ashes", 1, worldType = task.obj.worldType)
                 objRegistry.add(ashes)
             },
         )
