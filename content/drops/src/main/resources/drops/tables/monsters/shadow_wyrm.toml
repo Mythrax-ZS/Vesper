@@ -138,7 +138,8 @@ shared = "rareSeed"
 
 [[tertiary]]
 numerator = 10
-denominator = 243
+denominator = 256
+clue_rate_modifiers = true
 obj = "obj.trail_clue_hard_map001"
 count = 1
 clue_scroll_box = true

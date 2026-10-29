@@ -24,22 +24,12 @@ public object DropTableTomlTextFixer {
                     }
                     else -> true
                 }
-            }.toMutableList()
+            }.dropWhile { it.isBlank() }.toMutableList()
 
         if (!brimstoneKeyRoll && !brimstoneKonarBonus) {
             return content
         }
 
-        val insertAfter =
-            cleaned.indexOfLast { line ->
-                val trimmed = line.trim()
-                trimmed.startsWith("npcs = ") || trimmed.startsWith("areas = ")
-            }
-        if (insertAfter < 0) {
-            return content
-        }
-
-        val insertAt = insertAfter + 1
         val hoisted = buildList {
             if (brimstoneKeyRoll) {
                 add("brimstone_key_roll = true")
@@ -48,8 +38,8 @@ public object DropTableTomlTextFixer {
                 add("brimstone_key_roll_konar_bonus = true")
             }
         }
-        cleaned.add(insertAt, "")
-        cleaned.addAll(insertAt + 1, hoisted)
+        // Entry-scoped NPC filters must never become the insertion point for root settings.
+        cleaned.addAll(0, hoisted + "")
         return cleaned.joinToString("\n").trimEnd() + "\n"
     }
 }

@@ -136,7 +136,8 @@ count = 1
 
 [[tertiary]]
 numerator = 1
-denominator = 486
+denominator = 512
+clue_rate_modifiers = true
 obj = "obj.trail_clue_hard_map001"
 count = 1
 clue_scroll_box = true

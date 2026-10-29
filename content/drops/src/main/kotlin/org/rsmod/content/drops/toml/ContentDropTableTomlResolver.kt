@@ -6,12 +6,15 @@ import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import org.rsmod.api.area.checker.AreaChecker
 import org.rsmod.api.area.checker.isInWilderness
+import org.rsmod.api.droptable.ChanceRollStyle
 import org.rsmod.api.droptable.DropRollItem
 import org.rsmod.api.droptable.PendingDropItemConfig
 import org.rsmod.api.droptable.toml.DropTableTomlResolver
+import org.rsmod.api.droptable.toml.TomlChanceEntry
 import org.rsmod.api.droptable.toml.TomlDropHooks
 import org.rsmod.api.droptable.wearingRingOfWealth
 import org.rsmod.content.drops.brimstoneKeyRoll
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.content.drops.clueScrollTransformObj
 import org.rsmod.content.drops.shouldDropBrimstoneKey
 import org.rsmod.content.drops.shouldDropLootingBag
@@ -27,6 +30,23 @@ constructor(
     private val areaChecker: AreaChecker,
     private val questRequirements: QuestRequirementResolver,
 ) : DropTableTomlResolver {
+    override fun addChanceEntry(
+        builder: RSPrerollTableBuilder<Player, DropRollItem>,
+        entry: TomlChanceEntry,
+        style: ChanceRollStyle,
+        item: DropRollItem,
+    ) {
+        if (!entry.clueRateModifiers) {
+            super.addChanceEntry(builder, entry, style, item)
+            return
+        }
+        require(!entry.requireRingOfWealth &&
+            !entry.excludeRingOfWealth && !entry.requireWilderness) {
+            "Clue rate modifiers require a single base roll: ${entry.obj}"
+        }
+        builder.clueScrollRoll(entry.obj, entry.denominator, entry.numerator, item, entry.npcs)
+    }
+
     override fun sharedTable(name: String): RSWeightedTable<Player, DropRollItem> {
         val table =
             SHARED_TABLES[name]

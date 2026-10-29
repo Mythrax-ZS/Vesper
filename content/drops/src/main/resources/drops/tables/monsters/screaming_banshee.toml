@@ -104,7 +104,8 @@ count = 1
 
 [[tertiary]]
 numerator = 10
-denominator = 121
+denominator = 128
+clue_rate_modifiers = true
 obj = "obj.trail_clue_easy_simple001"
 count = 1
 clue_scroll_box = true

@@ -14,19 +14,17 @@ public enum class ClueScrollTier {
     Master,
 }
 
-/** X Marks the Spot — clue scrolls become scroll boxes after completion. Stub defaults to false. */
 public fun Player.hasCompletedXMarksTheSpot(): Boolean = hasCompletedQuest(X_MARKS_THE_SPOT_QUEST)
 
-/** Easy Combat Achievements reward tier unlocked (improves clue drop rate). Stub defaults to true. */
-public fun Player.hasUnlockedEasyCombat(): Boolean = true
+public fun Player.hasUnlockedEasyCombat(): Boolean = vars["varbit.ca_tier_status_easy"] == 2
 
-public fun Player.hasUnlockedMediumCombat(): Boolean = true
+public fun Player.hasUnlockedMediumCombat(): Boolean = vars["varbit.ca_tier_status_medium"] == 2
 
-public fun Player.hasUnlockedHardCombat(): Boolean = true
+public fun Player.hasUnlockedHardCombat(): Boolean = vars["varbit.ca_tier_status_hard"] == 2
 
-public fun Player.hasUnlockedEliteCombat(): Boolean = true
+public fun Player.hasUnlockedEliteCombat(): Boolean = vars["varbit.ca_tier_status_elite"] == 2
 
-public fun Player.hasUnlockedMasterCombat(): Boolean = true
+public fun Player.hasUnlockedMasterCombat(): Boolean = vars["varbit.ca_tier_status_master"] == 2
 
 public fun combatAchievementClueDenominator(baseDenominator: Int): Int =
     floor(baseDenominator - baseDenominator * 0.05).toInt()

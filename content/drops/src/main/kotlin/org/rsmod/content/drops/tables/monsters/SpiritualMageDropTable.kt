@@ -1,3 +1,4 @@
+// Hand-maintained drop table: clue-step progression rewards are not ordinary kill loot.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
@@ -48,11 +49,6 @@ public val spiritualMageDropTable: RSDropTable<Player, DropRollItem> = RSDropTab
         2 weight nothing()
     },
     tertiaries = rsPlayerTertiaryTable {
-        1 outOf 1 weight "obj.trail_clue_master" count 1 condition { player ->
-            // Drops Need Manual: Master clue scrolls and reward caskets are only dropped when completing a master clue scroll asking you to kill a spiritual mage.
-             true
-        }
-        1 outOf 1 weight "obj.trail_reward_casket_master" count 1
         1 outOf 3 weight "obj.looting_bag" count 1 condition {
             player -> player.shouldDropLootingBag()
         }

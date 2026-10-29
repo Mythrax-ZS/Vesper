@@ -1,3 +1,4 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
@@ -8,7 +9,7 @@ import org.rsmod.api.droptable.dropRollable
 import org.rsmod.api.droptable.ringNothing
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import org.rsmod.content.drops.clueScrollTransformObj
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.content.drops.tables.shared.SharedDropTables
 import org.rsmod.game.entity.Player
 
@@ -48,8 +49,6 @@ public val ammoniteCrabDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         1 weight SharedDropTables.gem
     },
     tertiaries = rsPlayerTertiaryTable {
-        1 outOf 121 weight "obj.trail_clue_easy_simple001" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_easy_simple001")
-        }
+        onBuilder { clueScrollRoll("obj.trail_clue_easy_simple001", 128) }
     },
 )

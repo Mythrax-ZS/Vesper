@@ -24,6 +24,7 @@ import org.rsmod.api.player.output.ClientScripts
 import org.rsmod.api.random.GameRandom
 import org.rsmod.api.repo.obj.ObjRepository
 import org.rsmod.content.interfaces.collectionlog.CollectionLog
+import org.rsmod.content.other.treasuretrails.ClueDropPolicy
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.Player
 import org.rsmod.map.CoordGrid
@@ -59,6 +60,7 @@ constructor(
                         ArgMap(
                             KillRollContext.npc with npc,
                             KillRollContext.areaChecker with areaChecker,
+                            KillRollContext.dropCoords with dropCoords,
                         ),
                     ).flatten()
         ) {
@@ -99,6 +101,7 @@ constructor(
             }
         }
         val obj = drop.transformObj(receiver) ?: drop.obj
+        if (!ClueDropPolicy.mayDrop(receiver, obj)) return
         val count = drop.rollCount(random)
         CollectionLog.grant(receiver, obj, count)
         if (

@@ -1,20 +1,19 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
 import dtx.rs.npcs
-import dtx.rs.areas
-import org.rsmod.api.droptable.rsPlayerGuaranteedTable
+import dtx.rs.rsWeightedTable
+import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.api.droptable.RegisterDropTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import dtx.rs.rsWeightedTable
+import org.rsmod.content.drops.brimstoneKeyRoll
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.content.drops.tables.shared.SharedDropTables
 import org.rsmod.content.drops.tables.shared.doubleRollHerbDropTable
 import org.rsmod.content.drops.tables.shared.herbDropTable
 import org.rsmod.content.drops.tables.shared.tripleRollHerbDropTable
-import org.rsmod.api.droptable.DropRollItem
-import org.rsmod.content.drops.brimstoneKeyRoll
-import org.rsmod.content.drops.clueScrollTransformObj
-import org.rsmod.api.droptable.RegisterDropTable
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
@@ -50,8 +49,6 @@ public val turothDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tertiaries = rsPlayerTertiaryTable {
         // Drops Need Manual (rate): Brimstone key rarities for levels 83, 85, 87, and 89 are 1/125, 1/116, 1/106, and 1/99 respectively.
         onBuilder { brimstoneKeyRoll(konarTaskBonus = true) }
-        1 outOf 121 weight "obj.trail_clue_hard_map001" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_hard_map001")
-        }
+        onBuilder { clueScrollRoll("obj.trail_clue_hard_map001", 128) }
     },
 )

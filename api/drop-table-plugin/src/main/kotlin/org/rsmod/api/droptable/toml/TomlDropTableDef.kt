@@ -67,6 +67,8 @@ public data class TomlChanceEntry(
     val shouldDropLootingBag: Boolean = false,
     val shouldDropBrimstoneKey: Boolean = false,
     val clueScrollBox: Boolean = false,
+    val clueRateModifiers: Boolean = false,
+    val npcs: List<String> = emptyList(),
     val requireRingOfWealth: Boolean = false,
     val excludeRingOfWealth: Boolean = false,
     val requireWilderness: Boolean = false,

@@ -10,7 +10,7 @@ import org.rsmod.game.entity.Player
  *
  * Weights from [[Rare drop table]] on the OSRS Wiki (/128 roll).
  */
-public val rareDropTable: RSWeightedTable<Player, DropRollItem> = rsWeightedTable {
+public val rareDropTable: RSWeightedTable<Player, DropRollItem> = rsWeightedTable(total = 128) {
     name("Rare drop table")
     21 weight DropRollItem("obj.coins", 3000)
     20 weight gemDropTable
@@ -25,8 +25,8 @@ public val rareDropTable: RSWeightedTable<Player, DropRollItem> = rsWeightedTabl
     2 weight DropRollItem("obj.rune_arrow", 42)
     2 weight DropRollItem("obj.steel_arrow", 150)
     2 weight DropRollItem("obj.rune_sq_shield", 1)
-    2 weight DropRollItem("obj.keyhalf2", 1)
-    2 weight DropRollItem("obj.keyhalf1", 1)
+    20 weight DropRollItem("obj.keyhalf2", 1)
+    20 weight DropRollItem("obj.keyhalf1", 1)
     2 weight DropRollItem("obj.dragonstone", 1)
     2 weight DropRollItem("obj.cert_silver_ore", 100)
     1 weight DropRollItem("obj.dragon_med_helm", 1)

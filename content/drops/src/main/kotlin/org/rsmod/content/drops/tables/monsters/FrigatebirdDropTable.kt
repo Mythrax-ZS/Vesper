@@ -1,15 +1,14 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
 import dtx.rs.npcs
-import dtx.rs.areas
-import org.rsmod.api.droptable.rsPlayerGuaranteedTable
+import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import org.rsmod.api.droptable.DropRollItem
-import org.rsmod.content.drops.clueScrollTransformObj
-import org.rsmod.api.droptable.nothing
-import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
@@ -43,8 +42,6 @@ public val frigatebirdDropTable: RSDropTable<Player, DropRollItem> = RSDropTable
              true
         }
         1 outOf 10 weight "obj.sailing_frigatebird_beak" count 1
-        1 outOf 161 weight "obj.trail_clue_hard_map001" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_hard_map001")
-        }
+        onBuilder { clueScrollRoll("obj.trail_clue_hard_map001", 170) }
     },
 )

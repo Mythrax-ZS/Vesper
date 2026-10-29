@@ -97,16 +97,8 @@ should_drop_looting_bag = true
 
 [[tertiary]]
 numerator = 1
-denominator = 121
+denominator = 128
+clue_rate_modifiers = true
 obj = "obj.trail_clue_easy_simple001"
 count = 1
 clue_scroll_box = true
-exclude_ring_of_wealth = true
-
-[[tertiary]]
-numerator = 1
-denominator = 64
-obj = "obj.trail_clue_easy_simple001"
-count = 1
-clue_scroll_box = true
-require_ring_of_wealth = true

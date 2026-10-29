@@ -70,20 +70,8 @@ should_drop_looting_bag = true
 
 [[tertiary]]
 numerator = 1
-denominator = 121
+denominator = 128
+clue_rate_modifiers = true
 obj = "obj.trail_medium_emote_exp1"
 count = 1
 clue_scroll_box = true
-exclude_ring_of_wealth = true
-
-[[tertiary]]
-numerator = 1
-denominator = 64
-obj = "obj.trail_medium_emote_exp1"
-count = 1
-clue_scroll_box = true
-require_ring_of_wealth = true
-require_wilderness = true
-
-
-# Main table pool padding uses a nothing roll (F2P drops removed and/or subtable access missing from wiki parse) (19 weight)

@@ -11,6 +11,7 @@ public object SharedDropTables {
     public val gem: RSWeightedTable<Player, DropRollItem> = gemDropTable
     public val seed: RSWeightedTable<Player, DropRollItem> = allotmentSeedDropTable
     public val rareSeed: RSWeightedTable<Player, DropRollItem> = rareSeedDropTable
+    public val treeHerbSeed: RSWeightedTable<Player, DropRollItem> = TREE_HERB_SEED_DROP_TABLE
     public val megaRare: RSWeightedTable<Player, DropRollItem> = megaRareDropTable
     public val rareDrop: RSWeightedTable<Player, DropRollItem> = rareDropTable
 }

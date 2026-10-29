@@ -89,6 +89,8 @@ public object DropTableTomlWriter {
     private fun appendChanceFields(sb: StringBuilder, entry: TomlChanceEntry) {
         sb.appendLine("numerator = ${entry.numerator}")
         sb.appendLine("denominator = ${entry.denominator}")
+        if (entry.clueRateModifiers) sb.appendLine("clue_rate_modifiers = true")
+        if (entry.npcs.isNotEmpty()) sb.appendLine("npcs = ${quoteList(entry.npcs)}")
         appendBoosted(sb, entry.boosted)
         sb.appendLine("obj = ${quote(entry.obj)}")
         appendCount(sb, entry.count, entry.countMin, entry.countMax)

@@ -29,7 +29,7 @@ Most wiki-dumped monster tables are **simple** — flat weighted main entries, s
 
 **Loading:** `DropTableRegistry` reads all `drops/tables/**/*.toml` from the classpath **before** scanning `@RegisterDropTable`. If the same NPC is registered in both TOML and Kotlin, startup fails with a conflict error.
 
-**Example** (main + tertiary clue with scroll-box transform and combat-achievement rate baked into the denominator):
+**Example** (main + tertiary clue with a source base rate, runtime modifiers, and scroll-box transform):
 
 ```toml
 id = "Zoja Drops"
@@ -54,7 +54,8 @@ nothing = true
 
 [[tertiary]]
 numerator = 1
-denominator = 121
+denominator = 128
+clue_rate_modifiers = true
 obj = "obj.trail_clue_easy_simple001"
 count = 1
 clue_scroll_box = true
@@ -74,6 +75,8 @@ clue_scroll_box = true
 | `should_drop_brimstone_key = true` | Konar task brimstone key check |
 | `quest` / `quest_mode` | Quest gate (`during`, `completed`, `not_completed`) |
 | `clue_scroll_box = true` | Clue scroll → scroll box after X Marks the Spot (`clueScrollTransformObj`) |
+| `clue_rate_modifiers = true` | Apply claimed Combat Achievement and eligible imbued-ring bonuses to the source base rate at runtime |
+| `npcs = ["npc.symbol"]` on a chance entry | Restrict that roll to named NPC variants; root `npcs` still registers the table |
 
 | TOML omits empty defaults (`areas = []`, false booleans, etc.). String values use double quotes. Unresolved wiki drop rates and manual notes are appended as `#` comment lines at the bottom of the file.
 
@@ -239,11 +242,18 @@ Return the **obj key string** to drop, or `null` to use the default item. Common
 
 In **TOML**, set `clue_scroll_box = true` on the entry instead of writing `transformObj` by hand.
 
-In **Kotlin**, use `player.clueScrollTransformObj("obj.trail_clue_easy_simple001")` (see `ClueScrollDropChecks.kt`).
+For ordinary monster clues, retain the unmodified source denominator and set
+`clue_rate_modifiers = true`. The runtime applies the matching claimed Combat
+Achievement reward and an eligible imbued ring at the actual loot tile. Do not
+bake those bonuses into the denominator or emit a second ring-only roll. Optional
+entry-level `npcs` filters separate variants whose source rates differ.
+
+In **Kotlin**, `clueScrollRoll` provides the same runtime rates and default scroll-box
+transformation (import `org.rsmod.content.drops.clueScrollRoll`):
 
 ```kotlin
-1 outOf 121 weight "obj.trail_clue_easy_simple001" count 1 transformObj { player ->
-    player.clueScrollTransformObj("obj.trail_clue_easy_simple001")
+onBuilder {
+    clueScrollRoll("obj.trail_clue_easy_simple001", denominator = 128)
 }
 ```
 

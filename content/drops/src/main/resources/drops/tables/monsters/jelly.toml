@@ -192,7 +192,18 @@ count = 10
 
 [[tertiary]]
 numerator = 1
-denominator = 121
+denominator = 128
+clue_rate_modifiers = true
+npcs = ["npc.slayer_jelly_1", "npc.slayer_jelly_2", "npc.slayer_jelly_3", "npc.slayer_jelly_4", "npc.slayer_jelly_5", "npc.slayer_jelly_6"]
+obj = "obj.trail_clue_hard_map001"
+count = 1
+clue_scroll_box = true
+
+[[tertiary]]
+numerator = 1
+denominator = 64
+clue_rate_modifiers = true
+npcs = ["npc.wild_cave_jelly_1", "npc.wild_cave_jelly_2", "npc.wild_cave_jelly_3", "npc.wild_cave_jelly_4", "npc.wild_cave_jelly_5"]
 obj = "obj.trail_clue_hard_map001"
 count = 1
 clue_scroll_box = true
@@ -203,19 +214,3 @@ denominator = 3
 obj = "obj.looting_bag"
 count = 1
 should_drop_looting_bag = true
-
-[[tertiary]]
-numerator = 1
-denominator = 60
-obj = "obj.trail_clue_hard_map001"
-count = 1
-clue_scroll_box = true
-exclude_ring_of_wealth = true
-
-[[tertiary]]
-numerator = 1
-denominator = 32
-obj = "obj.trail_clue_hard_map001"
-count = 1
-clue_scroll_box = true
-require_ring_of_wealth = true

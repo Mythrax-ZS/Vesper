@@ -1,3 +1,4 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
@@ -8,7 +9,7 @@ import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
 import org.rsmod.content.drops.brimstoneKeyRoll
-import org.rsmod.content.drops.clueScrollTransformObj
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.content.drops.shouldDropSanguineTorvaKit
 import org.rsmod.content.drops.vestigeProgressRoll
 import org.rsmod.game.entity.Player
@@ -72,17 +73,9 @@ public val theLeviathanDropTable: RSDropTable<Player, DropRollItem> = RSDropTabl
         1 outOf 1 weight "obj.dt2_sanguine_torva_kit" count 1 killCondition { player, npc, _ ->
             player.shouldDropSanguineTorvaKit(npc, "obj.dt2_sanguine_torva_kit")
         }
-        1 outOf 152 weight "obj.trail_clue_easy_simple001" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_easy_simple001")
-        }
-        1 outOf 152 weight "obj.trail_medium_emote_exp1" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_medium_emote_exp1")
-        }
-        1 outOf 152 weight "obj.trail_clue_hard_map001" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_hard_map001")
-        }
-        1 outOf 152 weight "obj.trail_elite_emote_exp1" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_elite_emote_exp1")
-        }
+        onBuilder { clueScrollRoll("obj.trail_clue_easy_simple001", 160) }
+        onBuilder { clueScrollRoll("obj.trail_medium_emote_exp1", 160) }
+        onBuilder { clueScrollRoll("obj.trail_clue_hard_map001", 160) }
+        onBuilder { clueScrollRoll("obj.trail_elite_emote_exp1", 160) }
     },
 )

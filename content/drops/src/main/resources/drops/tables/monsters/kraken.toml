@@ -214,7 +214,8 @@ count = 1
 
 [[tertiary]]
 numerator = 1
-denominator = 475
+denominator = 500
+clue_rate_modifiers = true
 obj = "obj.trail_elite_emote_exp1"
 count = 1
 clue_scroll_box = true

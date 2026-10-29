@@ -1,3 +1,4 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
@@ -9,7 +10,7 @@ import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
 import org.rsmod.content.drops.brimstoneKeyRoll
-import org.rsmod.content.drops.clueScrollTransformObj
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
@@ -66,8 +67,6 @@ public val generalGraardorDropTable: RSDropTable<Player, DropRollItem> = RSDropT
         1 outOf 400 weight "obj.dorgesh_construction_bone" count 1
         1 outOf 5000 weight "obj.bandospet" count 1
         1 outOf 5013 weight "obj.dorgesh_construction_bone_curved" count 1
-        1 outOf 237 weight "obj.trail_elite_emote_exp1" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_elite_emote_exp1")
-        }
+        onBuilder { clueScrollRoll("obj.trail_elite_emote_exp1", 250) }
     },
 )

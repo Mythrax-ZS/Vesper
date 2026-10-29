@@ -1,26 +1,38 @@
+// Hand-maintained drop table: keep encounter-specific rolls out of wiki regeneration.
+// Source: https://oldschool.runescape.wiki/w/Vorkath
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
 import dtx.rs.npcs
-import dtx.rs.areas
+import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.api.droptable.dropRollableWithPlayerCondition
 import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import org.rsmod.content.drops.tables.shared.SharedDropTables
-import org.rsmod.api.droptable.DropRollItem
 import org.rsmod.content.drops.brimstoneKeyRoll
-import org.rsmod.content.drops.clueScrollTransformObj
-import org.rsmod.api.droptable.nothing
-import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.content.drops.clueScrollRoll
+import org.rsmod.content.drops.tables.shared.SharedDropTables
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
 @JvmField
 public val vorkathDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     tableIdentifier = "Vorkath Drops",
-    npcs = npcs("npc.vorkath", "npc.vorkath_quest", "npc.vorkath_sleeping", "npc.vorkath_sleeping_noop"),
+    npcs = npcs("npc.vorkath"),
+    mainRolls = 2,
     guaranteed = rsPlayerGuaranteedTable {
         "obj.dragonhide_blue" count 2
+        // NpcDeath supplies the first bone from dropped_remains. Keep the extra bone at
+        // count 1 so NpcDropTableKillHook also runs the normal bonecrusher/drop hooks.
+        "obj.dragon_bones_superior" count 1
+        add(
+            dropRollableWithPlayerCondition(
+                DropRollItem("obj.vorkath_head", 1, condition = { player ->
+                    player.vars["varp.total_vorkath_kills"] == 50
+                }),
+            ),
+        )
     },
     mainTable = rsPlayerWeightedTable(total = 150) {
         name("Vorkath Drops")
@@ -52,37 +64,40 @@ public val vorkathDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         4 weight "obj.cert_diamond" count 10..20
         3 weight "obj.cert_dragonstone" count 2..3
         3 weight "obj.wrath_talisman" count 1
-        25 outOf 2730 separate "obj.xbows_bolt_tips_diamond" count 25..30
-        20 outOf 2730 separate rsPlayerWeightedTable {
+        5 weight rsPlayerWeightedTable(total = 91) {
+            25 weight "obj.xbows_bolt_tips_diamond" count 25..30
             20 weight "obj.xbows_bolt_tips_emerald" count 25..30
             20 weight "obj.xbows_bolt_tips_ruby" count 25..30
+            14 weight "obj.xbows_bolt_tips_dragonstone" count 25..30
+            7 weight "obj.xbows_bolt_tips_onyx" count 25..30
+            5 weight "obj.xbows_bolt_tips_sapphire" count 25..30
         }
-        14 outOf 2730 separate "obj.xbows_bolt_tips_dragonstone" count 25..30
-        7 outOf 2730 separate "obj.xbows_bolt_tips_onyx" count 25..30
-        5 outOf 2730 separate "obj.xbows_bolt_tips_sapphire" count 25..30
-        3 outOf 300 separate rsPlayerWeightedTable {
+        3 weight SharedDropTables.treeHerbSeed
+        1 weight "obj.snapdragon_seed" count 1
+        1 weight "obj.torstol_seed" count 1
+        4 weight rsPlayerWeightedTable(total = 8) {
             3 weight "obj.cert_raw_shark" count 35..55
-            3 weight "obj.shark_lure" count 70..110
+            3 weight DropRollItem(
+                "obj.shark_lure", 70..110, countChoices = (70..110 step 2).toList(),
+            )
+            2 weight "obj.cert_mantaray" count 35..55
         }
-        2 outOf 300 separate "obj.cert_mantaray" count 35..55
 
         5 weight SharedDropTables.rareDrop
-        14 weight nothing()
     },
     tertiaries = rsPlayerTertiaryTable {
         1 outOf 10 weight "obj.scaly_bluehide" count 1
-        1 outOf 50 weight "obj.vorkath_head" count 1 condition { player ->
-            // Drops Need Manual: }}}}
-             true
-        }
+        1 outOf 50 chance dropRollableWithPlayerCondition(
+            DropRollItem("obj.vorkath_head", 1, condition = { player ->
+                player.vars["varp.total_vorkath_kills"] != 50
+            }),
+        )
         onBuilder { brimstoneKeyRoll() }
         1 outOf 1000 weight "obj.dragonbone_necklace" count 1
         1 outOf 3000 weight "obj.jar_of_decay" count 1
         1 outOf 3000 weight "obj.vorkathpet" count 1
         1 outOf 5000 weight "obj.dragonfire_visage" count 1
         1 outOf 5000 weight "obj.skeletal_visage" count 1
-        1 outOf 61 weight "obj.trail_elite_emote_exp1" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_elite_emote_exp1")
-        }
+        onBuilder { clueScrollRoll("obj.trail_elite_emote_exp1", 65) }
     },
 )

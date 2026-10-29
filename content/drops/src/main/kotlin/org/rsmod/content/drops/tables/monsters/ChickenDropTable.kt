@@ -1,3 +1,4 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
@@ -8,7 +9,7 @@ import org.rsmod.api.droptable.ringNothing
 import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import org.rsmod.content.drops.clueScrollTransformObj
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
@@ -26,8 +27,6 @@ public val chickenDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         32 weight ringNothing()
     },
     tertiaries = rsPlayerTertiaryTable {
-        1 outOf 300 weight "obj.trail_clue_beginner" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_clue_beginner")
-        }
+        onBuilder { clueScrollRoll("obj.trail_clue_beginner", 300) }
     },
 )

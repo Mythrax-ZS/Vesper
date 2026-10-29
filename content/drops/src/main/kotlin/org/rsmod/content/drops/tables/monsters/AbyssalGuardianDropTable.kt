@@ -1,15 +1,14 @@
+// Hand-maintained drop table: clue base rates verified against source revisions in the parity receipt.
 package org.rsmod.content.drops.tables.monsters
 
 import dtx.rs.RSDropTable
 import dtx.rs.npcs
-import dtx.rs.areas
-import org.rsmod.api.droptable.rsPlayerGuaranteedTable
+import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
-import org.rsmod.api.droptable.DropRollItem
-import org.rsmod.content.drops.clueScrollTransformObj
-import org.rsmod.api.droptable.nothing
-import org.rsmod.api.droptable.RegisterDropTable
+import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
 
 @field:RegisterDropTable
@@ -47,8 +46,6 @@ public val abyssalGuardianDropTable: RSDropTable<Player, DropRollItem> = RSDropT
         134 weight nothing()
     },
     tertiaries = rsPlayerTertiaryTable {
-        1 outOf 243 weight "obj.trail_medium_emote_exp1" count 1 transformObj { player ->
-             player.clueScrollTransformObj("obj.trail_medium_emote_exp1")
-        }
+        onBuilder { clueScrollRoll("obj.trail_medium_emote_exp1", 256) }
     },
 )
