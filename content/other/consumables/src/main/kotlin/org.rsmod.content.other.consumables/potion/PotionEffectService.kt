@@ -65,8 +65,9 @@ constructor(
     fun apply(
         access: ProtectedAccess,
         effect: PotionEffectRow,
+        enhancedStamina: Boolean = false,
     ) {
-        applyEffect(access, effect)
+        applyEffect(access, effect, if (enhancedStamina) 2 else 1)
     }
 
     fun healMix(
@@ -336,6 +337,7 @@ constructor(
     private fun applyEffect(
         access: ProtectedAccess,
         effect: PotionEffectRow,
+        staminaMultiplier: Int = 1,
     ) {
         with(access) {
             when (effect.kind) {
@@ -371,7 +373,7 @@ constructor(
                     applyPrayerRegeneration(effect.duration)
 
                 KIND_RUN_ENERGY ->
-                    restoreRunEnergy(effect.amount)
+                    restoreRunEnergy(effect.amount * staminaMultiplier)
 
                 KIND_POISON_CURE -> {
                     if (PlayerVenom.reduceToPoison(player)) {
@@ -410,11 +412,13 @@ constructor(
                         applyEffect(
                             access = this,
                             effect = nested,
+                            staminaMultiplier = staminaMultiplier,
                         )
                     }
 
                     if (effect.stamina) {
-                        applyStamina(effect.duration)
+                        player.enduranceStaminaEnhanced = staminaMultiplier == 2
+                        applyStamina(effect.duration * staminaMultiplier)
                     }
 
                     if (effect.curesDisease) {
@@ -675,6 +679,15 @@ constructor(
         )
     }
 
+    internal fun removeEnduranceEnhancement(player: Player) {
+        if (!player.enduranceStaminaEnhanced) return
+        player.enduranceStaminaEnhanced = false
+        val clock = player.currentMapClock
+        val remaining = ((player.attr[PotionBuffState.staminaExpiresAt] ?: clock) - clock).coerceAtLeast(0)
+        player.attr[PotionBuffState.savedStaminaTicks] = remaining / 2
+        restoreStamina(player, clock)
+    }
+
     fun processStamina(
         access: ProtectedAccess,
     ) {
@@ -690,6 +703,7 @@ constructor(
                 expiresAt - mapClock
 
             if (remaining <= 0) {
+                player.enduranceStaminaEnhanced = false
                 player.attr.remove(
                     PotionBuffState.staminaExpiresAt,
                 )
@@ -1107,6 +1121,8 @@ constructor(
             )
 
         if (remaining <= 0) {
+            player.enduranceStaminaEnhanced = false
+            player.attr.remove(PotionBuffState.staminaExpiresAt)
             VarPlayerIntMapSetter.set(
                 player,
                 STAMINA_VARBIT,

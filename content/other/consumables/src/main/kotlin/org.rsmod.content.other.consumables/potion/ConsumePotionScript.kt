@@ -23,6 +23,7 @@ constructor(
     private val areaChecker: AreaChecker,
     private val effects: PotionEffectService,
     private val activityAccess: ConsumableActivityAccess,
+    private val endurance: RingOfEndurance,
 ) : PluginScript() {
     override fun ScriptContext.startup() {
         val registrations =
@@ -206,17 +207,15 @@ constructor(
             potion.items.getOrNull(doseIndex + 1)
                 ?: potion.empty
 
-        val transaction =
-            invReplaceSlot(
-                inv = inventory,
+        val enhancedStamina =
+            endurance.consumeDose(
+                player = player,
+                inventory = inventory,
                 slot = slot,
-                count = 1,
+                type = type,
                 replacement = replacement,
-            )
-
-        if (transaction.failure) {
-            return
-        }
+                potion = potion,
+            ) ?: return
 
         anim(DRINK_ANIMATION)
         soundSynth(DRINK_SOUND)
@@ -224,7 +223,12 @@ constructor(
         effects.apply(
             access = this,
             effect = potion.effect,
+            enhancedStamina = enhancedStamina,
         )
+
+        if (enhancedStamina) {
+            mes("Your Ring of endurance doubles the duration of your stamina potion's effect.")
+        }
 
         effects.healMix(
             access = this,
@@ -253,7 +257,9 @@ constructor(
     }
 
     private fun ProtectedAccess.canDrinkBlighted(): Boolean =
-        coords.isInWilderness(areaChecker) || areaChecker.inArea(FEROX_ENCLAVE, coords)
+        coords.isInWilderness(areaChecker) ||
+            areaChecker.inArea(FEROX_ENCLAVE, coords) ||
+            areaChecker.inArea(MAGE_ARENA_BANK, coords)
 
     private fun remainingDoseMessage(
         potion: PotionRow,
@@ -343,6 +349,7 @@ constructor(
             "seq.human_eat"
 
         const val FEROX_ENCLAVE: String = "area.ferox_enclave"
+        const val MAGE_ARENA_BANK: String = "area.mage_arena_bank"
 
         val CONSUME_OPTIONS: Set<String> =
             setOf(

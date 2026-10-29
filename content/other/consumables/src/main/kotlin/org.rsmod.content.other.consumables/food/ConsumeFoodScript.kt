@@ -201,8 +201,10 @@ constructor(
             return
         }
 
-        val inWilderness =
-            coords.isInWilderness(areaChecker)
+        val canConsumeBlighted =
+            coords.isInWilderness(areaChecker) ||
+                areaChecker.inArea(FEROX_ENCLAVE, coords) ||
+                areaChecker.inArea(MAGE_ARENA_BANK, coords)
 
         val blighted =
             type.name.startsWith(
@@ -210,7 +212,7 @@ constructor(
                 ignoreCase = true,
             )
 
-        if (blighted && !inWilderness) {
+        if (blighted && !canConsumeBlighted) {
             mes(
                 "The ${type.name.lowercase()} can only be " +
                     "consumed in the Wilderness.",
@@ -540,6 +542,8 @@ constructor(
     )
 
     private companion object {
+        const val FEROX_ENCLAVE: String = "area.ferox_enclave"
+        const val MAGE_ARENA_BANK: String = "area.mage_arena_bank"
         const val EAT_FOOD_SOUND: Int = 2393
         const val DEFAULT_EAT_DELAY: Int = 3
         const val DEFAULT_COMBAT_DELAY: Int = 3
