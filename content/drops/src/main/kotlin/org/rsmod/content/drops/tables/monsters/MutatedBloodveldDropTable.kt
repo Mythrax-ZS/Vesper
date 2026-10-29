@@ -7,6 +7,7 @@ import org.rsmod.api.droptable.DropRollItem
 import org.rsmod.api.droptable.RegisterDropTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
+import org.rsmod.content.drops.inIorwerthDungeon
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.content.drops.clueScrollTransformObj
 import org.rsmod.content.drops.tables.shared.SharedDropTables
@@ -50,9 +51,8 @@ public val mutatedBloodveldDropTable: RSDropTable<Player, DropRollItem> = RSDrop
     },
     tertiaries = rsPlayerTertiaryTable {
         1 outOf 20 weight "obj.arceuus_corpse_bloodveld" count 1
-        1 outOf 24 weight "obj.prif_crystal_shard" count (3..5) condition { player ->
-            // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
-             true
+        1 outOf 24 weight "obj.prif_crystal_shard" count (3..5) killCondition {
+            _, npc, areaChecker -> npc.inIorwerthDungeon(areaChecker)
         }
         onBuilder { brimstoneKeyRoll(konarTaskBonus = true) }
         1 outOf 121 weight "obj.trail_clue_hard_map001" count 1 transformObj { player ->

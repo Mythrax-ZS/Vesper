@@ -8,6 +8,7 @@ import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
 import org.rsmod.content.drops.tables.shared.SharedDropTables
 import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.content.drops.inIorwerthDungeon
 import org.rsmod.content.drops.shouldDropBrimstoneKey
 import org.rsmod.content.drops.clueScrollTransformObj
 import org.rsmod.api.droptable.RegisterDropTable
@@ -22,9 +23,8 @@ public val nechryarchDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
         "obj.konar_key" count 1 killCondition {
             player, npc, areaChecker -> player.shouldDropBrimstoneKey(npc, areaChecker)
         }
-        "obj.prif_crystal_shard" count (6..10) condition { player ->
-            // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
-             true
+        "obj.prif_crystal_shard" count (6..10) killCondition {
+            _, npc, areaChecker -> npc.inIorwerthDungeon(areaChecker)
         }
         "obj.konar_key" count 1 killCondition {
             player, npc, areaChecker -> player.shouldDropBrimstoneKey(npc, areaChecker)

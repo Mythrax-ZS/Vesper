@@ -8,6 +8,7 @@ import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
 import org.rsmod.content.drops.tables.shared.SharedDropTables
 import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.content.drops.inIorwerthDungeon
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.api.droptable.RegisterDropTable
 import org.rsmod.game.entity.Player
@@ -18,9 +19,8 @@ public val bloodthirstyKuraskDropTable: RSDropTable<Player, DropRollItem> = RSDr
     tableIdentifier = "Bloodthirsty kurask Drops",
     npcs = npcs("npc.league_superior_kurask"),
     guaranteed = rsPlayerGuaranteedTable {
-        "obj.prif_crystal_shard" count 1 condition { player ->
-            // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
-             true
+        "obj.prif_crystal_shard" count 1 killCondition {
+            _, npc, areaChecker -> npc.inIorwerthDungeon(areaChecker)
         }
     },
     mainTable = rsPlayerWeightedTable(total = 294) {

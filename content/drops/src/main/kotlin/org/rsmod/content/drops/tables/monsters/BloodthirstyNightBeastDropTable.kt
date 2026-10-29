@@ -12,6 +12,7 @@ import org.rsmod.content.drops.tables.shared.doubleRollHerbDropTable
 import org.rsmod.content.drops.tables.shared.herbDropTable
 import org.rsmod.content.drops.tables.shared.tripleRollHerbDropTable
 import org.rsmod.api.droptable.DropRollItem
+import org.rsmod.content.drops.inIorwerthDungeon
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.content.drops.clueScrollTransformObj
 import org.rsmod.api.droptable.RegisterDropTable
@@ -23,9 +24,8 @@ public val bloodthirstyNightBeastDropTable: RSDropTable<Player, DropRollItem> = 
     tableIdentifier = "Bloodthirsty Night beast Drops",
     npcs = npcs("npc.league_superior_dark_beast"),
     guaranteed = rsPlayerGuaranteedTable {
-        "obj.prif_crystal_shard" count 1 condition { player ->
-            // Drops Need Manual: Crystal shards are only dropped by those found within the Iorwerth Dungeon.
-             true
+        "obj.prif_crystal_shard" count 1 killCondition {
+            _, npc, areaChecker -> npc.inIorwerthDungeon(areaChecker)
         }
     },
     mainTable = rsPlayerWeightedTable(total = 128) {
