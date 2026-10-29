@@ -12577,6 +12577,7 @@ inherit = "npc.vorkath"
 [npc.params]
 "param.elemental_weakness_type"=3
 "param.elemental_weakness_percent"=40
+"param.killcount_varp"="varp.total_vorkath_kills"
 
 [[npc]]
 id = "npc.ds2_golem_melee"
