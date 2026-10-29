@@ -8,8 +8,14 @@ skill_wall_anim = 65383
 
 [gamevals.dbtable]
 mining_rocks = 55520
+mining_clue_geodes = 61006
 
 [gamevals.dbrow]
+mining_clue_geode_beginner = 61800
+mining_clue_geode_easy = 61801
+mining_clue_geode_medium = 61802
+mining_clue_geode_hard = 61803
+mining_clue_geode_elite = 61804
 mining_clayrock = 55480
 mining_copperrock = 55481
 mining_tinrock = 55482

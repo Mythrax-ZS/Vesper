@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("game-cache-test-conventions")
 }
 
 dependencies {
@@ -8,5 +9,9 @@ dependencies {
     implementation(projects.api.dropTable)
     implementation(projects.api.dropTablePlugin)
     implementation(projects.content.quest)
+    implementation(projects.content.other.treasureTrails)
     implementation(projects.content.skills.utils)
+    testImplementation(libs.mockk)
+    testImplementation(projects.api.invStorage)
+    testImplementation(projects.api.registry)
 }
