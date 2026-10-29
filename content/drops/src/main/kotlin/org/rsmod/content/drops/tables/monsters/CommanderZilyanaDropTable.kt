@@ -9,6 +9,7 @@ import org.rsmod.api.droptable.dropRollable
 import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
+import org.rsmod.content.drops.isOnQuest
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
@@ -20,8 +21,7 @@ public val commanderZilyanaDropTable: RSDropTable<Player, DropRollItem> = RSDrop
     npcs = npcs("npc.godwars_saradomin_avatar"),
     guaranteed = rsPlayerGuaranteedTable {
         "obj.nex_frozen_key_saradomin" count 1 condition { player ->
-            // Drops Need Manual: Frozen key pieces are only dropped during The Frozen Door miniquest.
-             true
+            player.isOnQuest("miniquest_frozendoor")
         }
     },
     mainTable = rsPlayerWeightedTable(total = 133) {

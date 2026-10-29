@@ -10,6 +10,7 @@ import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
+import org.rsmod.content.drops.isOnQuest
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
@@ -22,8 +23,7 @@ public val kreearraDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     guaranteed = rsPlayerGuaranteedTable {
         "obj.feather" count 1..16
         "obj.nex_frozen_key_armadyl" count 1 condition { player ->
-            // Drops Need Manual: Frozen key pieces are only dropped during The Frozen Door miniquest.
-             true
+            player.isOnQuest("miniquest_frozendoor")
         }
     },
     mainTable = rsPlayerWeightedTable(total = 127) {

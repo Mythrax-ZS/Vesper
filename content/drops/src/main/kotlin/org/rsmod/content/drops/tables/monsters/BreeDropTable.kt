@@ -8,6 +8,7 @@ import org.rsmod.api.droptable.RegisterDropTable
 import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
+import org.rsmod.content.drops.isOnQuest
 import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
 
@@ -39,8 +40,7 @@ public val breeDropTable: RSDropTable<Player, DropRollItem> = RSDropTable(
     },
     tertiaries = rsPlayerTertiaryTable {
         1 outOf 20 weight "obj.nex_frozen_key_saradomin" count 1 condition { player ->
-            // Drops Need Manual: Frozen key pieces are only dropped during The Frozen Door miniquest.
-             true
+            player.isOnQuest("miniquest_frozendoor")
         }
         onBuilder { clueScrollRoll("obj.trail_clue_hard_map001", 128) }
     },

@@ -10,6 +10,7 @@ import org.rsmod.api.droptable.nothing
 import org.rsmod.api.droptable.rsPlayerGuaranteedTable
 import org.rsmod.api.droptable.rsPlayerTertiaryTable
 import org.rsmod.api.droptable.rsPlayerWeightedTable
+import org.rsmod.content.drops.isOnQuest
 import org.rsmod.content.drops.brimstoneKeyRoll
 import org.rsmod.content.drops.clueScrollRoll
 import org.rsmod.game.entity.Player
@@ -21,8 +22,7 @@ public val krilTsutsarothDropTable: RSDropTable<Player, DropRollItem> = RSDropTa
     npcs = npcs("npc.godwars_zamorak_avatar"),
     guaranteed = rsPlayerGuaranteedTable {
         "obj.nex_frozen_key_zamorak" count 1 condition { player ->
-            // Drops Need Manual: Frozen key pieces are only dropped during The Frozen Door miniquest.
-             true
+            player.isOnQuest("miniquest_frozendoor")
         }
     },
     mainTable = rsPlayerWeightedTable(total = 127) {
