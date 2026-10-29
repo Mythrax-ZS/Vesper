@@ -16,5 +16,7 @@ internal class MagicRunesModule : PluginModule() {
         bindInstance<RuneSubstituteRepository>()
         bindInstance<StaffSubstituteRepository>()
         bindInstance<UnlimitedRuneRepository>()
+        bindInstance<BlightedRunePackPolicy>()
+        newSetBinding<BlightedRunePackPermission>()
     }
 }

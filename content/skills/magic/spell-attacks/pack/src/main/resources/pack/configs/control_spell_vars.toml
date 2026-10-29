@@ -1,0 +1,36 @@
+# Native UI uses active ticks + 100; this is session state and must not persist.
+[[varp]]
+isServerOnly = true
+id = "varp.deadman_teleblock_transmit"
+scope = "Temp"
+transmit = "OnSetDifferent"
+
+[[varp]]
+isServerOnly = true
+id = "varp.standard_teleblock_last_tick"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+isServerOnly = true
+id = "varp.standard_bind_caster"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+isServerOnly = true
+id = "varp.standard_bind_end_tick"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+isServerOnly = true
+id = "varp.standard_teleblock_caster_uuid_low"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+isServerOnly = true
+id = "varp.standard_teleblock_caster_uuid_high"
+scope = "Temp"
+transmit = "Never"

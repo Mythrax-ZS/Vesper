@@ -1,0 +1,7 @@
+# Native alternate_spells is permanent and also stores the spellbook and preferences.
+# Its Vengeance bits are cleared individually at session boundaries by the plugin.
+[[varp]]
+isServerOnly = true
+id = "varp.vengeance_cooldown_deadline"
+scope = "Temp"
+transmit = "Never"

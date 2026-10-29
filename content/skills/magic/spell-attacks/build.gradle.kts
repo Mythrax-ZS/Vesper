@@ -4,9 +4,28 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.api.attr)
+    implementation(projects.api.areaChecker)
+    implementation(projects.api.death)
+    implementation(projects.api.gameProcess)
     implementation(projects.api.combat.combatCommons)
     implementation(projects.api.combat.combatManager)
     implementation(projects.api.pluginCommons)
     implementation(projects.api.script)
     implementation(projects.api.spells)
+    testImplementation(libs.mockk)
+    testImplementation(libs.fastutil)
+    testImplementation(projects.api.combat.combatFormulas)
+    testImplementation(projects.api.combat.combatScripts)
+    testImplementation(projects.api.hitPlugin)
+    testImplementation(projects.api.npcPlugin)
+    testImplementation(projects.api.invStorage)
+    testImplementation(projects.api.registry)
+    testImplementation(projects.api.net)
+    testImplementation(projects.api.specials)
+    testImplementation(projects.api.spellsAutocast)
+    testImplementation(projects.api.spellsRunes)
+    testImplementation(projects.api.weapons)
+    testImplementation(projects.content.areas.wilderness)
+    testImplementation(libs.rsprot.api)
 }

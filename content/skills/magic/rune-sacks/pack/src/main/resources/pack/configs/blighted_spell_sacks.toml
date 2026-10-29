@@ -1,0 +1,28 @@
+# Mirrors revision 241's magic_spellbook_hasrunes sack mappings.
+# Spell access, target validation and geographic permission remain runtime checks.
+[[enum]]
+id = "enum.blighted_spell_sacks"
+isServerOnly = true
+keyType = "OBJ"
+valueType = "OBJ"
+
+[enum.values]
+"obj.20_bind" = "obj.blighted_sack_entangle"
+"obj.50_snare" = "obj.blighted_sack_entangle"
+"obj.79_entangle" = "obj.blighted_sack_entangle"
+"obj.58_ice_rush" = "obj.blighted_sack_icebarrage"
+"obj.70_ice_burst" = "obj.blighted_sack_icebarrage"
+"obj.82_ice_blitz" = "obj.blighted_sack_icebarrage"
+"obj.94_ice_barrage" = "obj.blighted_sack_icebarrage"
+"obj.85_teleport_block" = "obj.blighted_sack_teleblock"
+"obj.placeholder_caveorb4dot" = "obj.blighted_sack_teleblock"
+"obj.93_vengeance_other" = "obj.blighted_sack_vengeance"
+"obj.94_vengeance" = "obj.blighted_sack_vengeance"
+"obj.62_wind_wave" = "obj.blighted_sack_surge"
+"obj.65_water_wave" = "obj.blighted_sack_surge"
+"obj.70_earth_wave" = "obj.blighted_sack_surge"
+"obj.75_fire_wave" = "obj.blighted_sack_surge"
+"obj.81_wind_surge" = "obj.blighted_sack_surge"
+"obj.85_water_surge" = "obj.blighted_sack_surge"
+"obj.90_earth_surge" = "obj.blighted_sack_surge"
+"obj.95_fire_surge" = "obj.blighted_sack_surge"

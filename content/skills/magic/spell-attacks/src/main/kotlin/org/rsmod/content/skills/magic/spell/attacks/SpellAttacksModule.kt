@@ -1,15 +1,22 @@
 package org.rsmod.content.skills.magic.spell.attacks
 
+import org.rsmod.api.death.PlayerDeathCleanupHook
+import org.rsmod.api.death.PlayerDeathPreDropHook
 import org.rsmod.api.spells.attack.SpellAttackMap
 import org.rsmod.content.skills.magic.spell.attacks.ancient.AncientSpells
 import org.rsmod.content.skills.magic.spell.attacks.arceuus.DarkLureSpell
 import org.rsmod.content.skills.magic.spell.attacks.arceuus.DemonbaneSpells
 import org.rsmod.content.skills.magic.spell.attacks.arceuus.GraspSpells
+import org.rsmod.content.skills.magic.spell.attacks.standard.ControlSpellState
 import org.rsmod.content.skills.magic.spell.attacks.standard.ElementalSpells
+import org.rsmod.content.skills.magic.spell.attacks.standard.StandardControlSpells
 import org.rsmod.plugin.module.PluginModule
 
 class SpellAttacksModule : PluginModule() {
     override fun bind() {
+        addSetBinding<SpellAttackMap>(StandardControlSpells::class.java)
+        addSetBinding<PlayerDeathPreDropHook>(ControlSpellState::class.java)
+        addSetBinding<PlayerDeathCleanupHook>(ControlSpellState::class.java)
         addSetBinding<SpellAttackMap>(ElementalSpells::class.java)
         addSetBinding<SpellAttackMap>(AncientSpells::class.java)
         addSetBinding<SpellAttackMap>(DarkLureSpell::class.java)

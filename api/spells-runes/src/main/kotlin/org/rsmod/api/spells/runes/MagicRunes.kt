@@ -1,7 +1,5 @@
 package org.rsmod.api.spells.runes
 
-import dev.openrune.ServerCacheManager
-import dev.openrune.definition.type.VarBitType
 import dev.openrune.rscm.RSCM
 import dev.openrune.rscm.RSCM.asRSCM
 import dev.openrune.rscm.RSCMType
@@ -10,6 +8,7 @@ import dev.openrune.util.Wearpos
 import kotlin.math.max
 import kotlin.math.min
 import org.rsmod.api.combat.commons.magic.MagicSpell
+import org.rsmod.api.enums.NamedEnums.blighted_spell_sacks
 import org.rsmod.api.spells.runes.combo.ComboRuneRepository
 import org.rsmod.api.spells.runes.compact.CompactRuneRepository
 import org.rsmod.api.spells.runes.fake.FakeRuneRepository
@@ -363,9 +362,11 @@ public object MagicRunes {
         return Validation.Invalid.NotEnoughRunes(rune)
     }
 
-    // Note: We _could_ use an enum config and repository to define these "rune packs," but since
-    // they do not change often, it would likely be overengineering at this point. If the need
-    // arises later, we can refactor without much effort.
+    /**
+     * Selects one sack for the whole spell without mutating inventory. Spell-to-sack mappings
+     * belong to the content cache; spell access and current-context permission belong to the
+     * caller. Fake-rune minigames retain their existing individual-rune validation path.
+     */
     public fun validateRunePack(
         player: Player,
         spell: ItemServerType,
@@ -373,7 +374,16 @@ public object MagicRunes {
         allowBlighted: Boolean,
     ): Validation.Valid? {
 
-        return null
+        if (useFakeRunes || !allowBlighted) {
+            return null
+        }
+        val sack = blighted_spell_sacks.getOrNull(spell) ?: return null
+        val slot = player.inv.indexOfFirst { it.isType(sack) && it.count > 0 }
+        if (slot < 0) {
+            return null
+        }
+        val symbol = RSCM.getReverseMapping(RSCMType.OBJ, sack.id)
+        return Validation.Valid.HasEnough(Source.InvSource(symbol, slot, 1))
     }
 
     public sealed class Validation {

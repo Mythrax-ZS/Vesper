@@ -7,6 +7,8 @@ public class MagicSpellModule : PluginModule() {
     override fun bind() {
         bindProvider(RepositoryProvider::class.java)
         bindInstance<MagicSpellCoverage>()
+        bindInstance<NonAttackSpellRegistry>()
+        newSetBinding<NonAttackSpellProvider>()
     }
 
     // Since other plugin scripts rely on `MagicSpellRegistry` always being populated with the

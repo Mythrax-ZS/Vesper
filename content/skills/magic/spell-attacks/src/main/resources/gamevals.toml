@@ -3,3 +3,19 @@ dark_lure_end_clock = 64300
 
 [gamevals.queue]
 dark_lure_cooldown = 65515
+
+[gamevals.dbtable]
+standard_control_spells = 61010
+
+[gamevals.dbrow]
+standard_bind = 63570
+standard_snare = 63571
+standard_entangle = 63572
+standard_teleblock = 63573
+
+[gamevals.varp]
+standard_teleblock_last_tick = 64301
+standard_bind_caster = 64302
+standard_bind_end_tick = 64303
+standard_teleblock_caster_uuid_low = 64304
+standard_teleblock_caster_uuid_high = 64305

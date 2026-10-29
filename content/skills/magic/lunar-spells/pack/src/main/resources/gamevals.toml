@@ -1,0 +1,8 @@
+[gamevals.varp]
+vengeance_cooldown_deadline = 64306
+
+[gamevals.enum]
+vengeance_recoil_immune = 61012
+
+[gamevals.synth]
+lunar_vengence = 2907

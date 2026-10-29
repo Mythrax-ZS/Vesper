@@ -12,7 +12,17 @@ public class MagicSpellCoverage
 constructor(
     private val spells: MagicSpellRegistry,
     private val attacks: SpellAttackRegistry,
+    private val nonAttacks: NonAttackSpellRegistry,
 ) {
+    public constructor(spells: MagicSpellRegistry, attacks: SpellAttackRegistry) :
+        this(spells, attacks, NonAttackSpellRegistry(emptySet()))
+
+    public fun nonAttackSpells(): List<MagicSpell> =
+        spells.allSpells().filter { it in nonAttacks }
+
+    public fun missingNativeCombatHandlers(): List<MagicSpell> =
+        spells.combatSpells().filter { it !in attacks && it !in nonAttacks }
+
     public fun snapshot(): Snapshot {
         val autocastIds = spells.autocastSpells().entries.associate { it.value.obj.id to it.key }
         val entries =
