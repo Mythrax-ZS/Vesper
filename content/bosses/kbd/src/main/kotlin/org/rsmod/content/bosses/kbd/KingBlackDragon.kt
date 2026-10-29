@@ -4,9 +4,14 @@ import jakarta.inject.Inject
 import org.rsmod.api.bosses.dsl.*
 import org.rsmod.api.bosses.runtime.BossDeps
 import org.rsmod.api.bosses.runtime.BossPluginScript
+import org.rsmod.api.bosses.spec.DamageExpr
 import org.rsmod.api.bosses.spec.Effect
+import org.rsmod.api.combat.commons.types.MeleeAttackType
 
-class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(deps) {
+class KingBlackDragon @Inject constructor(
+    deps: BossDeps,
+    private val breaths: KbdBreathDamage,
+) : BossPluginScript(deps) {
 
     override val spec = boss("npc.king_dragon") {
 
@@ -15,7 +20,7 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
         val melee = ability("melee") {
             anim("seq.dragon_attack")
             hit {
-                damage(0..25).roll()
+                damage(Accuracy(npcMaxHit(MeleeAttackType.Stab), meleeAttackType = MeleeAttackType.Stab))
                 type(Melee)
             }
         }
@@ -25,7 +30,7 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
             projectile(
                 spotanim = "spotanim.dragon_ranged_fire_attack",
                 travel = "projanim.dragonfire",
-                hit = Effect.Hit(damage = Roll(0..65), type = Dragonfire),
+                hit = Effect.Hit(damage = DamageExpr.Custom { _, player -> breaths.roll(player, special = false) }, type = Typeless),
             )
         }
 
@@ -34,7 +39,7 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
             projectile(
                 spotanim = "spotanim.dragon_ranged_toxic_attack",
                 travel = "projanim.dragonfire",
-                hit = Effect.Hit(damage = Roll(0..50), type = Dragonfire),
+                hit = specialBreath(),
             )
             poison(damage = 8, chance = 1, outOf = 3)
         }
@@ -44,7 +49,7 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
             projectile(
                 spotanim = "spotanim.dragon_ranged_ice_attack",
                 travel = "projanim.dragonfire",
-                hit = Effect.Hit(damage = Roll(0..50), type = Dragonfire),
+                hit = specialBreath(),
             )
             freeze(ticks = 10, chance = 1, outOf = 3)
         }
@@ -54,7 +59,7 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
             projectile(
                 spotanim = "spotanim.dragon_ranged_lightning_attack",
                 travel = "projanim.dragonfire",
-                hit = Effect.Hit(damage = Roll(0..50), type = Dragonfire),
+                hit = specialBreath(),
             )
             statDrain {
                 +stat("stat.attack") {
@@ -80,4 +85,9 @@ class KingBlackDragon @Inject constructor(deps: BossDeps) : BossPluginScript(dep
             }
         }
     }
+
+    private fun specialBreath() = Effect.Hit(
+        damage = DamageExpr.Custom { _, player -> breaths.roll(player, special = true) },
+        type = Typeless,
+    )
 }

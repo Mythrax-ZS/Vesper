@@ -1,0 +1,7 @@
+[gamevals.dbtable]
+kbd_breath_protection = 61009
+
+[gamevals.dbrow]
+kbd_breath_unprotected = 61890
+kbd_breath_prayer = 61891
+kbd_breath_shield = 61892
