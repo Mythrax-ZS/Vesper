@@ -1,0 +1,416 @@
+{
+  "checked_at": "2026-10-29T15:21:19.272414236Z",
+  "revision": 241,
+  "definitionLayer": "native client ObjectType and SequenceType from LIVE; not ObjectServerType",
+  "objectConfigIndex": 2,
+  "objectConfigArchive": 6,
+  "sequenceConfigIndex": 2,
+  "sequenceConfigArchive": 12,
+  "cacheImplementation": "dev.openrune.filesystem.FileCache",
+  "mutations": false,
+  "objects": [
+    {
+      "symbol": "loc.hunting_ojibway_trap",
+      "name": "Bird snare",
+      "animationSymbols": [],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Dismantle, 1=Investigate], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_broken",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.hunting_ojibway_failed"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Dismantle, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_failing",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.hunting_ojibway_fail"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_full_coloured",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Check, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_full_desert",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Check, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_full_jungle",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Check, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_full_polar",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Check, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_full_woodland",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[0=Check, 1=Reset], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_trapping_coloured",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_trapping_desert",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_trapping_jungle",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_trapping_polar",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    },
+    {
+      "symbol": "loc.hunting_ojibway_trap_trapping_woodland",
+      "name": "Bird snare",
+      "animationSymbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "randomizeAnimStart": true,
+      "delayAnimationUpdate": false,
+      "actions": "EntityOpsDefinition(ops=[], subOps=[], conditionalOps=[], conditionalSubOps=[])",
+      "modelTypes": null,
+      "transforms": null
+    }
+  ],
+  "sequences": [
+    {
+      "symbols": [
+        "seq.hunting_ojibway_fail"
+      ],
+      "cacheLibraryEstimatedTicks": 2,
+      "rawFrameCycleTotal": 59,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 59,
+      "frameDelays": [
+        40,
+        4,
+        1,
+        3,
+        10,
+        1
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.hunting_ojibway_failed"
+      ],
+      "cacheLibraryEstimatedTicks": 1,
+      "rawFrameCycleTotal": 11,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 11,
+      "frameDelays": [
+        11
+      ],
+      "frameStep": 1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.bird_landontrap"
+      ],
+      "cacheLibraryEstimatedTicks": 1,
+      "rawFrameCycleTotal": 10026,
+      "trailingHeldFrameCycles": 10000,
+      "cyclesBeforeTrailingHeldFrame": 26,
+      "frameDelays": [
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        10000
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.bird_leavetrap"
+      ],
+      "cacheLibraryEstimatedTicks": 4,
+      "rawFrameCycleTotal": 116,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 116,
+      "frameDelays": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.bird_caughtintrap"
+      ],
+      "cacheLibraryEstimatedTicks": 1,
+      "rawFrameCycleTotal": 227,
+      "trailingHeldFrameCycles": 200,
+      "cyclesBeforeTrailingHeldFrame": 27,
+      "frameDelays": [
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        200
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.bird_caughtintrap_ready"
+      ],
+      "cacheLibraryEstimatedTicks": 2,
+      "rawFrameCycleTotal": 45,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 45,
+      "frameDelays": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "frameStep": 9,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.human_laytrap"
+      ],
+      "cacheLibraryEstimatedTicks": 6,
+      "rawFrameCycleTotal": 152,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 152,
+      "frameDelays": [
+        8,
+        4,
+        4,
+        4,
+        4,
+        3,
+        3,
+        15,
+        10,
+        15,
+        10,
+        30,
+        4,
+        4,
+        30,
+        4
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 0,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    },
+    {
+      "symbols": [
+        "seq.hunting_setting_trap_small"
+      ],
+      "cacheLibraryEstimatedTicks": 4,
+      "rawFrameCycleTotal": 99,
+      "trailingHeldFrameCycles": 0,
+      "cyclesBeforeTrailingHeldFrame": 99,
+      "frameDelays": [
+        4,
+        5,
+        6,
+        3,
+        3,
+        5,
+        6,
+        10,
+        15,
+        17,
+        15,
+        5,
+        5
+      ],
+      "frameStep": -1,
+      "maxLoops": 99,
+      "replyMode": 2,
+      "skeletalId": -1,
+      "skeletalRangeBegin": -1,
+      "skeletalRangeEnd": -1,
+      "rangeBegin": 0,
+      "rangeEnd": 0
+    }
+  ],
+  "timingCaveat": "Raw frameDelays are client cycles (20ms each). The cache library's getLengthInCycles helper actually estimates 600ms ticks and omits a final delay >=200. Neither that helper nor SequenceServerCodec.tickDuration establishes Jagex server script delays, respawn timers or attraction cadence. frameStep/looping/held frames affect presentation lifetime.",
+  "source_probe_sha256": "e6141c0c96ed3bc090c560a1d565d77b9c4cb3a67a59675212ef1ca00796a8dc",
+  "server_timing_conversion": "or-cache/src/main/kotlin/dev/openrune/codec/osrs/impl/SequenceServerCodec.kt drops trailing delays above 30 client cycles then adds 5 cycles; resulting landing/capture durations are 2 ticks. These derived values are not proof of native server action delays."
+}

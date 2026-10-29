@@ -1,0 +1,46 @@
+{
+  "checked_at": "2026-10-29T15:55:04.731054323Z",
+  "revision": 241,
+  "source": "Native client LIVE ItemType; no cache mutation",
+  "items": [
+    {
+      "symbol": "obj.hunting_ojibway_bird_snare",
+      "name": "Bird snare",
+      "groundOptions": "EntityOpsDefinition(ops\u003d[2\u003dTake, 3\u003dLay], subOps\u003d[], conditionalOps\u003d[], conditionalSubOps\u003d[])",
+      "inventoryOptions": [
+        "Lay",
+        null,
+        null,
+        null,
+        "Drop"
+      ],
+      "stackable": true
+    },
+    {
+      "symbol": "obj.anti_odour_salt",
+      "name": "Anti-odour salt",
+      "groundOptions": "EntityOpsDefinition(ops\u003d[2\u003dTake], subOps\u003d[], conditionalOps\u003d[], conditionalSubOps\u003d[])",
+      "inventoryOptions": [
+        null,
+        null,
+        null,
+        null,
+        "Drop"
+      ],
+      "stackable": true
+    },
+    {
+      "symbol": "obj.placeholder_anti_odour_salt",
+      "name": "null",
+      "groundOptions": "EntityOpsDefinition(ops\u003d[2\u003dTake], subOps\u003d[], conditionalOps\u003d[], conditionalSubOps\u003d[])",
+      "inventoryOptions": [
+        null,
+        null,
+        null,
+        null,
+        "Drop"
+      ],
+      "stackable": false
+    }
+  ]
+}

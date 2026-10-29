@@ -1,0 +1,13 @@
+[gamevals.dbtable]
+hunter_snare_birds = 61008
+
+# Hunter rows reserve 61900–61999.
+[gamevals.dbrow]
+hunter_snare_crimson_swift = 61900
+hunter_snare_golden_warbler = 61901
+hunter_snare_copper_longtail = 61902
+hunter_snare_cerulean_twitch = 61903
+hunter_snare_tropical_wagtail = 61904
+
+[gamevals.enum]
+hunter_trap_limits = 61008

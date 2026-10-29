@@ -1,0 +1,11 @@
+[[enum]]
+id = "enum.hunter_trap_limits"
+isServerOnly = true
+keyType = "DBROW"
+valueType = "INT"
+
+[enum.values]
+"dbrow.skill_feature_hunter_2traps" = 2
+"dbrow.skill_feature_hunter_3traps" = 3
+"dbrow.skill_feature_hunter_4traps" = 4
+"dbrow.skill_feature_hunter_5traps" = 5

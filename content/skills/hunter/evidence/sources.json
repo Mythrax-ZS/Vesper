@@ -1,0 +1,140 @@
+{
+  "retrieved_at": "2026-10-29T14:27:50.714823+00:00",
+  "sources": [
+    {
+      "title": "Hunter",
+      "revid": 15375251,
+      "timestamp": "2026-10-18T18:24:25Z",
+      "sha256": "29bea1a2795f5fd483b14945910ebe0ea2afbf4ee3e839e19e3753f3c93b43b9",
+      "source_file": "Hunter.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15375251"
+    },
+    {
+      "title": "Crimson swift",
+      "revid": 15381177,
+      "timestamp": "2026-10-24T15:43:39Z",
+      "sha256": "6b617d66d9448da9dd109a976a37eb916003bdadee6a92cf96a7fb55ef04e67a",
+      "source_file": "Crimson_swift.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381177"
+    },
+    {
+      "title": "Bird snare",
+      "revid": 15368303,
+      "timestamp": "2026-10-08T01:43:00Z",
+      "sha256": "82843c74897053f837fced3ea2ee0b469910b9cf6ff8c326bdc0b67bd62a7197",
+      "source_file": "Bird_snare.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15368303"
+    },
+    {
+      "title": "Tropical wagtail",
+      "revid": 15381180,
+      "timestamp": "2026-10-24T15:44:09Z",
+      "sha256": "37b57d7c063ceb5fd935705ed9dc3790ca4d22109c9c820cddc8ede3b17abd8c",
+      "source_file": "Tropical_wagtail.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381180"
+    },
+    {
+      "title": "Cerulean twitch",
+      "revid": 15381175,
+      "timestamp": "2026-10-24T15:43:01Z",
+      "sha256": "9c27045ee0d8ff6ef1f6ccf65c4c5ac31ffb44df91162c780bb37e8d70f1824b",
+      "source_file": "Cerulean_twitch.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381175"
+    },
+    {
+      "title": "Copper longtail",
+      "revid": 15385034,
+      "timestamp": "2026-10-29T01:30:41Z",
+      "sha256": "b7e3a30ff0560f19c0f92eba9777def2073a48608e74c51887756cff0b29f31a",
+      "source_file": "Copper_longtail.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385034"
+    },
+    {
+      "title": "Golden warbler",
+      "revid": 15381178,
+      "timestamp": "2026-10-24T15:43:56Z",
+      "sha256": "84d65b17b230e12b53d34393b2c9567d6a8e1c5bc33d40e6d619bf91c0592b16",
+      "source_file": "Golden_warbler.wiki",
+      "url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381178"
+    }
+  ],
+  "purpose": "Source provenance, not independent verification of every OSRS server rule. Source hashes are of retrieved raw wikitext.",
+  "official_updates": [
+    {
+      "date": "2026-08-19",
+      "url": "https://secure.runescape.com/m=news/summer-sweep-up---hunter--skilling?oldschool=1",
+      "supports": "Two traps at Hunter level 1."
+    },
+    {
+      "date": "2026-10-07",
+      "url": "https://secure.runescape.com/m=news/pete-kayers-challenges?oldschool=1",
+      "supports": "Bird-snare Reset option; no action delay or full-inventory rule disclosed."
+    }
+  ],
+  "runelite_sources": [
+    {
+      "url": "https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/hunter/HunterTrap.java",
+      "retrieved_at": "2026-10-29",
+      "sha256": "c9a89a2898d5a855f1d860b87da382cb52f6903329962868e311ddc527ddddc5",
+      "supports": "One-minute trap timer.",
+      "caveat": "Client observation/calculator data, not Jagex server source; master URL may subsequently change."
+    },
+    {
+      "url": "https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/hunter/HunterPlugin.java",
+      "retrieved_at": "2026-10-29",
+      "sha256": "62bf1b2aaa266381396b7348e1414feffd9b727d6fbe59c2425c9b7c5b34a681",
+      "supports": "Placement can coincide with movement; full/broken state resets timer.",
+      "caveat": "Client observation/calculator data, not Jagex server source; master URL may subsequently change."
+    },
+    {
+      "url": "https://github.com/runelite/runelite/blob/master/runelite-client/src/main/java/net/runelite/client/plugins/skillcalculator/skills/HunterAction.java",
+      "retrieved_at": "2026-10-29",
+      "sha256": "4f10e87f9771c1961689e779edbea0b4ef3ebbe0b27d68b1e15cda8192adf754",
+      "supports": "Calculator XP differs from per-creature Wiki for copper longtail and tropical wagtail.",
+      "caveat": "Client observation/calculator data, not Jagex server source; master URL may subsequently change."
+    }
+  ],
+  "box_trap_inference": [
+    {
+      "url": "https://twitter.com/JagexAsh/status/832525340417343488",
+      "scope": "Box-trap attraction interval approximately three server cycles; bird-specific cadence unverified."
+    },
+    {
+      "url": "https://twitter.com/JagexAsh/status/1155568204279943168",
+      "scope": "Box-trap range two; bird-specific range unverified."
+    }
+  ],
+  "xp_conflict": {
+    "per_creature_wiki": {
+      "copper_longtail": 61.2,
+      "cerulean_twitch": 64.5,
+      "tropical_wagtail": 95.2
+    },
+    "runelite_calculator": {
+      "copper_longtail": 61,
+      "cerulean_twitch": 64.5,
+      "tropical_wagtail": 95
+    },
+    "decision": "Use per-creature Wiki values; copper and tropical fractions require independent live-game verification."
+  },
+  "ground_lay_review": {
+    "checked_at": "2026-10-29T15:55:04.731054323Z",
+    "native_item_receipt_sha256": "fe9801460e4f3bb11e06cbe4a73623dda6fffe5b655001388aeeec6361d4a63d",
+    "verified": "Native ground op4 Lay; op3 Take; inventory op1 Lay; snare stackable.",
+    "implemented_provisional_behavior": "Route onto source tile, directly convert one registered ground snare into one placed trap without an intermediate inventory item, preserve remainder and source timers.",
+    "unresolved": [
+      "Whether OSRS uses an intermediate inventory slot during ground Lay.",
+      "How OSRS handles stacked ground snares and full inventory during Lay.",
+      "Exact laying cooldown and automatic step direction/timing."
+    ],
+    "research_scope": "Current Jagex update, Wiki, RuneLite/QuestHelper searches did not establish these server-side details; box-trap timing was not substituted for bird snares."
+  },
+  "smoke_salt_review": {
+    "url": "https://oldschool.runescape.wiki/w/Anti-odour_salt",
+    "primary_bonus_statement": "https://twitter.com/JagexAsh/status/793829284288851968",
+    "native_symbol": "obj.anti_odour_salt",
+    "known": "Salt automatically smokes traps; cited smoke bonus is +2%.",
+    "unresolved": "Current Wiki explicitly asks whether the rate adjustment is additive or multiplicative. Exact modifier snapshot/timing also lacks direct server evidence.",
+    "implementation": "No salt consumption or smoke bonus until arithmetic is established."
+  }
+}
