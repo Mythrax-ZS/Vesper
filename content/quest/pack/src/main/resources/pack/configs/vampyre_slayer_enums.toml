@@ -1,0 +1,10 @@
+[[enum]]
+isServerOnly = true
+id = "enum.vampyre_slayer_hammers"
+keyType = "INT"
+valueType = "OBJ"
+
+[enum.values]
+1 = "obj.hammer"
+2 = "obj.imcando_hammer"
+3 = "obj.imcando_hammer_offhand"

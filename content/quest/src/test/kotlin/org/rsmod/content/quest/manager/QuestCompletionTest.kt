@@ -17,6 +17,7 @@ import org.rsmod.api.invtx.InvTransactionsScript
 import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.protect.ProtectedAccessContextFactory
 import org.rsmod.api.player.vars.VarPlayerIntMapSetter
+import org.rsmod.api.player.vars.varMoveSpeed
 import org.rsmod.api.table.QuestRow
 import org.rsmod.coroutine.GameCoroutine
 import org.rsmod.events.EventBus
@@ -26,6 +27,7 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.inv.InvObj
 import org.rsmod.game.inv.InvVirtualStorageHolder
 import org.rsmod.game.inv.Inventory
+import org.rsmod.game.movement.MoveSpeed
 import org.rsmod.game.queue.EngineQueueCache
 import org.rsmod.plugin.scripts.ScriptContext
 
@@ -137,6 +139,52 @@ class QuestCompletionTest {
         }
     }
 
+    @Test
+    fun `only successful first completion restores energy and clears ongoing toxins`() {
+        for (entry in Entry.entries) {
+            val f = Fixture()
+            f.player.runEnergy = 1234
+            VarPlayerIntMapSetter.set(f.player, "varp.poison_severity", 40)
+            VarPlayerIntMapSetter.set(f.player, "varp.venom_strikes", 3)
+            VarPlayerIntMapSetter.set(f.player, "varp.disease_drain", 10)
+            for (timer in listOf("timer.player_poison", "timer.player_venom", "timer.player_disease")) {
+                f.player.timer(timer, 30)
+            }
+            f.fillLeaving(1)
+            val before = f.snapshot()
+            assertFalse(entry.complete(f))
+            assertEquals(before, f.snapshot())
+
+            f.player.inv[25] = null
+            f.player.inv[26] = null
+            assertTrue(entry.complete(f))
+            assertEquals(10000, f.player.runEnergy)
+            assertEquals(0, f.player.vars["varp.poison_severity"])
+            assertEquals(0, f.player.vars["varp.venom_strikes"])
+            assertEquals(0, f.player.vars["varp.disease_drain"])
+            assertTrue(f.player.timerMap.none { (it.shortKey.toInt() and 0xFFFF) in TOXIN_TIMERS })
+            assertEquals(MoveSpeed.Walk, f.player.varMoveSpeed)
+            assertEquals(1, f.snapshot().packets.count { it is net.rsprot.protocol.game.outgoing.misc.player.UpdateRunEnergy })
+
+            f.player.runEnergy = 100
+            VarPlayerIntMapSetter.set(f.player, "varp.poison_severity", 7)
+            f.player.timer("timer.player_poison", 30)
+            val repeated = f.snapshot()
+            assertTrue(f.quest.completeQuest(f.access))
+            assertEquals(repeated, f.snapshot())
+        }
+    }
+
+    @Test
+    fun `ordinary quest progress does not cure toxins or restore energy`() {
+        val f = Fixture(initialStage = 0)
+        f.player.runEnergy = 4321
+        VarPlayerIntMapSetter.set(f.player, "varp.poison_severity", 12)
+        assertTrue(f.quest.setQuestStage(f.access, 1))
+        assertEquals(4321, f.player.runEnergy)
+        assertEquals(12, f.player.vars["varp.poison_severity"])
+    }
+
     private enum class Entry {
         SetStage,
         Complete,
@@ -216,6 +264,9 @@ class QuestCompletionTest {
             xp = player.statMap.getXP("stat.crafting"),
             questScroll = player.ui.containsModal("interface.questscroll"),
             packets = client.messages.toList(),
+            energy = player.runEnergy,
+            toxins = listOf("varp.poison_severity", "varp.venom_strikes", "varp.disease_drain").map { player.vars[it] },
+            timers = player.timerMap.associate { it.shortKey to it.longValue },
         )
 
         @OptIn(InternalApi::class)
@@ -240,6 +291,9 @@ class QuestCompletionTest {
         val xp: Int,
         val questScroll: Boolean,
         val packets: List<Any>,
+        val energy: Int,
+        val toxins: List<Int>,
+        val timers: Map<Short, Long>,
     )
 
     private class RecordingClient : Client<Any, Any> {
@@ -255,10 +309,11 @@ class QuestCompletionTest {
     companion object {
         private val GEMS = listOf("obj.uncut_ruby", "obj.uncut_emerald", "obj.uncut_sapphire")
         private val restored = mutableListOf<() -> Unit>()
+        private val TOXIN_TIMERS get() = listOf("timer.player_poison", "timer.player_venom", "timer.player_disease").map { it.asRSCM() }
 
         @OptIn(InternalApi::class)
         @JvmStatic @BeforeAll fun cache() {
-            ServerCacheManager.init(240).close()
+            ServerCacheManager.init(241).close()
             for ((owner, name) in listOf(
                 "org.rsmod.api.invtx.InvTransactionsScriptKt" to "cachedInventoryTransactions",
                 "org.rsmod.api.invtx.VirtualInvTransactionsKt" to "cachedPlayerItemStorage",

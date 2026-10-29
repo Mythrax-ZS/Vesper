@@ -40,6 +40,7 @@ import org.rsmod.game.inv.InvObj
 import org.rsmod.game.inv.InvVirtualStorageHolder
 import org.rsmod.game.inv.Inventory
 import org.rsmod.game.queue.EngineQueueCache
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.ScriptContext
 
@@ -254,6 +255,7 @@ class XMarksTheSpotInteractionTest {
         @OptIn(InternalApi::class)
         val player =
             Player().apply {
+                worldType = WorldType.MAIN
                 this.client = this@Fixture.client
                 uuid = 791L
                 slotId = 1

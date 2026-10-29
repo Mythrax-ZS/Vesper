@@ -50,6 +50,7 @@ import org.rsmod.game.loc.BoundLocInfo
 import org.rsmod.game.loc.LocEntity
 import org.rsmod.game.loc.LocInfo
 import org.rsmod.game.queue.EngineQueueCache
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.ScriptContext
 
@@ -420,6 +421,7 @@ class DaddysHomeInteractionTest {
         @OptIn(InternalApi::class)
         val player =
             Player().apply {
+                worldType = WorldType.MAIN
                 this.client = this@Fixture.client
                 uuid = 793L
                 observerUUID = 793L

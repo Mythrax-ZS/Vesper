@@ -1,0 +1,13 @@
+[[varbit]]
+isServerOnly = true
+id = "varbit.vampyre_slayer_progress"
+varp = "varp.vampire"
+startBit = 0
+endBit = 1
+
+# A stake that has been committed to the killing blow must survive logout before the reward UI.
+[[varp]]
+isServerOnly = true
+id = "varp.vampyre_slayer_pending_completion"
+scope = "Perm"
+transmit = "Never"

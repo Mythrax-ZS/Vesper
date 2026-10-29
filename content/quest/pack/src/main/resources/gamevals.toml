@@ -75,6 +75,7 @@ chest_close = 51
 irondoor_locked = 72
 
 [gamevals.varp]
+vampyre_slayer_pending_completion = 63560
 restless_ghost_rising_tile = 63703
 restless_ghost_return_tile = 63704
 misthalin_return_tile = 63700
@@ -87,6 +88,7 @@ waterfall_state = 64310
 sheep_shearer_state = 65472
 
 [gamevals.varbit]
+vampyre_slayer_progress = 63560
 restless_ghost_progress = 63702
 imp_catcher_progress = 63703
 misthalin_reflections = 63700
@@ -125,6 +127,7 @@ misthalin_gem_sapphire = 32345
 misthalin_gem_emerald = 32334
 
 [gamevals.timer]
+vampyre_slayer_settlement = 63560
 restless_ghost_coffin_ghost = 123
 restless_skeleton_attack = 124
 
@@ -153,6 +156,7 @@ glarial_forbidden_parts = 63684
 glarial_allowed_parts = 63679
 
 [gamevals.enum]
+vampyre_slayer_hammers = 63560
 daddys_home_hammers = 65460
 daddys_home_saws = 65461
 daddys_home_nails = 65462

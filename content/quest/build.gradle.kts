@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    testImplementation(libs.mockk)
     testImplementation(projects.api.invPlugin)
     testImplementation(projects.api.objCharges)
     testImplementation(projects.api.gameProcess)
@@ -16,6 +17,7 @@ dependencies {
     implementation(projects.api.bottomlessMilk)
     implementation(projects.content.generic.genericLocs)
     implementation(projects.api.death)
+    implementation(projects.api.mechanics.toxins)
     implementation(projects.api.serverConfig)
     implementation(libs.rsprot.api)
 }

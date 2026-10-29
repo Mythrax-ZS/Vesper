@@ -7,10 +7,13 @@ import dev.openrune.rscm.RSCMType
 import java.util.Locale
 import net.rsprot.protocol.game.outgoing.interfaces.IfSetPosition
 import org.rsmod.api.attr.AttributeKey
+import org.rsmod.api.config.constants
 import org.rsmod.api.invtx.add
 import org.rsmod.api.invtx.invTransaction
 import org.rsmod.api.invtx.select
+import org.rsmod.api.mechanics.toxins.Toxin.cureAllToxins
 import org.rsmod.api.player.midiJingle
+import org.rsmod.api.player.output.UpdateRun
 import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.vars.VarPlayerIntMapSetter
 import org.rsmod.api.player.vars.intVarBit
@@ -245,7 +248,9 @@ data class Quest(
     }
 
     private fun completedQuest(access: ProtectedAccess) {
-
+        access.player.runEnergy = constants.run_max_energy
+        UpdateRun.energy(access.player, access.player.runEnergy)
+        access.player.cureAllToxins()
         access.player.questPoints += questPoints
         access.player.questsCompleted++
         access.mes("Congratulations, you've completed a quest: @q_mes@$displayName</col>")

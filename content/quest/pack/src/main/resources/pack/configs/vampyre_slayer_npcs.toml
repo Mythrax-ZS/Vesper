@@ -1,0 +1,13 @@
+[[npc]]
+isServerOnly = true
+id = "npc.count_draynor"
+inherit = "npc.count_draynor"
+defaultMode = "None"
+wanderRange = 0
+# NpcRegenProcessor waits this many countdown cycles between restoration cycles: 4 + 1 = 5 ticks.
+regenRate = 4
+[npc.params]
+"param.attackrate" = 4
+"param.npc_attack_type" = "category.attacktype_crush"
+"param.npc_com_xp_multiplier" = 25
+"param.dropped_remains" = -1

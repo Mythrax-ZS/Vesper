@@ -1,10 +1,13 @@
 package org.rsmod.content.quest.manager
 
 import org.rsmod.api.combat.commons.magic.SpellQuestRequirement
+import org.rsmod.api.death.NpcAttackValidateHook
 import org.rsmod.api.death.NpcDeathKillHook
 import org.rsmod.api.player.hook.SpadeDigHook
 import org.rsmod.content.generic.locs.bookcases.BookcaseSearchHook
 import org.rsmod.content.quest.area.baxtorianfalls.waterfall.TouristCentreBookcases
+import org.rsmod.content.quest.area.draynor.vampyreslayer.VampyreSlayer
+import org.rsmod.content.quest.area.draynor.vampyreslayer.VampyreSlayerEncounter
 import org.rsmod.content.quest.area.falador.doricsquest.DoricsQuest
 import org.rsmod.content.quest.area.falador.knightssword.KnightsSwordQuest
 import org.rsmod.content.quest.area.lumbridge.RuneMysteriesQuest
@@ -18,6 +21,9 @@ import org.rsmod.plugin.module.PluginModule
 public class QuestModule : PluginModule() {
     override fun bind() {
         bindInstance<QuestRequirementResolver>()
+        bindInstance<VampyreSlayer>()
+        bindInstance<VampyreSlayerEncounter>()
+        addSetBinding<NpcAttackValidateHook>(VampyreSlayerEncounter::class.java)
         bindInstance<RuneMysteriesQuest>()
         bindInstance<GertrudesCatQuest>()
         bindInstance<DaddysHomeQuest>()

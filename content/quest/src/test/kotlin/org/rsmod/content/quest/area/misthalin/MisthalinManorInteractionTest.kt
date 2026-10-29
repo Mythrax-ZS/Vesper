@@ -84,6 +84,7 @@ import org.rsmod.game.region.RegionListLarge
 import org.rsmod.game.region.RegionListSmall
 import org.rsmod.game.region.RegionListWorldEntity
 import org.rsmod.game.seq.EntitySeq
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.ScriptContext
 import org.rsmod.routefinder.collision.CollisionFlagMap
@@ -401,6 +402,7 @@ class MisthalinManorInteractionTest {
 
         @OptIn(InternalApi::class)
         val player = Player().apply {
+            worldType = WorldType.MAIN
             this.client = this@Fixture.client
             uuid = 456L
             slotId = 1
