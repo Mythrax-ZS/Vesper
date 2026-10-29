@@ -56,7 +56,7 @@ constructor(
         spellAttributes: EnumSet<CombatSpellAttributes>,
     ): Int {
         val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, null)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val magicBonus = bonuses.offensiveMagicBonusBase(source)
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifySpellAttackRoll(attackRoll, spellAttributes)
     }
@@ -82,7 +82,7 @@ constructor(
 
     public fun computeStaffAttackRoll(source: Player, attackStyle: MagicAttackStyle?): Int {
         val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, attackStyle)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val magicBonus = bonuses.offensiveMagicBonusBase(source)
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifyStaffAttackRoll(attackRoll)
     }

@@ -18,6 +18,7 @@ import org.rsmod.game.entity.npc.NpcUid
 import org.rsmod.game.entity.player.PlayerUid
 import org.rsmod.game.hit.Hit
 import org.rsmod.game.hit.HitType
+import org.rsmod.game.hit.NpcDamageContext
 import org.rsmod.game.type.getOrNull
 
 private val ProtectedAccess.autoRetaliateDisabled by boolVarp("varp.option_nodef")
@@ -64,9 +65,10 @@ public fun Player.finishNpcHit(
     damage: Int,
     modifier: PlayerHitModifier,
     penetration: Int = 0,
+    damageContext: NpcDamageContext? = null,
 ): Hit {
     queueCombatRetaliate(source)
-    val hit = queueHit(source, delay, type, damage, modifier, penetration = penetration)
+    val hit = queueHit(source, delay, type, damage, modifier, penetration = penetration, damageContext = damageContext)
     combatPlayDefendAnim()
     return hit
 }

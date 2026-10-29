@@ -10,6 +10,12 @@ internal class CombatModule : PluginModule() {
         Multibinder.newSetBinder(binder(), NpcAttackHook::class.java)
         Multibinder.newSetBinder(binder(), NpcAttackOverrideHook::class.java)
 
+        bind(org.rsmod.api.player.hit.modifier.NpcIncomingDamageReducer::class.java)
+            .to(org.rsmod.api.combat.formulas.NpcIncomingDamageReducer::class.java)
+
+        bind(org.rsmod.api.player.hit.modifier.PvpIncomingDamageReducer::class.java)
+            .to(org.rsmod.api.combat.formulas.PvpIncomingDamageReducer::class.java)
+
         bindInstance<NvPCombat>()
         bindInstance<PvNCombat>()
         bindInstance<PvPCombat>()

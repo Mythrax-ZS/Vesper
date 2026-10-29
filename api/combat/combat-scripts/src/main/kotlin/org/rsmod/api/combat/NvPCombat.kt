@@ -27,7 +27,9 @@ import org.rsmod.api.player.isValidTarget
 import org.rsmod.api.player.output.soundSynth
 import org.rsmod.api.repo.world.WorldRepository
 import org.rsmod.game.entity.Player
+import org.rsmod.game.hit.HitDefenceType
 import org.rsmod.game.hit.HitType
+import org.rsmod.game.hit.NpcDamageContext
 import org.rsmod.game.proj.ProjAnim
 
 internal class NvPCombat
@@ -71,6 +73,7 @@ constructor(
             type = HitType.Melee,
             damage = damage,
             penetration = override.penetration(),
+            defenceType = attack.type?.toHitDefenceType(),
         )
     }
 
@@ -97,6 +100,7 @@ constructor(
             type = HitType.Ranged,
             damage = damage,
             penetration = override.penetration(),
+            defenceType = HitDefenceType.Ranged,
         )
     }
 
@@ -126,6 +130,7 @@ constructor(
             type = HitType.Magic,
             damage = damage,
             penetration = override.penetration(),
+            defenceType = HitDefenceType.Magic,
         )
     }
 
@@ -186,9 +191,13 @@ constructor(
         type: HitType,
         damage: Int,
         penetration: Int = 0,
+        defenceType: HitDefenceType?,
     ) {
         setAttackVars(target)
-        target.finishNpcHit(npc, delay, type, damage, hitModifier, penetration)
+        target.finishNpcHit(
+            npc, delay, type, damage, hitModifier, penetration,
+            damageContext = NpcDamageContext(npc.visType.id, defenceType),
+        )
     }
 
     private fun StandardNpcAccess.resolveOverride(target: Player): NpcAttackOverride? =

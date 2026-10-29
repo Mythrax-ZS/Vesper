@@ -2,7 +2,6 @@ package org.rsmod.api.combat.formulas.maxhit.magic
 
 import jakarta.inject.Inject
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
-import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.combat.maxhit.npc.NpcMagicMaxHit
 import org.rsmod.api.npc.magicStrength
 import org.rsmod.api.player.bonus.WornBonuses
@@ -21,10 +20,6 @@ constructor(
 
     public fun computeMaxHit(npc: Npc, target: Player): Int {
         val effectiveMagic = NpcMagicMaxHit.calculateEffectiveMagic(npc.magicLvl)
-        val baseDamage = NpcMagicMaxHit.calculateBaseDamage(effectiveMagic, npc.magicStrength)
-
-        val defenceBonus = bonuses.defensiveMagicBonus(target)
-        val reductionAttributes = reductions.collectNvP(target, npc, random)
-        return MaxHitOperations.applyDamageReductions(baseDamage, defenceBonus, reductionAttributes)
+        return NpcMagicMaxHit.calculateBaseDamage(effectiveMagic, npc.magicStrength)
     }
 }

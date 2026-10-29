@@ -1,0 +1,4067 @@
+{
+  "recorded_at": "2026-10-29T18:45:23.080378+00:00",
+  "scope": "Static main-game flat armour baselines. Phase and world-mode exclusions are explicit; this data does not implement encounters.",
+  "table": "https://oldschool.runescape.wiki/w/Flat_armour",
+  "table_revision": 15382660,
+  "native_revision": 241,
+  "entries": [
+    {
+      "symbol": "npc.akd_egg_lizardman",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Lizardman brute#Battlefront",
+          "page": "Lizardman brute",
+          "revision": 15339921,
+          "revision_timestamp": "2026-09-10T22:36:44Z",
+          "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.amoxliatl",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Amoxliatl#Post-quest",
+          "page": "Amoxliatl",
+          "revision": 15383998,
+          "revision_timestamp": "2026-10-27T18:31:51Z",
+          "url": "https://oldschool.runescape.wiki/w/Amoxliatl",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383998"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.amoxliatl_quest",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Amoxliatl#Quest",
+          "page": "Amoxliatl",
+          "revision": 15383998,
+          "revision_timestamp": "2026-10-27T18:31:51Z",
+          "url": "https://oldschool.runescape.wiki/w/Amoxliatl",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383998"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.barrows_karil",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Karil the Tainted",
+          "page": "Karil the Tainted",
+          "revision": 15317918,
+          "revision_timestamp": "2026-08-24T07:26:55Z",
+          "url": "https://oldschool.runescape.wiki/w/Karil_the_Tainted",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15317918"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.brut_skeleton1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Skeleton hero",
+          "page": "Skeleton hero",
+          "revision": 15351306,
+          "revision_timestamp": "2026-09-19T18:07:20Z",
+          "url": "https://oldschool.runescape.wiki/w/Skeleton_hero",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351306"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.brut_skeleton5",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Skeleton heavy",
+          "page": "Skeleton heavy",
+          "revision": 15351308,
+          "revision_timestamp": "2026-09-19T18:07:29Z",
+          "url": "https://oldschool.runescape.wiki/w/Skeleton_heavy",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351308"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.brut_skeleton6",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Skeleton thug",
+          "page": "Skeleton thug",
+          "revision": 15351307,
+          "revision_timestamp": "2026-09-19T18:07:25Z",
+          "url": "https://oldschool.runescape.wiki/w/Skeleton_thug",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351307"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_body",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Body Golem#Golem",
+          "page": "Body Golem",
+          "revision": 15350682,
+          "revision_timestamp": "2026-09-19T01:34:16Z",
+          "url": "https://oldschool.runescape.wiki/w/Body_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15350682"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_body_rock",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Body Golem#Rubble",
+          "page": "Body Golem",
+          "revision": 15350682,
+          "revision_timestamp": "2026-09-19T01:34:16Z",
+          "url": "https://oldschool.runescape.wiki/w/Body_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15350682"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_chaos",
+      "flat_armour": 3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Chaos Golem#Golem",
+          "page": "Chaos Golem",
+          "revision": 15270689,
+          "revision_timestamp": "2026-07-20T22:25:02Z",
+          "url": "https://oldschool.runescape.wiki/w/Chaos_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_chaos_rock",
+      "flat_armour": 3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Chaos Golem#Rubble",
+          "page": "Chaos Golem",
+          "revision": 15270689,
+          "revision_timestamp": "2026-07-20T22:25:02Z",
+          "url": "https://oldschool.runescape.wiki/w/Chaos_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_flawed",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Flawed Golem#Golem",
+          "page": "Flawed Golem",
+          "revision": 15270680,
+          "revision_timestamp": "2026-07-20T22:19:27Z",
+          "url": "https://oldschool.runescape.wiki/w/Flawed_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270680"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_flawed_rock",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Flawed Golem#Rubble",
+          "page": "Flawed Golem",
+          "revision": 15270680,
+          "revision_timestamp": "2026-07-20T22:19:27Z",
+          "url": "https://oldschool.runescape.wiki/w/Flawed_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270680"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_mind",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Mind Golem#Golem",
+          "page": "Mind Golem",
+          "revision": 15368490,
+          "revision_timestamp": "2026-10-08T11:44:42Z",
+          "url": "https://oldschool.runescape.wiki/w/Mind_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15368490"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.camdozaal_golem_mind_rock",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Mind Golem#Rubble",
+          "page": "Mind Golem",
+          "revision": 15368490,
+          "revision_timestamp": "2026-10-08T11:44:42Z",
+          "url": "https://oldschool.runescape.wiki/w/Mind_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15368490"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_melee_1",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Melee, 1",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_melee_2",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Melee, 2",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_melee_3",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Melee, 3",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_melee_4",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Melee, 4",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_melee_5",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Melee, 5",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_ranged_1",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Ranged, 1",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_ranged_2",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Ranged, 2",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_ranged_3",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Ranged, 3",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_ranged_4",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Ranged, 4",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.coa_armoured_zombie_ranged_5",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Fort)#Ranged, 5",
+          "page": "Armoured zombie (Zemouregal's Fort)",
+          "revision": 15340888,
+          "revision_timestamp": "2026-09-11T17:19:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.contact_locust_bow",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Locust rider#Ranger",
+          "page": "Locust rider",
+          "revision": 15281959,
+          "revision_timestamp": "2026-07-29T23:33:24Z",
+          "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.contact_locust_bow_b",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Locust rider#Ranger (Quest)",
+          "page": "Locust rider",
+          "revision": 15281959,
+          "revision_timestamp": "2026-07-29T23:33:24Z",
+          "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.contact_locust_lance",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Locust rider#Lancer",
+          "page": "Locust rider",
+          "revision": 15281959,
+          "revision_timestamp": "2026-07-29T23:33:24Z",
+          "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.contact_locust_lance_b",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Locust rider#Lancer (Quest)",
+          "page": "Locust rider",
+          "revision": 15281959,
+          "revision_timestamp": "2026-07-29T23:33:24Z",
+          "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.crypt_of_tonali_grimy_lizard",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Grimy Lizard",
+          "page": "Grimy Lizard",
+          "revision": 15366465,
+          "revision_timestamp": "2026-10-06T01:19:04Z",
+          "url": "https://oldschool.runescape.wiki/w/Grimy_Lizard",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15366465"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_melee_1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Melee",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_melee_2",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Melee",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_melee_3",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Melee",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_melee_4",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Melee",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_melee_5",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Melee",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_ranged_1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Ranged",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_ranged_2",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Ranged",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_ranged_3",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Ranged",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_ranged_4",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Ranged",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_ranged_5",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Zemouregal's Base)#Ranged",
+          "page": "Armoured zombie (Zemouregal's Base)",
+          "revision": 15381494,
+          "revision_timestamp": "2026-10-25T01:43:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_1_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_2",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_3",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_3_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_4",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_4_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_melee_5",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_2",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_2_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_4",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        },
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_4_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_5",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.dov_armoured_zombie_varrock_ranged_5_huntplayer",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+          "page": "Armoured zombie (Defender of Varrock)",
+          "revision": 15200622,
+          "revision_timestamp": "2026-04-28T07:29:35Z",
+          "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.drake",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Drake",
+          "page": "Drake",
+          "revision": 15371749,
+          "revision_timestamp": "2026-10-13T07:32:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Drake",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15371749"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.drake_death",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Drake",
+          "page": "Drake",
+          "revision": 15371749,
+          "revision_timestamp": "2026-10-13T07:32:48Z",
+          "url": "https://oldschool.runescape.wiki/w/Drake",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15371749"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.earth_nagua",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Earthen Nagua#Normal",
+          "page": "Earthen Nagua",
+          "revision": 15355034,
+          "revision_timestamp": "2026-09-24T03:50:46Z",
+          "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+        },
+        {
+          "variant": "Earthen Nagua#Weakened",
+          "page": "Earthen Nagua",
+          "revision": 15355034,
+          "revision_timestamp": "2026-09-24T03:50:46Z",
+          "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.earth_nagua_reinforced",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Earthen Nagua#Reinforced",
+          "page": "Earthen Nagua",
+          "revision": 15355034,
+          "revision_timestamp": "2026-09-24T03:50:46Z",
+          "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.elite_black_knight_1",
+      "flat_armour": 7,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Elite Black Knight#Male",
+          "page": "Elite Black Knight",
+          "revision": 15383689,
+          "revision_timestamp": "2026-10-27T09:07:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.elite_black_knight_1_cutscene",
+      "flat_armour": 7,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Elite Black Knight#Male",
+          "page": "Elite Black Knight",
+          "revision": 15383689,
+          "revision_timestamp": "2026-10-27T09:07:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.elite_black_knight_2",
+      "flat_armour": 7,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Elite Black Knight#Female",
+          "page": "Elite Black Knight",
+          "revision": 15383689,
+          "revision_timestamp": "2026-10-27T09:07:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.elite_black_knight_2_cutscene",
+      "flat_armour": 7,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Elite Black Knight#Female",
+          "page": "Elite Black Knight",
+          "revision": 15383689,
+          "revision_timestamp": "2026-10-27T09:07:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_1",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 13",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_2",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 27",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_3",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 46",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_4",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 76",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_5",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 115",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairy2_golemguardian_6",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Rock Golem (monster)#Level 154",
+          "page": "Rock Golem (monster)",
+          "revision": 15370849,
+          "revision_timestamp": "2026-10-11T23:25:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.fairytale2_gorak",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Gorak#Level 145",
+          "page": "Gorak",
+          "revision": 15341617,
+          "revision_timestamp": "2026-09-12T10:24:38Z",
+          "url": "https://oldschool.runescape.wiki/w/Gorak",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341617"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.frost_nagua",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Frost Nagua",
+          "page": "Frost Nagua",
+          "revision": 15341239,
+          "revision_timestamp": "2026-09-12T03:00:56Z",
+          "url": "https://oldschool.runescape.wiki/w/Frost_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341239"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.frost_nagua_cutscene",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Frost Nagua",
+          "page": "Frost Nagua",
+          "revision": 15341239,
+          "revision_timestamp": "2026-09-12T03:00:56Z",
+          "url": "https://oldschool.runescape.wiki/w/Frost_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341239"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase1_defensive",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase1_flytransition",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase1_transition",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase2_attacking",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase3_defensive",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.gargboss_dusk_phase3_transition",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Dusk#First form",
+          "page": "Dusk",
+          "revision": 15352439,
+          "revision_timestamp": "2026-09-21T01:15:11Z",
+          "url": "https://oldschool.runescape.wiki/w/Dusk",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.godwars_gorak",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Gorak#GWD",
+          "page": "Gorak",
+          "revision": 15341617,
+          "revision_timestamp": "2026-09-12T10:24:38Z",
+          "url": "https://oldschool.runescape.wiki/w/Gorak",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341617"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.grimy_lizard",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Grimy Lizard",
+          "page": "Grimy Lizard",
+          "revision": 15366465,
+          "revision_timestamp": "2026-10-06T01:19:04Z",
+          "url": "https://oldschool.runescape.wiki/w/Grimy_Lizard",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15366465"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.jungle_spider",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Jungle spider",
+          "page": "Jungle spider",
+          "revision": 15239033,
+          "revision_timestamp": "2026-06-25T03:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Jungle_spider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15239033"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.kourend_shade",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Shade#Catacombs of Kourend",
+          "page": "Shade",
+          "revision": 15357045,
+          "revision_timestamp": "2026-09-27T18:29:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15357045"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.macro_shade",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Shade#Stronghold of Security",
+          "page": "Shade",
+          "revision": 15357045,
+          "revision_timestamp": "2026-09-27T18:29:10Z",
+          "url": "https://oldschool.runescape.wiki/w/Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15357045"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.mm_jungle_spider",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Jungle spider (Ape Atoll)",
+          "page": "Jungle spider (Ape Atoll)",
+          "revision": 15322116,
+          "revision_timestamp": "2026-08-27T17:01:01Z",
+          "url": "https://oldschool.runescape.wiki/w/Jungle_spider_%28Ape_Atoll%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15322116"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.molch_lizardbrute_1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Lizardman brute#Battlefront",
+          "page": "Lizardman brute",
+          "revision": 15339921,
+          "revision_timestamp": "2026-09-10T22:36:44Z",
+          "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.nex_bloodmage",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Cruor",
+          "page": "Cruor",
+          "revision": 15365818,
+          "revision_timestamp": "2026-10-05T18:01:20Z",
+          "url": "https://oldschool.runescape.wiki/w/Cruor",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365818"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.nex_icemage",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Glacies",
+          "page": "Glacies",
+          "revision": 15365820,
+          "revision_timestamp": "2026-10-05T18:01:34Z",
+          "url": "https://oldschool.runescape.wiki/w/Glacies",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365820"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.nex_shadowmage",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Umbra",
+          "page": "Umbra",
+          "revision": 15365825,
+          "revision_timestamp": "2026-10-05T18:02:09Z",
+          "url": "https://oldschool.runescape.wiki/w/Umbra",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365825"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.nex_smokemage",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Fumus",
+          "page": "Fumus",
+          "revision": 15365819,
+          "revision_timestamp": "2026-10-05T18:01:25Z",
+          "url": "https://oldschool.runescape.wiki/w/Fumus",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365819"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.otherworldly_being",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Otherworldly being",
+          "page": "Otherworldly being",
+          "revision": 15199250,
+          "revision_timestamp": "2026-04-28T07:18:20Z",
+          "url": "https://oldschool.runescape.wiki/w/Otherworldly_being",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199250"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_1_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Purple, Intermediate/veteran",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_1_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Purple, Novice",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_2_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Blue, Intermediate/veteran",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_2_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Blue, Novice",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_3_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Yellow, Intermediate/veteran",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_3_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Yellow, Novice",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_4_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Red, Intermediate/veteran",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_4_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Red, Novice",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_1_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Purple, Intermediate/veteran (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_1_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Purple, Novice (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_2_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Blue, Intermediate/veteran (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_2_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Blue, Novice (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_3_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Yellow, Intermediate/veteran (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_3_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Yellow, Novice (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_4_active",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Red, Intermediate/veteran (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pest_portal_shield_4_active_bt1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Portal (Pest Control)#Red, Novice (shielded)",
+          "page": "Portal (Pest Control)",
+          "revision": 15361188,
+          "revision_timestamp": "2026-10-03T10:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pmoon_boss_blood_moon",
+      "flat_armour": -2,
+      "evidence_kind": "native_combat_actor_to_wiki_visual_morph",
+      "native_visual_symbol": "npc.pmoon_boss_blood_moon_vis",
+      "native_transforms": [
+        13011,
+        13485,
+        -1
+      ],
+      "sources": [
+        {
+          "variant": "Blood Moon",
+          "page": "Blood Moon",
+          "revision": 15383459,
+          "revision_timestamp": "2026-10-27T00:57:04Z",
+          "url": "https://oldschool.runescape.wiki/w/Blood_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383459"
+        }
+      ],
+      "justification": "Native combat definition has HP>1 and morphs to the Wiki-listed visual actor. Baseline follows the regular actor; this is not a claim that phase gameplay is implemented."
+    },
+    {
+      "symbol": "npc.pmoon_boss_blood_moon_vis",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Blood Moon",
+          "page": "Blood Moon",
+          "revision": 15383459,
+          "revision_timestamp": "2026-10-27T00:57:04Z",
+          "url": "https://oldschool.runescape.wiki/w/Blood_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383459"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pmoon_boss_blue_moon",
+      "flat_armour": -5,
+      "evidence_kind": "native_combat_actor_to_wiki_visual_morph",
+      "native_visual_symbol": "npc.pmoon_boss_blue_moon_vis",
+      "native_transforms": [
+        13013,
+        13486,
+        -1
+      ],
+      "sources": [
+        {
+          "variant": "Blue Moon",
+          "page": "Blue Moon",
+          "revision": 15383987,
+          "revision_timestamp": "2026-10-27T18:13:43Z",
+          "url": "https://oldschool.runescape.wiki/w/Blue_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383987"
+        }
+      ],
+      "justification": "Native combat definition has HP>1 and morphs to the Wiki-listed visual actor. Baseline follows the regular actor; this is not a claim that phase gameplay is implemented."
+    },
+    {
+      "symbol": "npc.pmoon_boss_blue_moon_vis",
+      "flat_armour": -5,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Blue Moon",
+          "page": "Blue Moon",
+          "revision": 15383987,
+          "revision_timestamp": "2026-10-27T18:13:43Z",
+          "url": "https://oldschool.runescape.wiki/w/Blue_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383987"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pmoon_boss_eclipse_moon",
+      "flat_armour": 6,
+      "evidence_kind": "native_combat_actor_to_wiki_visual_morph",
+      "native_visual_symbol": "npc.pmoon_boss_eclipse_moon_vis",
+      "native_transforms": [
+        13012,
+        13487,
+        -1
+      ],
+      "sources": [
+        {
+          "variant": "Eclipse Moon#Regular",
+          "page": "Eclipse Moon",
+          "revision": 15383986,
+          "revision_timestamp": "2026-10-27T18:13:32Z",
+          "url": "https://oldschool.runescape.wiki/w/Eclipse_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383986"
+        }
+      ],
+      "justification": "Native combat definition has HP>1 and morphs to the Wiki-listed visual actor. Baseline follows the regular actor; this is not a claim that phase gameplay is implemented."
+    },
+    {
+      "symbol": "npc.pmoon_boss_eclipse_moon_vis",
+      "flat_armour": 6,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Eclipse Moon#Regular",
+          "page": "Eclipse Moon",
+          "revision": 15383986,
+          "revision_timestamp": "2026-10-27T18:13:32Z",
+          "url": "https://oldschool.runescape.wiki/w/Eclipse_Moon",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383986"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pmoon_quest_nagua",
+      "flat_armour": -4,
+      "evidence_kind": "native_combat_actor_to_wiki_visual_morph",
+      "native_visual_symbol": "npc.pmoon_quest_nagua_vis",
+      "native_transforms": [
+        -1,
+        -1,
+        12879,
+        -1
+      ],
+      "sources": [
+        {
+          "variant": "Sulphur Nagua (Perilous Moons)",
+          "page": "Sulphur Nagua (Perilous Moons)",
+          "revision": 15276264,
+          "revision_timestamp": "2026-07-26T23:49:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Sulphur_Nagua_%28Perilous_Moons%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15276264"
+        }
+      ],
+      "justification": "Native combat definition has HP>1 and morphs to the Wiki-listed visual actor. Baseline follows the regular actor; this is not a claim that phase gameplay is implemented."
+    },
+    {
+      "symbol": "npc.pmoon_quest_nagua_vis",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Sulphur Nagua (Perilous Moons)",
+          "page": "Sulphur Nagua (Perilous Moons)",
+          "revision": 15276264,
+          "revision_timestamp": "2026-07-26T23:49:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Sulphur_Nagua_%28Perilous_Moons%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15276264"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.pmoon_sulphur_nagua",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Sulphur Nagua",
+          "page": "Sulphur Nagua",
+          "revision": 15352431,
+          "revision_timestamp": "2026-09-21T01:04:23Z",
+          "url": "https://oldschool.runescape.wiki/w/Sulphur_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352431"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.sailing_veiled_kraken",
+      "flat_armour": 15,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Veiled kraken",
+          "page": "Veiled kraken",
+          "revision": 15372892,
+          "revision_timestamp": "2026-10-15T08:29:47Z",
+          "url": "https://oldschool.runescape.wiki/w/Veiled_kraken",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15372892"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level1",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Loar Shade#Shade",
+          "page": "Loar Shade",
+          "revision": 15199268,
+          "revision_timestamp": "2026-04-28T07:18:30Z",
+          "url": "https://oldschool.runescape.wiki/w/Loar_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199268"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level2",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Phrin Shade#Shade",
+          "page": "Phrin Shade",
+          "revision": 15199728,
+          "revision_timestamp": "2026-04-28T07:22:38Z",
+          "url": "https://oldschool.runescape.wiki/w/Phrin_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199728"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level3",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Riyl Shade#Shade",
+          "page": "Riyl Shade",
+          "revision": 15199707,
+          "revision_timestamp": "2026-04-28T07:22:29Z",
+          "url": "https://oldschool.runescape.wiki/w/Riyl_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199707"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level4",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Asyn Shade#Shade",
+          "page": "Asyn Shade",
+          "revision": 15199705,
+          "revision_timestamp": "2026-04-28T07:22:28Z",
+          "url": "https://oldschool.runescape.wiki/w/Asyn_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199705"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level5",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Fiyr Shade#Shade",
+          "page": "Fiyr Shade",
+          "revision": 15229541,
+          "revision_timestamp": "2026-06-08T04:21:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Fiyr_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15229541"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shade_level6",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Urium Shade#Shade",
+          "page": "Urium Shade",
+          "revision": 15200239,
+          "revision_timestamp": "2026-04-28T07:26:37Z",
+          "url": "https://oldschool.runescape.wiki/w/Urium_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200239"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level1",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Loar Shade#Shadow",
+          "page": "Loar Shade",
+          "revision": 15199268,
+          "revision_timestamp": "2026-04-28T07:18:30Z",
+          "url": "https://oldschool.runescape.wiki/w/Loar_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199268"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level2",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Phrin Shade#Shadow",
+          "page": "Phrin Shade",
+          "revision": 15199728,
+          "revision_timestamp": "2026-04-28T07:22:38Z",
+          "url": "https://oldschool.runescape.wiki/w/Phrin_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199728"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level3",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Riyl Shade#Shadow",
+          "page": "Riyl Shade",
+          "revision": 15199707,
+          "revision_timestamp": "2026-04-28T07:22:29Z",
+          "url": "https://oldschool.runescape.wiki/w/Riyl_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199707"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level4",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Asyn Shade#Shadow",
+          "page": "Asyn Shade",
+          "revision": 15199705,
+          "revision_timestamp": "2026-04-28T07:22:28Z",
+          "url": "https://oldschool.runescape.wiki/w/Asyn_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199705"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level5",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Fiyr Shade#Shadow",
+          "page": "Fiyr Shade",
+          "revision": 15229541,
+          "revision_timestamp": "2026-06-08T04:21:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Fiyr_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15229541"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.shadeshadow_level6",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Urium Shade#Shadow",
+          "page": "Urium Shade",
+          "revision": 15200239,
+          "revision_timestamp": "2026-04-28T07:26:37Z",
+          "url": "https://oldschool.runescape.wiki/w/Urium_Shade",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200239"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.slayer_cave_gargoyle",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Gargoyle#Basement",
+          "page": "Gargoyle",
+          "revision": 15385687,
+          "revision_timestamp": "2026-10-29T16:14:54Z",
+          "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.slayer_gargoyle_1",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Gargoyle#Upstairs",
+          "page": "Gargoyle",
+          "revision": 15385687,
+          "revision_timestamp": "2026-10-29T16:14:54Z",
+          "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.slayer_gargoyle_dead",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Gargoyle#Basement",
+          "page": "Gargoyle",
+          "revision": 15385687,
+          "revision_timestamp": "2026-10-29T16:14:54Z",
+          "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+        },
+        {
+          "variant": "Gargoyle#Upstairs",
+          "page": "Gargoyle",
+          "revision": 15385687,
+          "revision_timestamp": "2026-10-29T16:14:54Z",
+          "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.sulphur_lizard",
+      "flat_armour": -1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Sulphur Lizard",
+          "page": "Sulphur Lizard",
+          "revision": 15339650,
+          "revision_timestamp": "2026-09-10T15:13:55Z",
+          "url": "https://oldschool.runescape.wiki/w/Sulphur_Lizard",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339650"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_drake",
+      "flat_armour": 3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Guardian Drake",
+          "page": "Guardian Drake",
+          "revision": 15373909,
+          "revision_timestamp": "2026-10-16T04:32:30Z",
+          "url": "https://oldschool.runescape.wiki/w/Guardian_Drake",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373909"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_rockslug",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Giant rockslug",
+          "page": "Giant rockslug",
+          "revision": 15373754,
+          "revision_timestamp": "2026-10-16T03:17:44Z",
+          "url": "https://oldschool.runescape.wiki/w/Giant_rockslug",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373754"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_warped_terrorbird",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Mutated Terrorbird",
+          "page": "Mutated Terrorbird",
+          "revision": 15373801,
+          "revision_timestamp": "2026-10-16T03:33:58Z",
+          "url": "https://oldschool.runescape.wiki/w/Mutated_Terrorbird",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373801"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_warped_tortoise",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Mutated Tortoise",
+          "page": "Mutated Tortoise",
+          "revision": 15373803,
+          "revision_timestamp": "2026-10-16T03:34:06Z",
+          "url": "https://oldschool.runescape.wiki/w/Mutated_Tortoise",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373803"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_wyrm_dark",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Shadow Wyrm#Idle",
+          "page": "Shadow Wyrm",
+          "revision": 15373833,
+          "revision_timestamp": "2026-10-16T03:39:26Z",
+          "url": "https://oldschool.runescape.wiki/w/Shadow_Wyrm",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373833"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.superior_wyrm_light",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Shadow Wyrm#Attacking",
+          "page": "Shadow Wyrm",
+          "revision": 15373833,
+          "revision_timestamp": "2026-10-16T03:39:26Z",
+          "url": "https://oldschool.runescape.wiki/w/Shadow_Wyrm",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373833"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.tbwcu_jungle_spider",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Jungle spider",
+          "page": "Jungle spider",
+          "revision": 15239033,
+          "revision_timestamp": "2026-06-25T03:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Jungle_spider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15239033"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.tbwcu_spider_appear",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Jungle spider",
+          "page": "Jungle spider",
+          "revision": 15239033,
+          "revision_timestamp": "2026-06-25T03:37:57Z",
+          "url": "https://oldschool.runescape.wiki/w/Jungle_spider",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15239033"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.templetrek_shade_3",
+      "flat_armour": -3,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Shade (Temple Trekking)",
+          "page": "Shade (Temple Trekking)",
+          "revision": 15215815,
+          "revision_timestamp": "2026-05-23T21:34:22Z",
+          "url": "https://oldschool.runescape.wiki/w/Shade_%28Temple_Trekking%29",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15215815"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.tfa_smork",
+      "flat_armour": 2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "The Smorks",
+          "page": "The Smorks",
+          "revision": 15383809,
+          "revision_timestamp": "2026-10-27T13:25:45Z",
+          "url": "https://oldschool.runescape.wiki/w/The_Smorks",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383809"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.tol_frogeel",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Frogeel",
+          "page": "Frogeel",
+          "revision": 15356419,
+          "revision_timestamp": "2026-09-26T11:50:20Z",
+          "url": "https://oldschool.runescape.wiki/w/Frogeel",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15356419"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.vmq3_ruins_frost_nagua",
+      "flat_armour": -4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Frost Nagua",
+          "page": "Frost Nagua",
+          "revision": 15341239,
+          "revision_timestamp": "2026-09-12T03:00:56Z",
+          "url": "https://oldschool.runescape.wiki/w/Frost_Nagua",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341239"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.wilderness_rune_golem",
+      "flat_armour": 4,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Runite Golem",
+          "page": "Runite Golem",
+          "revision": 15372629,
+          "revision_timestamp": "2026-10-14T20:44:03Z",
+          "url": "https://oldschool.runescape.wiki/w/Runite_Golem",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15372629"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.wyrm_dark",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Wyrm#Idle",
+          "page": "Wyrm",
+          "revision": 15385025,
+          "revision_timestamp": "2026-10-29T01:24:09Z",
+          "url": "https://oldschool.runescape.wiki/w/Wyrm",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385025"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.wyrm_light",
+      "flat_armour": 1,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Wyrm#Attacking",
+          "page": "Wyrm",
+          "revision": 15385025,
+          "revision_timestamp": "2026-10-29T01:24:09Z",
+          "url": "https://oldschool.runescape.wiki/w/Wyrm",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385025"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.zeah_lizardman_3_vn",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Lizardman brute#Standard",
+          "page": "Lizardman brute",
+          "revision": 15339921,
+          "revision_timestamp": "2026-09-10T22:36:44Z",
+          "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+        }
+      ]
+    },
+    {
+      "symbol": "npc.zeah_lizardman_3_vp",
+      "flat_armour": -2,
+      "evidence_kind": "current_wiki_numeric_alias",
+      "sources": [
+        {
+          "variant": "Lizardman brute#Standard",
+          "page": "Lizardman brute",
+          "revision": 15339921,
+          "revision_timestamp": "2026-09-10T22:36:44Z",
+          "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+          "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+        }
+      ]
+    }
+  ],
+  "row_assessment": [
+    {
+      "page_name_sub": "Amoxliatl (Echo)",
+      "flat_armour": -2,
+      "ids": [
+        "override13685"
+      ],
+      "source": {
+        "page": "Amoxliatl (Echo)",
+        "revision": 15210490,
+        "revision_timestamp": "2026-05-13T16:21:06Z",
+        "url": "https://oldschool.runescape.wiki/w/Amoxliatl_%28Echo%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15210490"
+      },
+      "decision": "exclude_mode_only",
+      "reason": "League-only override key; not a distinct native NPC identifier."
+    },
+    {
+      "page_name_sub": "Amoxliatl#Post-quest",
+      "flat_armour": -2,
+      "ids": [
+        "13685"
+      ],
+      "source": {
+        "page": "Amoxliatl",
+        "revision": 15383998,
+        "revision_timestamp": "2026-10-27T18:31:51Z",
+        "url": "https://oldschool.runescape.wiki/w/Amoxliatl",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383998"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Amoxliatl#Quest",
+      "flat_armour": -2,
+      "ids": [
+        "13686"
+      ],
+      "source": {
+        "page": "Amoxliatl",
+        "revision": 15383998,
+        "revision_timestamp": "2026-10-27T18:31:51Z",
+        "url": "https://oldschool.runescape.wiki/w/Amoxliatl",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383998"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Defender of Varrock)#Melee (invasion)",
+      "flat_armour": 1,
+      "ids": [
+        "12730",
+        "12731",
+        "12732",
+        "12733",
+        "12734",
+        "12736",
+        "12738",
+        "12755",
+        "12757",
+        "12758"
+      ],
+      "source": {
+        "page": "Armoured zombie (Defender of Varrock)",
+        "revision": 15200622,
+        "revision_timestamp": "2026-04-28T07:29:35Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Defender of Varrock)#Ranged (invasion)",
+      "flat_armour": 1,
+      "ids": [
+        "12735",
+        "12738",
+        "12739",
+        "12761",
+        "12763",
+        "12764"
+      ],
+      "source": {
+        "page": "Armoured zombie (Defender of Varrock)",
+        "revision": 15200622,
+        "revision_timestamp": "2026-04-28T07:29:35Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Defender_of_Varrock%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200622"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Base)#Melee",
+      "flat_armour": 1,
+      "ids": [
+        "12720",
+        "12721",
+        "12722",
+        "12723",
+        "12724"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Base)",
+        "revision": 15381494,
+        "revision_timestamp": "2026-10-25T01:43:48Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Base)#Ranged",
+      "flat_armour": 1,
+      "ids": [
+        "12725",
+        "12726",
+        "12727",
+        "12728",
+        "12729"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Base)",
+        "revision": 15381494,
+        "revision_timestamp": "2026-10-25T01:43:48Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Base%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15381494"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Melee, 1",
+      "flat_armour": 2,
+      "ids": [
+        "14113"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Melee, 2",
+      "flat_armour": 2,
+      "ids": [
+        "14114"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Melee, 3",
+      "flat_armour": 2,
+      "ids": [
+        "14115"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Melee, 4",
+      "flat_armour": 2,
+      "ids": [
+        "14116"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Melee, 5",
+      "flat_armour": 2,
+      "ids": [
+        "14117"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Ranged, 1",
+      "flat_armour": 2,
+      "ids": [
+        "14118"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Ranged, 2",
+      "flat_armour": 2,
+      "ids": [
+        "14119"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Ranged, 3",
+      "flat_armour": 2,
+      "ids": [
+        "14120"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Ranged, 4",
+      "flat_armour": 2,
+      "ids": [
+        "14121"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Armoured zombie (Zemouregal's Fort)#Ranged, 5",
+      "flat_armour": 2,
+      "ids": [
+        "14122"
+      ],
+      "source": {
+        "page": "Armoured zombie (Zemouregal's Fort)",
+        "revision": 15340888,
+        "revision_timestamp": "2026-09-11T17:19:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Armoured_zombie_%28Zemouregal%27s_Fort%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15340888"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Asyn Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "1284"
+      ],
+      "source": {
+        "page": "Asyn Shade",
+        "revision": 15199705,
+        "revision_timestamp": "2026-04-28T07:22:28Z",
+        "url": "https://oldschool.runescape.wiki/w/Asyn_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199705"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Asyn Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "1283"
+      ],
+      "source": {
+        "page": "Asyn Shade",
+        "revision": 15199705,
+        "revision_timestamp": "2026-04-28T07:22:28Z",
+        "url": "https://oldschool.runescape.wiki/w/Asyn_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199705"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Blood Moon",
+      "flat_armour": -2,
+      "ids": [
+        "13011"
+      ],
+      "source": {
+        "page": "Blood Moon",
+        "revision": 15383459,
+        "revision_timestamp": "2026-10-27T00:57:04Z",
+        "url": "https://oldschool.runescape.wiki/w/Blood_Moon",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383459"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Blue Moon",
+      "flat_armour": -5,
+      "ids": [
+        "13013"
+      ],
+      "source": {
+        "page": "Blue Moon",
+        "revision": 15383987,
+        "revision_timestamp": "2026-10-27T18:13:43Z",
+        "url": "https://oldschool.runescape.wiki/w/Blue_Moon",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383987"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Body Golem#Golem",
+      "flat_armour": 2,
+      "ids": [
+        "10691"
+      ],
+      "source": {
+        "page": "Body Golem",
+        "revision": 15350682,
+        "revision_timestamp": "2026-09-19T01:34:16Z",
+        "url": "https://oldschool.runescape.wiki/w/Body_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15350682"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Body Golem#Rubble",
+      "flat_armour": 2,
+      "ids": [
+        "10692"
+      ],
+      "source": {
+        "page": "Body Golem",
+        "revision": 15350682,
+        "revision_timestamp": "2026-09-19T01:34:16Z",
+        "url": "https://oldschool.runescape.wiki/w/Body_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15350682"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Chaos Golem#Golem",
+      "flat_armour": 3,
+      "ids": [
+        "10689"
+      ],
+      "source": {
+        "page": "Chaos Golem",
+        "revision": 15270689,
+        "revision_timestamp": "2026-07-20T22:25:02Z",
+        "url": "https://oldschool.runescape.wiki/w/Chaos_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270689"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Chaos Golem#Rubble",
+      "flat_armour": 3,
+      "ids": [
+        "10690"
+      ],
+      "source": {
+        "page": "Chaos Golem",
+        "revision": 15270689,
+        "revision_timestamp": "2026-07-20T22:25:02Z",
+        "url": "https://oldschool.runescape.wiki/w/Chaos_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270689"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Cruor",
+      "flat_armour": -2,
+      "ids": [
+        "11285"
+      ],
+      "source": {
+        "page": "Cruor",
+        "revision": 15365818,
+        "revision_timestamp": "2026-10-05T18:01:20Z",
+        "url": "https://oldschool.runescape.wiki/w/Cruor",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365818"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Drake",
+      "flat_armour": 2,
+      "ids": [
+        "8612",
+        "8613"
+      ],
+      "source": {
+        "page": "Drake",
+        "revision": 15371749,
+        "revision_timestamp": "2026-10-13T07:32:48Z",
+        "url": "https://oldschool.runescape.wiki/w/Drake",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15371749"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Dusk#First form",
+      "flat_armour": -1,
+      "ids": [
+        "7851",
+        "7854",
+        "7855",
+        "7882",
+        "7883",
+        "7886"
+      ],
+      "source": {
+        "page": "Dusk",
+        "revision": 15352439,
+        "revision_timestamp": "2026-09-21T01:15:11Z",
+        "url": "https://oldschool.runescape.wiki/w/Dusk",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352439"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Earthen Nagua#Normal",
+      "flat_armour": -4,
+      "ids": [
+        "14420"
+      ],
+      "source": {
+        "page": "Earthen Nagua",
+        "revision": 15355034,
+        "revision_timestamp": "2026-09-24T03:50:46Z",
+        "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Earthen Nagua#Reinforced",
+      "flat_armour": -4,
+      "ids": [
+        "14421"
+      ],
+      "source": {
+        "page": "Earthen Nagua",
+        "revision": 15355034,
+        "revision_timestamp": "2026-09-24T03:50:46Z",
+        "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Earthen Nagua#Weakened",
+      "flat_armour": -4,
+      "ids": [
+        "14420"
+      ],
+      "source": {
+        "page": "Earthen Nagua",
+        "revision": 15355034,
+        "revision_timestamp": "2026-09-24T03:50:46Z",
+        "url": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15355034"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Eclipse Moon#Clone",
+      "flat_armour": 4,
+      "ids": [
+        "13012"
+      ],
+      "source": {
+        "page": "Eclipse Moon",
+        "revision": 15383986,
+        "revision_timestamp": "2026-10-27T18:13:32Z",
+        "url": "https://oldschool.runescape.wiki/w/Eclipse_Moon",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383986"
+      },
+      "decision": "defer_dynamic_state",
+      "reason": "Shares the normal visible actor ID; value4 belongs to the clone special, not a second static value for the same NPC. Native clone actor exists but parry-damage recipient is not proven."
+    },
+    {
+      "page_name_sub": "Eclipse Moon#Regular",
+      "flat_armour": 6,
+      "ids": [
+        "13012"
+      ],
+      "source": {
+        "page": "Eclipse Moon",
+        "revision": 15383986,
+        "revision_timestamp": "2026-10-27T18:13:32Z",
+        "url": "https://oldschool.runescape.wiki/w/Eclipse_Moon",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383986"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Elite Black Knight#Female",
+      "flat_armour": 7,
+      "ids": [
+        "13464",
+        "13481"
+      ],
+      "source": {
+        "page": "Elite Black Knight",
+        "revision": 15383689,
+        "revision_timestamp": "2026-10-27T09:07:23Z",
+        "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Elite Black Knight#Male",
+      "flat_armour": 7,
+      "ids": [
+        "13463",
+        "13480"
+      ],
+      "source": {
+        "page": "Elite Black Knight",
+        "revision": 15383689,
+        "revision_timestamp": "2026-10-27T09:07:23Z",
+        "url": "https://oldschool.runescape.wiki/w/Elite_Black_Knight",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383689"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Fiyr Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "1286"
+      ],
+      "source": {
+        "page": "Fiyr Shade",
+        "revision": 15229541,
+        "revision_timestamp": "2026-06-08T04:21:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Fiyr_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15229541"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Fiyr Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "1285"
+      ],
+      "source": {
+        "page": "Fiyr Shade",
+        "revision": 15229541,
+        "revision_timestamp": "2026-06-08T04:21:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Fiyr_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15229541"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Flawed Golem#Golem",
+      "flat_armour": 1,
+      "ids": [
+        "10695"
+      ],
+      "source": {
+        "page": "Flawed Golem",
+        "revision": 15270680,
+        "revision_timestamp": "2026-07-20T22:19:27Z",
+        "url": "https://oldschool.runescape.wiki/w/Flawed_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270680"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Flawed Golem#Rubble",
+      "flat_armour": 1,
+      "ids": [
+        "10696"
+      ],
+      "source": {
+        "page": "Flawed Golem",
+        "revision": 15270680,
+        "revision_timestamp": "2026-07-20T22:19:27Z",
+        "url": "https://oldschool.runescape.wiki/w/Flawed_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15270680"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Frogeel",
+      "flat_armour": -2,
+      "ids": [
+        "3600"
+      ],
+      "source": {
+        "page": "Frogeel",
+        "revision": 15356419,
+        "revision_timestamp": "2026-09-26T11:50:20Z",
+        "url": "https://oldschool.runescape.wiki/w/Frogeel",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15356419"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Frost Nagua",
+      "flat_armour": -4,
+      "ids": [
+        "13728",
+        "13787",
+        "13788"
+      ],
+      "source": {
+        "page": "Frost Nagua",
+        "revision": 15341239,
+        "revision_timestamp": "2026-09-12T03:00:56Z",
+        "url": "https://oldschool.runescape.wiki/w/Frost_Nagua",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341239"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Fumus",
+      "flat_armour": -2,
+      "ids": [
+        "11283"
+      ],
+      "source": {
+        "page": "Fumus",
+        "revision": 15365819,
+        "revision_timestamp": "2026-10-05T18:01:25Z",
+        "url": "https://oldschool.runescape.wiki/w/Fumus",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365819"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Gargoyle#Basement",
+      "flat_armour": -2,
+      "ids": [
+        "1543",
+        "413"
+      ],
+      "source": {
+        "page": "Gargoyle",
+        "revision": 15385687,
+        "revision_timestamp": "2026-10-29T16:14:54Z",
+        "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Gargoyle#Upstairs",
+      "flat_armour": -2,
+      "ids": [
+        "412",
+        "413"
+      ],
+      "source": {
+        "page": "Gargoyle",
+        "revision": 15385687,
+        "revision_timestamp": "2026-10-29T16:14:54Z",
+        "url": "https://oldschool.runescape.wiki/w/Gargoyle",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385687"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Giant rockslug",
+      "flat_armour": 2,
+      "ids": [
+        "7392"
+      ],
+      "source": {
+        "page": "Giant rockslug",
+        "revision": 15373754,
+        "revision_timestamp": "2026-10-16T03:17:44Z",
+        "url": "https://oldschool.runescape.wiki/w/Giant_rockslug",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373754"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Glacies",
+      "flat_armour": -2,
+      "ids": [
+        "11286"
+      ],
+      "source": {
+        "page": "Glacies",
+        "revision": 15365820,
+        "revision_timestamp": "2026-10-05T18:01:34Z",
+        "url": "https://oldschool.runescape.wiki/w/Glacies",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365820"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Gorak#GWD",
+      "flat_armour": -2,
+      "ids": [
+        "3141"
+      ],
+      "source": {
+        "page": "Gorak",
+        "revision": 15341617,
+        "revision_timestamp": "2026-09-12T10:24:38Z",
+        "url": "https://oldschool.runescape.wiki/w/Gorak",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341617"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Gorak#Level 145",
+      "flat_armour": -2,
+      "ids": [
+        "1834"
+      ],
+      "source": {
+        "page": "Gorak",
+        "revision": 15341617,
+        "revision_timestamp": "2026-09-12T10:24:38Z",
+        "url": "https://oldschool.runescape.wiki/w/Gorak",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15341617"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Grimy Lizard",
+      "flat_armour": -2,
+      "ids": [
+        "13029",
+        "14430"
+      ],
+      "source": {
+        "page": "Grimy Lizard",
+        "revision": 15366465,
+        "revision_timestamp": "2026-10-06T01:19:04Z",
+        "url": "https://oldschool.runescape.wiki/w/Grimy_Lizard",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15366465"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Guardian Drake",
+      "flat_armour": 3,
+      "ids": [
+        "10400"
+      ],
+      "source": {
+        "page": "Guardian Drake",
+        "revision": 15373909,
+        "revision_timestamp": "2026-10-16T04:32:30Z",
+        "url": "https://oldschool.runescape.wiki/w/Guardian_Drake",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373909"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Jungle spider",
+      "flat_armour": -2,
+      "ids": [
+        "3020",
+        "6267",
+        "6271"
+      ],
+      "source": {
+        "page": "Jungle spider",
+        "revision": 15239033,
+        "revision_timestamp": "2026-06-25T03:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Jungle_spider",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15239033"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Jungle spider (Ape Atoll)",
+      "flat_armour": -2,
+      "ids": [
+        "5243"
+      ],
+      "source": {
+        "page": "Jungle spider (Ape Atoll)",
+        "revision": 15322116,
+        "revision_timestamp": "2026-08-27T17:01:01Z",
+        "url": "https://oldschool.runescape.wiki/w/Jungle_spider_%28Ape_Atoll%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15322116"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Karil the Tainted",
+      "flat_armour": -2,
+      "ids": [
+        "1675"
+      ],
+      "source": {
+        "page": "Karil the Tainted",
+        "revision": 15317918,
+        "revision_timestamp": "2026-08-24T07:26:55Z",
+        "url": "https://oldschool.runescape.wiki/w/Karil_the_Tainted",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15317918"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Lizardman brute#Battlefront",
+      "flat_armour": -2,
+      "ids": [
+        "8564",
+        "10947"
+      ],
+      "source": {
+        "page": "Lizardman brute",
+        "revision": 15339921,
+        "revision_timestamp": "2026-09-10T22:36:44Z",
+        "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Lizardman brute#Standard",
+      "flat_armour": -2,
+      "ids": [
+        "6918",
+        "6919"
+      ],
+      "source": {
+        "page": "Lizardman brute",
+        "revision": 15339921,
+        "revision_timestamp": "2026-09-10T22:36:44Z",
+        "url": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339921"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Loar Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "1277"
+      ],
+      "source": {
+        "page": "Loar Shade",
+        "revision": 15199268,
+        "revision_timestamp": "2026-04-28T07:18:30Z",
+        "url": "https://oldschool.runescape.wiki/w/Loar_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199268"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Loar Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "1276"
+      ],
+      "source": {
+        "page": "Loar Shade",
+        "revision": 15199268,
+        "revision_timestamp": "2026-04-28T07:18:30Z",
+        "url": "https://oldschool.runescape.wiki/w/Loar_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199268"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Locust rider#Lancer",
+      "flat_armour": -2,
+      "ids": [
+        "795"
+      ],
+      "source": {
+        "page": "Locust rider",
+        "revision": 15281959,
+        "revision_timestamp": "2026-07-29T23:33:24Z",
+        "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Locust rider#Lancer (Quest)",
+      "flat_armour": -2,
+      "ids": [
+        "800"
+      ],
+      "source": {
+        "page": "Locust rider",
+        "revision": 15281959,
+        "revision_timestamp": "2026-07-29T23:33:24Z",
+        "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Locust rider#Ranger",
+      "flat_armour": -2,
+      "ids": [
+        "796"
+      ],
+      "source": {
+        "page": "Locust rider",
+        "revision": 15281959,
+        "revision_timestamp": "2026-07-29T23:33:24Z",
+        "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Locust rider#Ranger (Quest)",
+      "flat_armour": -2,
+      "ids": [
+        "801"
+      ],
+      "source": {
+        "page": "Locust rider",
+        "revision": 15281959,
+        "revision_timestamp": "2026-07-29T23:33:24Z",
+        "url": "https://oldschool.runescape.wiki/w/Locust_rider",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15281959"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Mind Golem#Golem",
+      "flat_armour": 1,
+      "ids": [
+        "10693"
+      ],
+      "source": {
+        "page": "Mind Golem",
+        "revision": 15368490,
+        "revision_timestamp": "2026-10-08T11:44:42Z",
+        "url": "https://oldschool.runescape.wiki/w/Mind_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15368490"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Mind Golem#Rubble",
+      "flat_armour": 1,
+      "ids": [
+        "10694"
+      ],
+      "source": {
+        "page": "Mind Golem",
+        "revision": 15368490,
+        "revision_timestamp": "2026-10-08T11:44:42Z",
+        "url": "https://oldschool.runescape.wiki/w/Mind_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15368490"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Mutated Terrorbird",
+      "flat_armour": -2,
+      "ids": [
+        "12464"
+      ],
+      "source": {
+        "page": "Mutated Terrorbird",
+        "revision": 15373801,
+        "revision_timestamp": "2026-10-16T03:33:58Z",
+        "url": "https://oldschool.runescape.wiki/w/Mutated_Terrorbird",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373801"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Mutated Tortoise",
+      "flat_armour": 1,
+      "ids": [
+        "12465"
+      ],
+      "source": {
+        "page": "Mutated Tortoise",
+        "revision": 15373803,
+        "revision_timestamp": "2026-10-16T03:34:06Z",
+        "url": "https://oldschool.runescape.wiki/w/Mutated_Tortoise",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373803"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Otherworldly being",
+      "flat_armour": -2,
+      "ids": [
+        "2843"
+      ],
+      "source": {
+        "page": "Otherworldly being",
+        "revision": 15199250,
+        "revision_timestamp": "2026-04-28T07:18:20Z",
+        "url": "https://oldschool.runescape.wiki/w/Otherworldly_being",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199250"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Phrin Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "1280"
+      ],
+      "source": {
+        "page": "Phrin Shade",
+        "revision": 15199728,
+        "revision_timestamp": "2026-04-28T07:22:38Z",
+        "url": "https://oldschool.runescape.wiki/w/Phrin_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199728"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Phrin Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "1279"
+      ],
+      "source": {
+        "page": "Phrin Shade",
+        "revision": 15199728,
+        "revision_timestamp": "2026-04-28T07:22:38Z",
+        "url": "https://oldschool.runescape.wiki/w/Phrin_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199728"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Blue, Intermediate/veteran",
+      "flat_armour": -2,
+      "ids": [
+        "1740"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Blue, Intermediate/veteran (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1744"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Blue, Novice",
+      "flat_armour": -2,
+      "ids": [
+        "1748"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Blue, Novice (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1752"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Purple, Intermediate/veteran",
+      "flat_armour": -2,
+      "ids": [
+        "1739"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Purple, Intermediate/veteran (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1743"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Purple, Novice",
+      "flat_armour": -2,
+      "ids": [
+        "1747"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Purple, Novice (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1751"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Red, Intermediate/veteran",
+      "flat_armour": -2,
+      "ids": [
+        "1742"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Red, Intermediate/veteran (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1746"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Red, Novice",
+      "flat_armour": -2,
+      "ids": [
+        "1750"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Red, Novice (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1754"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Yellow, Intermediate/veteran",
+      "flat_armour": -2,
+      "ids": [
+        "1741"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Yellow, Intermediate/veteran (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1745"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Yellow, Novice",
+      "flat_armour": -2,
+      "ids": [
+        "1749"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Portal (Pest Control)#Yellow, Novice (shielded)",
+      "flat_armour": -2,
+      "ids": [
+        "1753"
+      ],
+      "source": {
+        "page": "Portal (Pest Control)",
+        "revision": 15361188,
+        "revision_timestamp": "2026-10-03T10:37:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Portal_%28Pest_Control%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15361188"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Riyl Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "1282"
+      ],
+      "source": {
+        "page": "Riyl Shade",
+        "revision": 15199707,
+        "revision_timestamp": "2026-04-28T07:22:29Z",
+        "url": "https://oldschool.runescape.wiki/w/Riyl_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199707"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Riyl Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "1281"
+      ],
+      "source": {
+        "page": "Riyl Shade",
+        "revision": 15199707,
+        "revision_timestamp": "2026-04-28T07:22:29Z",
+        "url": "https://oldschool.runescape.wiki/w/Riyl_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15199707"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 115",
+      "flat_armour": 2,
+      "ids": [
+        "6729"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 13",
+      "flat_armour": 1,
+      "ids": [
+        "6725"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 154",
+      "flat_armour": 2,
+      "ids": [
+        "6730"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 27",
+      "flat_armour": 1,
+      "ids": [
+        "6726"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 46",
+      "flat_armour": 1,
+      "ids": [
+        "6727"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Rock Golem (monster)#Level 76",
+      "flat_armour": 1,
+      "ids": [
+        "6728"
+      ],
+      "source": {
+        "page": "Rock Golem (monster)",
+        "revision": 15370849,
+        "revision_timestamp": "2026-10-11T23:25:57Z",
+        "url": "https://oldschool.runescape.wiki/w/Rock_Golem_%28monster%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15370849"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Runite Golem",
+      "flat_armour": 4,
+      "ids": [
+        "6600"
+      ],
+      "source": {
+        "page": "Runite Golem",
+        "revision": 15372629,
+        "revision_timestamp": "2026-10-14T20:44:03Z",
+        "url": "https://oldschool.runescape.wiki/w/Runite_Golem",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15372629"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Shade (Temple Trekking)",
+      "flat_armour": -3,
+      "ids": [
+        "5633"
+      ],
+      "source": {
+        "page": "Shade (Temple Trekking)",
+        "revision": 15215815,
+        "revision_timestamp": "2026-05-23T21:34:22Z",
+        "url": "https://oldschool.runescape.wiki/w/Shade_%28Temple_Trekking%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15215815"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Shade#Catacombs of Kourend",
+      "flat_armour": -3,
+      "ids": [
+        "7258"
+      ],
+      "source": {
+        "page": "Shade",
+        "revision": 15357045,
+        "revision_timestamp": "2026-09-27T18:29:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15357045"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Shade#Stronghold of Security",
+      "flat_armour": -3,
+      "ids": [
+        "6740"
+      ],
+      "source": {
+        "page": "Shade",
+        "revision": 15357045,
+        "revision_timestamp": "2026-09-27T18:29:10Z",
+        "url": "https://oldschool.runescape.wiki/w/Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15357045"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Shadow Wyrm#Attacking",
+      "flat_armour": 2,
+      "ids": [
+        "10399"
+      ],
+      "source": {
+        "page": "Shadow Wyrm",
+        "revision": 15373833,
+        "revision_timestamp": "2026-10-16T03:39:26Z",
+        "url": "https://oldschool.runescape.wiki/w/Shadow_Wyrm",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373833"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Shadow Wyrm#Idle",
+      "flat_armour": 2,
+      "ids": [
+        "10398"
+      ],
+      "source": {
+        "page": "Shadow Wyrm",
+        "revision": 15373833,
+        "revision_timestamp": "2026-10-16T03:39:26Z",
+        "url": "https://oldschool.runescape.wiki/w/Shadow_Wyrm",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15373833"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Skeleton heavy",
+      "flat_armour": 1,
+      "ids": [
+        "1540"
+      ],
+      "source": {
+        "page": "Skeleton heavy",
+        "revision": 15351308,
+        "revision_timestamp": "2026-09-19T18:07:29Z",
+        "url": "https://oldschool.runescape.wiki/w/Skeleton_heavy",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351308"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Skeleton hero",
+      "flat_armour": 1,
+      "ids": [
+        "1537"
+      ],
+      "source": {
+        "page": "Skeleton hero",
+        "revision": 15351306,
+        "revision_timestamp": "2026-09-19T18:07:20Z",
+        "url": "https://oldschool.runescape.wiki/w/Skeleton_hero",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351306"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Skeleton thug",
+      "flat_armour": 1,
+      "ids": [
+        "1541"
+      ],
+      "source": {
+        "page": "Skeleton thug",
+        "revision": 15351307,
+        "revision_timestamp": "2026-09-19T18:07:25Z",
+        "url": "https://oldschool.runescape.wiki/w/Skeleton_thug",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15351307"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Sulphur Lizard",
+      "flat_armour": -1,
+      "ids": [
+        "8614"
+      ],
+      "source": {
+        "page": "Sulphur Lizard",
+        "revision": 15339650,
+        "revision_timestamp": "2026-09-10T15:13:55Z",
+        "url": "https://oldschool.runescape.wiki/w/Sulphur_Lizard",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15339650"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Sulphur Lizard (Deadman)#Annihilation",
+      "flat_armour": -1,
+      "ids": [
+        "12458"
+      ],
+      "source": {
+        "page": "Sulphur Lizard (Deadman)",
+        "revision": 15217973,
+        "revision_timestamp": "2026-05-27T10:02:08Z",
+        "url": "https://oldschool.runescape.wiki/w/Sulphur_Lizard_%28Deadman%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15217973"
+      },
+      "decision": "exclude_mode_only",
+      "reason": "Deadman-specific actor, excluded from main-mode baseline import."
+    },
+    {
+      "page_name_sub": "Sulphur Lizard (Deadman)#Permanent",
+      "flat_armour": -1,
+      "ids": [
+        "12458"
+      ],
+      "source": {
+        "page": "Sulphur Lizard (Deadman)",
+        "revision": 15217973,
+        "revision_timestamp": "2026-05-27T10:02:08Z",
+        "url": "https://oldschool.runescape.wiki/w/Sulphur_Lizard_%28Deadman%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15217973"
+      },
+      "decision": "exclude_mode_only",
+      "reason": "Deadman-specific actor, excluded from main-mode baseline import."
+    },
+    {
+      "page_name_sub": "Sulphur Nagua",
+      "flat_armour": -4,
+      "ids": [
+        "13033"
+      ],
+      "source": {
+        "page": "Sulphur Nagua",
+        "revision": 15352431,
+        "revision_timestamp": "2026-09-21T01:04:23Z",
+        "url": "https://oldschool.runescape.wiki/w/Sulphur_Nagua",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15352431"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Sulphur Nagua (Perilous Moons)",
+      "flat_armour": -4,
+      "ids": [
+        "12879"
+      ],
+      "source": {
+        "page": "Sulphur Nagua (Perilous Moons)",
+        "revision": 15276264,
+        "revision_timestamp": "2026-07-26T23:49:23Z",
+        "url": "https://oldschool.runescape.wiki/w/Sulphur_Nagua_%28Perilous_Moons%29",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15276264"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "The Smorks",
+      "flat_armour": 2,
+      "ids": [
+        "16641"
+      ],
+      "source": {
+        "page": "The Smorks",
+        "revision": 15383809,
+        "revision_timestamp": "2026-10-27T13:25:45Z",
+        "url": "https://oldschool.runescape.wiki/w/The_Smorks",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15383809"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Umbra",
+      "flat_armour": -2,
+      "ids": [
+        "11284"
+      ],
+      "source": {
+        "page": "Umbra",
+        "revision": 15365825,
+        "revision_timestamp": "2026-10-05T18:02:09Z",
+        "url": "https://oldschool.runescape.wiki/w/Umbra",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15365825"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Urium Shade#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "10589"
+      ],
+      "source": {
+        "page": "Urium Shade",
+        "revision": 15200239,
+        "revision_timestamp": "2026-04-28T07:26:37Z",
+        "url": "https://oldschool.runescape.wiki/w/Urium_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200239"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Urium Shade#Shadow",
+      "flat_armour": -3,
+      "ids": [
+        "6143"
+      ],
+      "source": {
+        "page": "Urium Shade",
+        "revision": 15200239,
+        "revision_timestamp": "2026-04-28T07:26:37Z",
+        "url": "https://oldschool.runescape.wiki/w/Urium_Shade",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15200239"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Veiled kraken",
+      "flat_armour": 15,
+      "ids": [
+        "15576"
+      ],
+      "source": {
+        "page": "Veiled kraken",
+        "revision": 15372892,
+        "revision_timestamp": "2026-10-15T08:29:47Z",
+        "url": "https://oldschool.runescape.wiki/w/Veiled_kraken",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15372892"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Wyrm#Attacking",
+      "flat_armour": 1,
+      "ids": [
+        "8611"
+      ],
+      "source": {
+        "page": "Wyrm",
+        "revision": 15385025,
+        "revision_timestamp": "2026-10-29T01:24:09Z",
+        "url": "https://oldschool.runescape.wiki/w/Wyrm",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385025"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Wyrm#Idle",
+      "flat_armour": 1,
+      "ids": [
+        "8610"
+      ],
+      "source": {
+        "page": "Wyrm",
+        "revision": 15385025,
+        "revision_timestamp": "2026-10-29T01:24:09Z",
+        "url": "https://oldschool.runescape.wiki/w/Wyrm",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15385025"
+      },
+      "decision": "import_static"
+    },
+    {
+      "page_name_sub": "Zemouregal Summon#Shade",
+      "flat_armour": -3,
+      "ids": [
+        "15559"
+      ],
+      "source": {
+        "page": "Zemouregal Summon",
+        "revision": 15328522,
+        "revision_timestamp": "2026-09-02T15:31:53Z",
+        "url": "https://oldschool.runescape.wiki/w/Zemouregal_Summon",
+        "revision_url": "https://oldschool.runescape.wiki/w/Special:PermanentLink/15328522"
+      },
+      "decision": "exclude_mode_only",
+      "reason": "Deadman-only summoned shade actor, excluded from main-mode baseline import."
+    }
+  ],
+  "deferred_native_actor": {
+    "symbol": "npc.pmoon_boss_eclipse_clone",
+    "id": 13019,
+    "candidate_value": 4,
+    "reason": "Native clone has no Attack op and morphs to the same visual as regular Eclipse. Wiki describes counterattacks damaging the boss. Exact receiving actor and phase ownership are not established; eventual encounter must set explicit4 on the actual hit recipient."
+  },
+  "notes": [
+    "DoV duplicate/misgrouped12738 deduplicated only; no missing family aliases inferred.",
+    "Dusk six first-form aliases imported -1; three explicit second-form aliases remain default0.",
+    "Veiled kraken15 included: current Wiki says ordinary melee/ranged hits subtract15, magic ignores; primary2026 boat-combat post makes ordinary player gear work as on land.",
+    "Current regular Eclipse6 is a static baseline only; clone-phase4 needs presence-aware temporary override.",
+    "All per-row page revisions and resolved symbols retained.",
+    "Source table query has identical SHA256 to preceding receipt."
+  ]
+}

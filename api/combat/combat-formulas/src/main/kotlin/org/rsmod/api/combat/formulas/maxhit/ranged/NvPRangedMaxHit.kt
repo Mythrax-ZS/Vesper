@@ -2,7 +2,6 @@ package org.rsmod.api.combat.formulas.maxhit.ranged
 
 import jakarta.inject.Inject
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
-import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.combat.maxhit.npc.NpcRangedMaxHit
 import org.rsmod.api.npc.rangedStrength
 import org.rsmod.api.player.bonus.WornBonuses
@@ -23,10 +22,6 @@ constructor(
 
     public fun computeMaxHit(npc: Npc, target: Player): Int {
         val effectiveRanged = NpcRangedMaxHit.calculateEffectiveRanged(npc.rangedLvl)
-        val baseDamage = NpcRangedMaxHit.calculateBaseDamage(effectiveRanged, npc.rangedStrength)
-
-        val defenceBonus = bonuses.defensiveRangedBonus(target)
-        val reductionAttributes = reductions.collectNvP(target, npc, random)
-        return MaxHitOperations.applyDamageReductions(baseDamage, defenceBonus, reductionAttributes)
+        return NpcRangedMaxHit.calculateBaseDamage(effectiveRanged, npc.rangedStrength)
     }
 }

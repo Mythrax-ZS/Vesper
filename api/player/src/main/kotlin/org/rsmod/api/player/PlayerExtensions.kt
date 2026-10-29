@@ -108,7 +108,7 @@ public fun Player.deathResetTimers() {
 }
 
 public fun Player.isValidTarget(): Boolean {
-    val isLoggingOut = pendingLogout || loggingOut
+    val isLoggingOut = pendingLogout || loggingOut || worldTypeSwitching || forceDisconnect || persistenceInvalidated
     if (isLoggingOut) {
         return false
     }

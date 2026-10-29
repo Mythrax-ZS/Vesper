@@ -1,6 +1,6 @@
 plugins {
     id("base-conventions")
-
+    id("game-cache-test-conventions")
 }
 
 kotlin {
@@ -34,4 +34,22 @@ dependencies {
     implementation(projects.engine.game)
     implementation(projects.engine.map)
     implementation(projects.engine.plugin)
+    testImplementation(libs.mockk)
+    testImplementation(projects.api.hitPlugin)
+    testImplementation(projects.api.npcPlugin)
+    testImplementation(projects.engine.annotations)
+    testImplementation(projects.engine.coroutine)
+    testImplementation(projects.engine.routefinder)
+    testImplementation(libs.fastutil)
+    testImplementation(projects.api.invStorage)
+    testImplementation(projects.api.invtx)
+    testImplementation(projects.api.objCharges)
+    testImplementation(projects.api.registry)
+    testImplementation(projects.api.spellsRunes)
+    testImplementation(projects.content.other.specialWeapons)
+    testImplementation(projects.content.skills.magic.spellAttacks)
+    testImplementation(projects.content.areas.wilderness)
+    testImplementation(projects.api.net)
+    testImplementation(libs.rsprot.api)
+    testImplementation(libs.rsprot.shared)
 }

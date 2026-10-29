@@ -16,6 +16,7 @@ constructor(private val contextFactory: ProtectedAccessContextFactory) {
 
     @InternalApi(message = "Usage of this function should only be used internally, or sparingly.")
     public fun launchLenient(player: Player, block: suspend ProtectedAccess.() -> Unit) {
+        if (player.worldTypeSwitching || player.forceDisconnect || player.persistenceInvalidated) return
         player.launch {
             val protectedAccess = ProtectedAccess(player, this, contextFactory.create())
             block(protectedAccess)
@@ -32,6 +33,7 @@ constructor(private val contextFactory: ProtectedAccessContextFactory) {
      */
     @InternalApi(message = "Usage of this function should only be used internally, or sparingly.")
     public fun launchBeside(player: Player, block: suspend ProtectedAccess.() -> Unit) {
+        if (player.worldTypeSwitching || player.forceDisconnect || player.persistenceInvalidated) return
         if (player.activeCoroutine?.isSuspended != true) {
             launchLenient(player, block)
             return

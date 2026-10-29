@@ -98,9 +98,9 @@ constructor(
         }
 
         val damage = manager.rollMeleeDamage(player, npc, attack)
-        manager.giveCombatXp(player, npc, attack, damage)
         manager.playWeaponFx(player, attack)
-        manager.queueMeleeHit(player, npc, damage)
+        val hit = manager.queueMeleeHit(player, npc, damage)
+        manager.giveCombatXp(player, npc, attack, hit.damage)
         manager.continueCombat(player, npc)
     }
 
@@ -209,17 +209,18 @@ constructor(
         val projanim = manager.spawnProjectile(player, npc, travelSpotanim, projanimType)
         val (serverDelay, clientDelay) = projanim.durations
 
+        val damage = manager.rollRangedDamage(player, npc, attack)
+
+        val hitAmmoObj = if (usingThrown) null else quiverType
+        val hit = manager.queueRangedHit(player, npc, hitAmmoObj, damage, clientDelay, serverDelay)
+
+        // Snapshot the shot while its ammunition and thrown weapon are still equipped.
         if (usingThrown) {
             ammunition.useThrownWeapon(player, righthandType, npc.coords, dropDelay = serverDelay)
         } else if (quiverType != null) {
             ammunition.useQuiverAmmo(player, quiverType, npc.coords, dropDelay = serverDelay)
         }
-
-        val damage = manager.rollRangedDamage(player, npc, attack)
-        manager.giveCombatXp(player, npc, attack, damage)
-
-        val hitAmmoObj = if (usingThrown) null else quiverType
-        manager.queueRangedHit(player, npc, hitAmmoObj, damage, clientDelay, serverDelay)
+        manager.giveCombatXp(player, npc, attack, hit.damage)
 
         if (usingThrown && player.righthand == null) {
             mes("That was your last one!")

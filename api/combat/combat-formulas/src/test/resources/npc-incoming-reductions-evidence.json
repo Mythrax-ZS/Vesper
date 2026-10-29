@@ -1,0 +1,31 @@
+{
+  "scope": "NPC incoming sampled-damage reductions; PvP and outgoing maximum calculations unchanged",
+  "supported_example": {
+    "source": "https://secure.runescape.com/m=news/the-theatre-of-blood?oldschool=1",
+    "input_damage": 40,
+    "after_elysian": 30,
+    "style_defence": 450,
+    "after_justiciar": 25,
+    "interpretation": "Historical primary example supports sequential reduction and truncation of the Justiciar residual."
+  },
+  "retained_implementation_rules": {
+    "elysian": "Seven of ten proc slots; floor of sampled damage times 3/4.",
+    "dinh": "Existing block stance and passive-delay gates; floor of sampled damage times 4/5.",
+    "justiciar": "Full set and explicit defence style; floor residual with at least one reduction on a positive hit, nonnegative defence and result clamps.",
+    "ward": "Explicit eligibility, demon source and active Ward; subtract floor of one tenth after equipment reductions.",
+    "ordering": "Elysian, Dinh, Justiciar, Ward. Caller retains pre-protection-prayer timing."
+  },
+  "unresolved": [
+    "Exact Elysian and Dinh small-hit rounding is retained from the previous implementation and is not independently primary-source verified.",
+    "The Justiciar minimum-one and negative-defence edges are current Wiki statements, not independently primary-source verified.",
+    "The current Wiki additive-stacking statement has conflicting evidence; implementation retains the historical primary sequential example.",
+    "Universal ordering relative to protection prayers remains unproved; this change preserves the existing NPC ordering.",
+    "Boss-specific equipment and Ward eligibility is supplied by attack context and requires its own evidence."
+  ],
+  "supporting_sources": [
+    "https://oldschool.runescape.wiki/w/Justiciar_armour",
+    "https://oldschool.runescape.wiki/w/Elysian_spirit_shield",
+    "https://oldschool.runescape.wiki/w/Dinh%27s_bulwark",
+    "https://oldschool.runescape.wiki/w/Ward_of_Arceuus"
+  ]
+}

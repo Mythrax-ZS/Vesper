@@ -191,6 +191,11 @@ public object MeleeMaxHitOperations {
 
         // TODO(combat): Vampyre mods
 
+        // Garlic changes the quest Count's maximum hit, not each sampled hit. Misses stay misses.
+        if (MeleeAttr.Garlic in meleeAttributes && NpcAttr.CountDraynor in npcAttributes) {
+            modified += 1
+        }
+
         // Corporeal beast damage reduction is applied _after_ bolt proc multipliers. This is why we
         // handle it here instead of in a specialized `onModifyNpcHit(corp_beast)` script. Though
         // this is for Melee max hit, this should be consistent throughout all combat styles to

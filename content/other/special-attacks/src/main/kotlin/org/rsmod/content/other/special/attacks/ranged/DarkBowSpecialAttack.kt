@@ -3,7 +3,6 @@ package org.rsmod.content.other.special.attacks.ranged
 import dev.openrune.rscm.RSCM
 import dev.openrune.rscm.RSCMType
 import dev.openrune.types.ItemServerType
-import dev.openrune.types.aconverted.SpotanimType
 import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.manager.RangedAmmoManager
@@ -96,7 +95,7 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
             anim("seq.human_bow")
             soundSynth("synth.darkbow_doublefire")
             soundSynth("synth.darkbow_shadow_attack")
-            spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM,launchSpot!!.id), height = 96, slot = constants.spotanim_slot_combat)
+            spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM, launchSpot!!.id), height = 96, slot = constants.spotanim_slot_combat)
 
             val descentTravel = "spotanim.darkbow_generic_smoke_arrow_flight"
             val descentImpact = "spotanim.darkbow_smoke_arrow_impact"
@@ -119,8 +118,6 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
             val hitDelay1 = proj1.serverCycles
             val hitDelay2 = proj2.serverCycles
 
-            manager.giveCombatXp(this, target, attack, damage.total)
-
             ammunition.useQuiverAmmo(
                 player = player,
                 quiverType = quiverType,
@@ -128,7 +125,7 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
                 dropDelay = hitDelay1,
             )
 
-            manager.queueRangedHit(this, target, quiverType, damage[0], clientDelay2, hitDelay1)
+            val firstHit = manager.queueRangedHit(this, target, quiverType, damage[0], clientDelay2, hitDelay1)
 
             ammunition.useQuiverAmmo(
                 player = player,
@@ -137,7 +134,9 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
                 dropDelay = hitDelay2,
             )
 
-            manager.queueRangedDamage(this, target, quiverType, damage[1], hitDelay2)
+            val secondHit = manager.queueRangedDamage(this, target, quiverType, damage[1], hitDelay2)
+            val xpDamage = if (target is Npc) firstHit.damage + secondHit.damage else damage.total
+            manager.giveCombatXp(this, target, attack, xpDamage)
 
             if (player.quiver?.count == 1) {
                 mes("You now have only 1 arrow left in your quiver.")
@@ -154,7 +153,7 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
             anim("seq.human_bow")
             soundSynth("synth.darkbow_doublefire")
             soundSynth("synth.darkbow_dragon_attack")
-            spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM,launchSpot!!.id), height = 96, slot = constants.spotanim_slot_combat)
+            spotanim(RSCM.getReverseMapping(RSCMType.SPOTANIM, launchSpot!!.id), height = 96, slot = constants.spotanim_slot_combat)
 
             val descentTravel = "spotanim.darkbow_dragon_head_flying_projanim"
             val descentImpact = "spotanim.darkbow_dragon_head_flying_impact_anim"
@@ -176,8 +175,6 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
             val hitDelay1 = proj1.serverCycles
             val hitDelay2 = proj2.serverCycles
 
-            manager.giveCombatXp(this, target, attack, damage.total)
-
             ammunition.useQuiverAmmo(
                 player = player,
                 quiverType = quiverType,
@@ -185,7 +182,7 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
                 dropDelay = hitDelay1,
             )
 
-            manager.queueRangedHit(this, target, quiverType, damage[0], clientDelay2, hitDelay1)
+            val firstHit = manager.queueRangedHit(this, target, quiverType, damage[0], clientDelay2, hitDelay1)
 
             ammunition.useQuiverAmmo(
                 player = player,
@@ -194,7 +191,9 @@ class DarkBowSpecialAttack @Inject constructor(private val ammunition: RangedAmm
                 dropDelay = hitDelay2,
             )
 
-            manager.queueRangedDamage(this, target, quiverType, damage[1], hitDelay2)
+            val secondHit = manager.queueRangedDamage(this, target, quiverType, damage[1], hitDelay2)
+            val xpDamage = if (target is Npc) firstHit.damage + secondHit.damage else damage.total
+            manager.giveCombatXp(this, target, attack, xpDamage)
 
             if (player.quiver?.count == 1) {
                 mes("You now have only 1 arrow left in your quiver.")

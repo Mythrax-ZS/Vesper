@@ -13,6 +13,7 @@ import org.rsmod.api.player.output.mes
 import org.rsmod.api.player.stat.magicLvl
 import org.rsmod.api.player.vars.VarPlayerIntMapSetter
 import org.rsmod.api.player.vars.enumVarBit
+import org.rsmod.api.spells.runes.BlightedRunePackPolicy
 import org.rsmod.api.spells.runes.MagicRunes
 import org.rsmod.api.spells.runes.combo.ComboRuneRepository
 import org.rsmod.api.spells.runes.compact.CompactRuneRepository
@@ -36,7 +37,28 @@ constructor(
     private val staffSubs: StaffSubstituteRepository,
     private val runeSubs: RuneSubstituteRepository,
     private val questRequirements: Set<SpellQuestRequirement>,
+    private val blightedRunePacks: BlightedRunePackPolicy,
 ) {
+    /** Retains the existing constructor for callers without content-owned sack permissions. */
+    public constructor(
+        fakes: FakeRuneRepository,
+        combos: ComboRuneRepository,
+        compact: CompactRuneRepository,
+        unlimited: UnlimitedRuneRepository,
+        staffSubs: StaffSubstituteRepository,
+        runeSubs: RuneSubstituteRepository,
+        questRequirements: Set<SpellQuestRequirement>,
+    ) : this(
+        fakes,
+        combos,
+        compact,
+        unlimited,
+        staffSubs,
+        runeSubs,
+        questRequirements,
+        BlightedRunePackPolicy(emptySet()),
+    )
+
     private val Player.spellbook by enumVarBit<Spellbook>("varbit.spellbook")
 
     /**
@@ -158,14 +180,18 @@ constructor(
             val (type, slot, required) = source
             val invObj = player.inv[slot]
             if (!invObj.isType(type)) {
-                continue
+                return CastResult.Failure.NotEnoughInvObj
             }
             consume += invObj.copy(count = required)
         }
 
-        val transaction = player.invDelAll(player.inv, consume, strict = true)
-        if (!transaction.success) {
-            return CastResult.Failure.NotEnoughInvObj
+        // Pouch-only recipes have no inventory deletions. An empty inventory transaction is
+        // unsuccessful by contract, but the validated pouch quantities still need consuming.
+        if (consume.isNotEmpty()) {
+            val transaction = player.invDelAll(player.inv, consume, strict = true)
+            if (!transaction.success) {
+                return CastResult.Failure.NotEnoughInvObj
+            }
         }
 
         for (source in varbitSources) {
@@ -184,7 +210,10 @@ constructor(
     public fun validateSpell(player: Player, spell: MagicSpell): List<MagicRunes.Validation> {
         val runePack = validateRunePack(player, spell.obj)
         return if (runePack != null) {
-            listOf(runePack)
+            // Sacks replace runes, never a spell's equipment or other item requirements.
+            val otherRequirements =
+                spell.objReqs.filter { it.wornSlot != null || !it.obj.isCategoryType("category.rune") }
+            listOf(runePack) + validateReqs(player, otherRequirements)
         } else {
             validateReqs(player, spell.objReqs)
         }
@@ -229,7 +258,7 @@ constructor(
         spell: MagicSpell,
         book: Spellbook,
     ): CastResult.Failure? {
-        if (spell.spellbook != book) {
+        if (spell.spellbook != null && spell.spellbook != book) {
             // Official behavior: This does not send a message - it simply no-ops.
             return CastResult.Failure.IncorrectSpellbook
         }
@@ -251,7 +280,7 @@ constructor(
     }
 
     private fun Player.allowBlighted(): Boolean {
-        return vars["varbit.blighted_items_allowed"] == 1
+        return blightedRunePacks.permits(this)
     }
 
     private fun Player.nearFountainOfRune(): Boolean {

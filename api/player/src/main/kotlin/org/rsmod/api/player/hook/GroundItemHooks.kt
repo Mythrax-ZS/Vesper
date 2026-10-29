@@ -42,6 +42,13 @@ public fun interface PlayerObjTakeValidateHook {
      * @return A denial message if the pickup should be blocked, or `null` if allowed.
      */
     public fun validateTake(player: Player, obj: Obj, objType: ItemServerType): String?
+
+    /**
+     * Runs synchronously after the ground object and inventory transaction have committed.
+     * Implementations must not suspend or throw; validate prerequisites in [validateTake].
+     * This notification is never retried, including when another hook throws.
+     */
+    public fun onTake(player: Player, obj: Obj, objType: ItemServerType) {}
 }
 
 public class GroundItemDropResolver
@@ -73,5 +80,17 @@ constructor(private val hooks: Set<@JvmSuppressWildcards PlayerObjTakeValidateHo
             }
         }
         return null
+    }
+
+    public fun onTake(player: Player, obj: Obj, objType: ItemServerType) {
+        var failure: Throwable? = null
+        for (hook in hooks) {
+            try {
+                hook.onTake(player, obj, objType)
+            } catch (cause: Exception) {
+                if (failure == null) failure = cause else failure.addSuppressed(cause)
+            }
+        }
+        failure?.let { throw IllegalStateException("Ground-item pickup committed; hook failed", it) }
     }
 }

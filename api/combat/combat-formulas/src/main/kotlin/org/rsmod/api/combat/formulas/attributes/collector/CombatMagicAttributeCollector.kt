@@ -1,8 +1,10 @@
 package org.rsmod.api.combat.formulas.attributes.collector
 
 import dev.openrune.types.ItemServerType
+import jakarta.inject.Inject
 import java.util.EnumSet
 import kotlin.collections.plusAssign
+import org.rsmod.api.area.checker.AreaChecker
 import org.rsmod.api.combat.commons.magic.MagicSpellChecks
 import org.rsmod.api.combat.commons.magic.Spellbook
 import org.rsmod.api.combat.formulas.attributes.CombatSpellAttributes
@@ -25,6 +27,17 @@ import org.rsmod.game.inv.isType
 import org.rsmod.game.type.getOrNull
 
 public class CombatMagicAttributeCollector {
+    private val areas: AreaChecker?
+
+    public constructor() {
+        areas = null
+    }
+
+    @Inject
+    public constructor(areas: AreaChecker) {
+        this.areas = areas
+    }
+
     // `random` is an explicit parameter to indicate that this function relies on randomness
     // for certain effects, such as the Brimstone ring proc.
     public fun spellCollect(
@@ -230,6 +243,13 @@ public class CombatMagicAttributeCollector {
 
         if (weaponAttribute != null) {
             attributes += weaponAttribute
+        }
+
+        if (
+            weaponAttribute == CombatStaffAttributes.TumekensShadow &&
+                areas?.inArea("area.toa_raid", player.coords) == true
+        ) {
+            attributes += CombatStaffAttributes.TumekensShadowInAmascut
         }
 
         return attributes

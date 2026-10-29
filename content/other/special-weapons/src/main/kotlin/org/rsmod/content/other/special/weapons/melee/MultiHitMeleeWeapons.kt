@@ -51,19 +51,16 @@ class MultiHitMeleeWeapons @Inject constructor() : WeaponMap {
             target: PathingEntity,
             attack: CombatAttack.Melee,
         ): Int {
+            val wholeMax = manager.calculateMeleeMaxHit(this, target, attack.type, attack.style, 1.0)
+            val firstMax = wholeMax / 2
             var totalDamage = 0
-            for (roundUp in booleanArrayOf(false, true)) {
+            for (hitMax in intArrayOf(firstMax, wholeMax - firstMax)) {
+                val accurate = manager.rollMeleeAccuracy(this, target, attack.type, attack.style, attack.type, 1.0)
                 val damage =
-                    manager.rollMeleeDamage(
-                        source = this,
-                        target = target,
-                        attack = attack,
-                        accuracyMultiplier = 1.0,
-                        maxHitMultiplier = 0.5,
-                        roundMaxHitUp = roundUp,
-                    )
-                totalDamage += damage
-                manager.queueMeleeHit(this, target, damage)
+                    if (accurate) manager.rollSuccessfulDamage(this, 0..hitMax, damagingAttack = wholeMax > 0)
+                    else 0
+                val hit = manager.queueMeleeHit(this, target, damage)
+                totalDamage += if (target is Npc) hit.damage else damage
             }
             return totalDamage
         }

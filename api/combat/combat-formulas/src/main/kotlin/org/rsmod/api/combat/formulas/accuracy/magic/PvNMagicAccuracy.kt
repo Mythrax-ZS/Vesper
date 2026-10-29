@@ -102,7 +102,7 @@ constructor(
         npcAttributes: EnumSet<CombatNpcAttributes>,
     ): Int {
         val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, null)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val magicBonus = bonuses.offensiveMagicBonusBase(source)
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifySpellAttackRoll(
             attackRoll = attackRoll,
@@ -171,7 +171,15 @@ constructor(
         npcAttributes: EnumSet<CombatNpcAttributes>,
     ): Int {
         val effectiveMagic = MagicAccuracyOperations.calculateEffectiveMagic(source, attackStyle)
-        val magicBonus = bonuses.offensiveMagicBonus(source)
+        val equipmentBonus = bonuses.offensiveMagicBonusBase(source)
+        val magicBonus =
+            if (CombatStaffAttributes.TumekensShadow in staffAttributes) {
+                val multiplier =
+                    if (CombatStaffAttributes.TumekensShadowInAmascut in staffAttributes) 4 else 3
+                equipmentBonus * multiplier
+            } else {
+                equipmentBonus
+            }
         val attackRoll = PlayerMagicAccuracy.calculateBaseAttackRoll(effectiveMagic, magicBonus)
         return MagicAccuracyOperations.modifyStaffAttackRoll(
             attackRoll = attackRoll,

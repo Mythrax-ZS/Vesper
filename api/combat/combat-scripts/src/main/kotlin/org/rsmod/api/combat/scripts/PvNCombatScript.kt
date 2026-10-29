@@ -22,6 +22,7 @@ import org.rsmod.api.script.advanced.onDefaultApNpc2
 import org.rsmod.api.script.advanced.onDefaultOpNpc2
 import org.rsmod.api.script.onApNpcT
 import org.rsmod.api.spells.MagicSpellRegistry
+import org.rsmod.api.spells.NonAttackSpellRegistry
 import org.rsmod.api.spells.autocast.AutocastWeapons
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.type.getOrNull
@@ -38,11 +39,23 @@ constructor(
     private val runes: MagicRuneManager,
     private val autocast: AutocastWeapons,
     private val attackValidateHooks: Set<NpcAttackValidateHook>,
+    private val nonAttackSpells: NonAttackSpellRegistry,
 ) : PluginScript() {
+    constructor(
+        styles: AttackStyles,
+        types: AttackTypes,
+        combat: PvNCombat,
+        spells: MagicSpellRegistry,
+        runes: MagicRuneManager,
+        autocast: AutocastWeapons,
+        attackValidateHooks: Set<NpcAttackValidateHook>,
+    ) : this(styles, types, combat, spells, runes, autocast, attackValidateHooks, NonAttackSpellRegistry(emptySet()))
+
     override fun ScriptContext.startup() {
         onDefaultApNpc2 { attemptCombatAp(it.npc) }
         onDefaultOpNpc2 { attemptCombatOp(it.npc) }
         for (spell in spells.combatSpells()) {
+            if (spell in nonAttackSpells) continue
             onApNpcT(spell.component) { attemptCombatSpell(it.npc, spell) }
         }
     }

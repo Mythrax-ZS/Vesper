@@ -53,6 +53,7 @@ import org.rsmod.game.entity.PathingEntity
 import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.Hit
 import org.rsmod.game.hit.HitType
+import org.rsmod.game.hit.NpcFlatArmourPolicy
 import org.rsmod.game.interact.InteractionOp
 import org.rsmod.game.proj.ProjAnim
 import org.rsmod.game.type.getInvObj
@@ -239,8 +240,10 @@ constructor(
      * Calculates and grants combat experience based on the given [attack], [damage], and the
      * [target]'s predefined combat xp multiplier.
      *
-     * @param damage The damage rolled to be inflicted on [target]. This value is implicitly capped
-     *   to the [target]'s remaining hitpoints.
+     * @param damage The XP damage basis, capped to [target]'s current hitpoints. NPC callers must
+     *   use the returned queued [Hit.damage] after modifiers, preserving the attack's XP award
+     *   boundaries; sum existing grouped hits before their shared award. This does not recalculate
+     *   armour or wait for impact. PvP callers retain their separate damage policy.
      */
     public fun giveCombatXp(
         player: Player,
@@ -305,8 +308,10 @@ constructor(
      * Calculates and grants combat experience based on the given [attack], [damage], and the
      * [target]'s predefined combat xp multiplier.
      *
-     * @param damage The damage rolled to be inflicted on [target]. This value is implicitly capped
-     *   to the [target]'s remaining hitpoints.
+     * @param damage The XP damage basis, capped to [target]'s current hitpoints. NPC callers must
+     *   use the returned queued [Hit.damage] after modifiers, preserving the attack's XP award
+     *   boundaries; sum existing grouped hits before their shared award. This does not recalculate
+     *   armour or wait for impact. PvP callers retain their separate damage policy.
      */
     public fun giveCombatXp(
         player: Player,
@@ -476,7 +481,8 @@ constructor(
      * This function first determines if the attack hits by calling [rollMeleeAccuracy]. If the
      * accuracy roll is successful, it then calculates the damage by calling [rollMeleeMaxHit].
      *
-     * Note: Even if the accuracy roll succeeds, [rollMeleeMaxHit] can still return `0`.
+     * A successful attack rolls `0..maxHit` and converts a rolled zero to one when the
+     * maximum is positive. A zero maximum remains zero.
      *
      * @param accuracyMultiplier Multiplier to apply to accuracy (`1.0` = no change, `1.1` = +10%
      *   boost, `0.9` = -10% penalty).
@@ -490,8 +496,7 @@ constructor(
      *   same as [attackType], but certain scenarios override this with a fixed value. For example,
      *   a Dragon longsword special attack always uses `Slash` for [blockType], even though
      *   [attackType] remains dynamic.
-     * @return `0` if the accuracy roll fails; otherwise, a random damage value from `0` up to the
-     *   calculated max hit.
+     * @return `0` if accuracy fails or the maximum is zero; otherwise, the successful damage roll.
      */
     public fun rollMeleeDamage(
         source: Player,
@@ -602,10 +607,11 @@ constructor(
         )
 
     /**
-     * Rolls a random damage value between `0` and the maximum possible melee hit.
+     * Rolls successful melee damage, converting a rolled zero to one for a positive maximum.
      *
      * This function first calculates the maximum melee hit with any applicable boosts by calling
-     * [calculateMeleeMaxHit], and then rolls a random value within that range.
+     * [calculateMeleeMaxHit], then samples the inclusive range `0..maxHit` before converting
+     * zero to one.
      *
      * @param attackType The [MeleeAttackType] used for the [source]'s max hit calculation. Usually
      *   based on the current `CombatAttack.Melee` attack but can be overridden.
@@ -613,7 +619,7 @@ constructor(
      *   Usually based on the current `CombatAttack.Melee` attack but can be overridden.
      * @param multiplier Multiplier to apply to max hit (`1.0` = no change, `1.1` = +10% boost,
      *   `0.9` = -10% penalty).
-     * @return A random damage value between `0` and the calculated max hit.
+     * @return The successful damage roll, or `0` when the calculated maximum is zero.
      */
     public fun rollMeleeMaxHit(
         source: Player,
@@ -625,10 +631,7 @@ constructor(
     ): Int {
         val maxHit =
             calculateMeleeMaxHit(source, target, attackType, attackStyle, multiplier, roundUp)
-        if (source.adminMaxHit) {
-            return maxHit
-        }
-        return random.of(1..maxHit)
+        return rollSuccessfulDamage(source, 0..maxHit)
     }
 
     /**
@@ -731,7 +734,9 @@ constructor(
         // last entries in the queue list at the time of processing.
         target.queueCombatRetaliate(source)
 
-        val hit = target.queueHit(source, delay, HitType.Melee, damage, playerHitModifier)
+        val hit = target.queueHit(
+            source, delay, HitType.Melee, damage, playerHitModifier, pvpDamageReduction = true,
+        )
         notifyPlayerHit(source, target, damage)
         target.combatPlayDefendAnim()
         return hit
@@ -743,7 +748,8 @@ constructor(
      * This function first determines if the attack hits by calling [rollRangedAccuracy]. If the
      * accuracy roll is successful, it then calculates the damage by calling [rollRangedMaxHit].
      *
-     * Note: Even if the accuracy roll succeeds, [rollRangedMaxHit] can still return `0`.
+     * A successful attack rolls `0..maxHit` and converts a rolled zero to one when the
+     * maximum is positive. A zero maximum remains zero.
      *
      * @param accuracyMultiplier Multiplier to apply to accuracy (`1.0` = no change, `1.1` = +10%
      *   boost, `0.9` = -10% penalty).
@@ -757,8 +763,7 @@ constructor(
      *   same as [attackType], but certain scenarios override this with a fixed value.
      * @param boltSpecDamage The additive bonus damage from bolt special attacks. For example, Opal
      *   bolts (e) special should set this value to `visible ranged level * 10%, rounded down`.
-     * @return `0` if the accuracy roll fails; otherwise, a random damage value from `0` up to the
-     *   calculated max hit.
+     * @return `0` if accuracy fails or the maximum is zero; otherwise, the successful damage roll.
      */
     public fun rollRangedDamage(
         source: Player,
@@ -863,10 +868,11 @@ constructor(
         )
 
     /**
-     * Rolls a random damage value between `0` and the maximum possible ranged hit.
+     * Rolls successful ranged damage, converting a rolled zero to one for a positive maximum.
      *
      * This function first calculates the maximum ranged hit with any applicable boosts by calling
-     * [calculateRangedMaxHit], and then rolls a random value within that range.
+     * [calculateRangedMaxHit], then samples the inclusive range `0..maxHit` before converting
+     * zero to one.
      *
      * @param attackType The [RangedAttackType] used for the [source]'s max hit calculation. Usually
      *   based on the current `CombatAttack.Ranged` attack but can be overridden.
@@ -876,7 +882,7 @@ constructor(
      *   `0.9` = -10% penalty).
      * @param boltSpecDamage The additive bonus damage from bolt special attacks. For example, Opal
      *   bolts (e) special should set this value to `visible ranged level * 10%, rounded down`.
-     * @return A random damage value between `0` and the calculated max hit.
+     * @return The successful damage roll, or `0` when the calculated maximum is zero.
      */
     public fun rollRangedMaxHit(
         source: Player,
@@ -895,10 +901,7 @@ constructor(
                 multiplier = multiplier,
                 boltSpecDamage = boltSpecDamage,
             )
-        if (source.adminMaxHit) {
-            return maxHit
-        }
-        return random.of(1..maxHit)
+        return rollSuccessfulDamage(source, 0..maxHit)
     }
 
     /**
@@ -1032,6 +1035,23 @@ constructor(
         damage: Int,
         clientDelay: Int,
         hitDelay: Int,
+    ): Hit = queueRangedHit(
+        source, target, ammo, damage, clientDelay, hitDelay, NpcFlatArmourPolicy.Standard,
+    )
+
+    /**
+     * Ranged NPC hit with explicit negative-flat-armour eligibility. Venator ricochets use
+     * [NpcFlatArmourPolicy.IgnoreNegative]; the primary shot and other weapons use the original
+     * overload. This still queues one ordinary hit and runs all hooks, immunity and positive armour.
+     */
+    public fun queueRangedHit(
+        source: Player,
+        target: Npc,
+        ammo: ItemServerType?,
+        damage: Int,
+        clientDelay: Int,
+        hitDelay: Int,
+        npcFlatArmourPolicy: NpcFlatArmourPolicy,
     ): Hit {
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
@@ -1046,6 +1066,7 @@ constructor(
                 damage = damage,
                 modifier = npcHitModifier,
                 sourceSecondary = ammo,
+                npcFlatArmourPolicy = npcFlatArmourPolicy,
             )
         target.combatPlayDefendAnim(clientDelay)
         target.combatPlayDefendSpot(ammo, clientDelay)
@@ -1073,6 +1094,7 @@ constructor(
                 damage = damage,
                 modifier = playerHitModifier,
                 sourceSecondary = ammo,
+                pvpDamageReduction = true,
             )
         notifyPlayerHit(source, target, damage)
         target.combatPlayDefendAnim(clientDelay)
@@ -1126,6 +1148,7 @@ constructor(
                 damage = damage,
                 modifier = playerHitModifier,
                 sourceSecondary = ammo,
+                pvpDamageReduction = true,
             )
         return hit
     }
@@ -1214,8 +1237,9 @@ constructor(
      * Rolls a magic spell damage value between the minimum and maximum possible spell hit.
      *
      * This function first calculates the minimum and maximum hit by calling [calculateSpellMaxHit],
-     * then rolls a random value within that range. The minimum hit is usually `0`; however, certain
-     * modifiers - such as one enabled through [sunfireRune] - can affect this value.
+     * then samples that inclusive range. A rolled zero becomes one when the maximum is positive;
+     * a zero maximum remains zero. A positive minimum, such as one enabled through [sunfireRune],
+     * is preserved.
      *
      * @param spell The [ItemServerType] representing the spell being cast (e.g.,
      *   `"obj.01_wind_strike"` for the Wind strike spell).
@@ -1227,7 +1251,7 @@ constructor(
      *   is usually `5` for spell attacks.
      * @param sunfireRune Set to `true` if the spell was cast using a Sunfire rune. Sunfire runes
      *   apply modifiers, such as increasing the minimum hit for Fire-based spells.
-     * @return A random damage value between the calculated minimum and maximum hit.
+     * @return The successful damage roll, preserving a positive minimum or a zero maximum.
      */
     public fun rollSpellMaxHit(
         source: Player,
@@ -1248,10 +1272,7 @@ constructor(
                 attackRate = attackRate,
                 sunfireRune = sunfireRune,
             )
-        if (source.adminMaxHit) {
-            return hitRange.last
-        }
-        return random.of(hitRange)
+        return rollSuccessfulDamage(source, hitRange)
     }
 
     /**
@@ -1395,17 +1416,17 @@ constructor(
         )
 
     /**
-     * Rolls a random damage value between `0` and the maximum possible hit for a powered staff's
-     * built-in spell.
+     * Rolls successful powered-staff damage, converting a rolled zero to one for a positive maximum.
      *
      * This function first calculates the maximum magic hit for the built-in spell by calling
-     * [calculateStaffMaxHit], and then rolls a random value within that range.
+     * [calculateStaffMaxHit], then samples the inclusive range `0..maxHit` before converting
+     * zero to one.
      *
      * @param baseMaxHit The base max hit of the powered staff's built-in spell before any modifiers
      *   are applied.
      * @param multiplier Multiplier to apply to max hit (`1.0` = no change, `1.1` = +10% boost,
      *   `0.9` = -10% penalty).
-     * @return A random damage value between `0` and the calculated max hit.
+     * @return The successful damage roll, or `0` when the calculated maximum is zero.
      */
     public fun rollStaffMaxHit(
         source: Player,
@@ -1414,10 +1435,27 @@ constructor(
         multiplier: Double,
     ): Int {
         val maxHit = calculateStaffMaxHit(source, target, baseMaxHit, multiplier)
+        return rollSuccessfulDamage(source, 0..maxHit)
+    }
+
+    /**
+     * Samples damage after a successful accuracy check, converting only a rolled zero to one.
+     *
+     * [damagingAttack] refers to the whole attack before splitting it into hits. A zero-maximum
+     * subhit of a damaging attack can still deal one; a genuinely non-damaging attack stays zero.
+     */
+    public fun rollSuccessfulDamage(
+        source: Player,
+        hitRange: IntRange,
+        damagingAttack: Boolean = hitRange.last > 0,
+    ): Int {
         if (source.adminMaxHit) {
-            return maxHit
+            return hitRange.last
         }
-        return random.of(1..maxHit)
+        if (!damagingAttack) {
+            return 0
+        }
+        return random.of(hitRange).coerceAtLeast(1)
     }
 
     /**
@@ -1514,6 +1552,27 @@ constructor(
         hitDelay: Int,
         retaliationDelay: Int = hitDelay,
     ): Hit =
+        queueMagicHit(
+            source = source,
+            target = target,
+            spell = spell,
+            damage = damage,
+            clientDelay = clientDelay,
+            hitDelay = hitDelay,
+            retaliationDelay = retaliationDelay,
+            isMagicSplash = false,
+        )
+
+    private fun queueMagicHit(
+        source: Player,
+        target: PathingEntity,
+        spell: ItemServerType?,
+        damage: Int,
+        clientDelay: Int,
+        hitDelay: Int,
+        retaliationDelay: Int,
+        isMagicSplash: Boolean,
+    ): Hit =
         when (target) {
             is Npc ->
                 queueMagicHit(
@@ -1524,6 +1583,7 @@ constructor(
                     clientDelay = clientDelay,
                     hitDelay = hitDelay,
                     retaliationDelay = retaliationDelay,
+                    isMagicSplash = isMagicSplash,
                 )
             is Player ->
                 queueMagicHit(
@@ -1534,6 +1594,7 @@ constructor(
                     clientDelay = clientDelay,
                     hitDelay = hitDelay,
                     retaliationDelay = retaliationDelay,
+                    isMagicSplash = isMagicSplash,
                 )
         }
 
@@ -1545,6 +1606,7 @@ constructor(
         clientDelay: Int,
         hitDelay: Int,
         retaliationDelay: Int,
+        isMagicSplash: Boolean,
     ): Hit {
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
@@ -1559,6 +1621,7 @@ constructor(
                 damage = damage,
                 modifier = npcHitModifier,
                 sourceSecondary = spell,
+                isMagicSplash = isMagicSplash,
             )
         target.combatPlayDefendAnim(clientDelay)
         return hit
@@ -1572,6 +1635,7 @@ constructor(
         clientDelay: Int,
         hitDelay: Int,
         retaliationDelay: Int,
+        isMagicSplash: Boolean,
     ): Hit {
         // Note: Retaliation must be queued _before_ the hit. If queued after, every hit would
         // trigger the "speed-up" death mechanic, since the hit queues would no longer be the
@@ -1586,6 +1650,8 @@ constructor(
                 damage = damage,
                 modifier = playerHitModifier,
                 sourceSecondary = spell,
+                isMagicSplash = isMagicSplash,
+                pvpDamageReduction = true,
             )
         notifyPlayerHit(source, target, damage)
         target.combatPlayDefendAnim(clientDelay)
@@ -1596,7 +1662,8 @@ constructor(
      * Queues a magic **splash** hit on [target], triggering auto-retaliation after 1 server cycle -
      * a quirk of how splashing works.
      *
-     * This is equivalent to calling [queueMagicHit] with `damage = 0` and `retaliationDelay = 1`.
+     * The hit starts with zero damage and retains [Hit.isMagicSplash] through damage modification
+     * and impact. An ordinary [queueMagicHit] with zero damage is not a splash.
      *
      * **Note:** This function **does not** play splash sounds or visual effects on the [target].
      * These must be handled separately by calling [playMagicSplashFx].
@@ -1618,6 +1685,7 @@ constructor(
             clientDelay = clientDelay,
             hitDelay = hitDelay,
             retaliationDelay = 1,
+            isMagicSplash = true,
         )
 
     /**

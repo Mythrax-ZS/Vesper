@@ -27,6 +27,7 @@ public class WornBonuses {
 
     /**
      * Returns the player's base magic damage bonus.
+     * This includes Elite Void's set bonus; [equipmentMagicDamageBonus] excludes that addition.
      *
      * **Note:** This does **not** include [Bonuses.magicDmgMultiplier] or
      * [Bonuses.magicDmgAdditive]. Those values are used for display purposes in the bonus
@@ -40,6 +41,20 @@ public class WornBonuses {
         val bonuses = calculate(player)
         return bonuses.magicDmg
     }
+
+    /**
+     * Returns only the equipped items' magic damage bonus, in tenths of a percent.
+     *
+     * This excludes Elite Void's set bonus and display-only modifiers. Combat formulas that
+     * multiply or cap equipment bonuses can add [eliteVoidMagicDamageBonus] afterwards without
+     * multiplying the set bonus. [magicDamageBonusBase] retains its existing combined result.
+     */
+    public fun equipmentMagicDamageBonus(player: Player): Int =
+        calculate(player, applyShadowDisplay = false, includeEliteVoid = false).magicDmg
+
+    /** Returns Elite Void's magic set bonus in tenths of a percent, independently of equipment. */
+    public fun eliteVoidMagicDamageBonus(player: Player): Int =
+        if (player.isWearingEliteMageVoid()) 50 else 0
 
     public fun offensiveStabBonus(player: Player): Int {
         val bonuses = calculate(player)
@@ -65,6 +80,15 @@ public class WornBonuses {
         val bonuses = calculate(player)
         return bonuses.offMagic
     }
+
+    /**
+     * Returns equipment magic accuracy before Shadow's display multiplier, including negatives.
+     *
+     * Combat callers must apply attack-specific passives themselves. Merely holding a Shadow
+     * does not establish whether the attack is its built-in spell, a manual spell, or PvP.
+     */
+    public fun offensiveMagicBonusBase(player: Player): Int =
+        calculate(player, applyShadowDisplay = false, includeEliteVoid = false).offMagic
 
     public fun defensiveCrushBonus(player: Player): Int {
         val bonuses = calculate(player)
@@ -96,7 +120,14 @@ public class WornBonuses {
         return bonuses.prayer
     }
 
-    public fun calculate(player: Player): Bonuses {
+    public fun calculate(player: Player): Bonuses =
+        calculate(player, applyShadowDisplay = true, includeEliteVoid = true)
+
+    private fun calculate(
+        player: Player,
+        applyShadowDisplay: Boolean,
+        includeEliteVoid: Boolean,
+    ): Bonuses {
         var offStab = 0
         var offSlash = 0
         var offCrush = 0
@@ -155,14 +186,14 @@ public class WornBonuses {
 
         // TODO: Apply toxic blowpipe dart bonuses.
 
-        if (EquipmentChecks.isTumekensShadow(player.righthand)) {
+        if (applyShadowDisplay && EquipmentChecks.isTumekensShadow(player.righthand)) {
             // TODO: 4.0 while in tombs of amascut. This is purely for the visual bonus, the actual
             //  combat formula should use a separate resolved multiplier that matches.
             val multiplier = 3.0
             magicDmgMultiplier = multiplier
 
-            // Note: Multiplying `offMagic` here means it will affect magic accuracy even in pvp.
-            // Unsure if this is the case in the official game.
+            // Legacy display transformation; combat uses offensiveMagicBonusBase and resolves
+            // the passive for the actual attack and target separately.
             offMagic = (offMagic * multiplier).toInt()
         }
 
@@ -190,8 +221,8 @@ public class WornBonuses {
             magicDmgAdditive += 3
         }
 
-        if (player.isWearingEliteMageVoid()) {
-            magicDmg += 50
+        if (includeEliteVoid) {
+            magicDmg += eliteVoidMagicDamageBonus(player)
         }
 
         // TODO: +10 off ranged and +1 ranged str with dizana's quiver.

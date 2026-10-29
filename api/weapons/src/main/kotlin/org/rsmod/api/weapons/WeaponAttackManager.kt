@@ -1,9 +1,6 @@
 package org.rsmod.api.weapons
 
 import dev.openrune.types.ItemServerType
-import dev.openrune.types.ProjAnimType
-import dev.openrune.types.aconverted.SpotanimType
-import dev.openrune.types.aconverted.SynthType
 import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.commons.styles.MeleeAttackStyle
@@ -16,6 +13,7 @@ import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.PathingEntity
 import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.Hit
+import org.rsmod.game.hit.NpcFlatArmourPolicy
 import org.rsmod.game.proj.ProjAnim
 
 public class WeaponAttackManager @Inject constructor(private val manager: PlayerAttackManager) {
@@ -119,6 +117,13 @@ public class WeaponAttackManager @Inject constructor(private val manager: Player
         attack: CombatAttack.Staff,
         damage: Int,
     ): Unit = manager.giveCombatXp(source.player, target, attack, damage)
+
+    /** @see [PlayerAttackManager.rollSuccessfulDamage] */
+    public fun rollSuccessfulDamage(
+        source: ProtectedAccess,
+        hitRange: IntRange,
+        damagingAttack: Boolean = hitRange.last > 0,
+    ): Int = manager.rollSuccessfulDamage(source.player, hitRange, damagingAttack)
 
     /** @see [PlayerAttackManager.rollMeleeDamage] */
     public fun rollMeleeDamage(
@@ -300,6 +305,26 @@ public class WeaponAttackManager @Inject constructor(private val manager: Player
             damage = damage,
             clientDelay = clientDelay,
             hitDelay = hitDelay,
+        )
+
+    /** @see [PlayerAttackManager.queueRangedHit] */
+    public fun queueRangedHit(
+        source: ProtectedAccess,
+        target: Npc,
+        ammo: ItemServerType?,
+        damage: Int,
+        clientDelay: Int,
+        hitDelay: Int,
+        npcFlatArmourPolicy: NpcFlatArmourPolicy,
+    ): Hit =
+        manager.queueRangedHit(
+            source = source.player,
+            target = target,
+            ammo = ammo,
+            damage = damage,
+            clientDelay = clientDelay,
+            hitDelay = hitDelay,
+            npcFlatArmourPolicy = npcFlatArmourPolicy,
         )
 
     /** @see [PlayerAttackManager.queueRangedDamage] */

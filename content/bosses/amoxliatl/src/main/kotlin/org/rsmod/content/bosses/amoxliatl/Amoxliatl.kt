@@ -17,11 +17,9 @@ import org.rsmod.api.combat.commons.player.finishNpcHit
 import org.rsmod.api.npc.heal
 import org.rsmod.api.player.stat.hitpoints
 import org.rsmod.api.repo.loc.LocRepository
-import org.rsmod.api.script.onEvent
 import org.rsmod.api.script.onModifyNpcHit
 import org.rsmod.api.script.onNpcQueue
 import org.rsmod.game.entity.Npc
-import org.rsmod.game.entity.npc.NpcStateEvents
 import org.rsmod.game.entity.player.PlayerUid
 import org.rsmod.game.hit.HitType
 import org.rsmod.game.loc.LocAngle
@@ -41,10 +39,6 @@ class Amoxliatl @Inject constructor(deps: BossDeps, private val locRepo: LocRepo
         BossCombat.register(this, spec, deps)
 
         iceBlockType = ServerCacheManager.getNpc(ICE_BLOCK.asRSCM(RSCMType.NPC))!!
-
-        val amoxliatlId = AMOXLIATL_NPC.asRSCM(RSCMType.NPC)
-        onEvent<NpcStateEvents.Create> { if (npc.type.id == amoxliatlId) initAmoxliatl(npc) }
-        onEvent<NpcStateEvents.Respawn> { if (npc.type.id == amoxliatlId) initAmoxliatl(npc) }
 
         onModifyNpcHit(iceBlockType) {
             if (!hit.isFromPlayer) return@onModifyNpcHit
@@ -77,10 +71,6 @@ class Amoxliatl @Inject constructor(deps: BossDeps, private val locRepo: LocRepo
                 if (block.hitpoints > 0) explodeIceBlock(block, block.coords, heal = true)
             }
         }
-    }
-
-    private fun initAmoxliatl(npc: Npc) {
-        npc.vars["varn.flat_armour"] = FLAT_ARMOUR
     }
 
     private fun spawnIcyPool(npc: Npc, coord: CoordGrid) {
@@ -242,8 +232,6 @@ class Amoxliatl @Inject constructor(deps: BossDeps, private val locRepo: LocRepo
 
     private companion object {
         private const val AMOXLIATL_NPC = "npc.amoxliatl"
-
-        private const val FLAT_ARMOUR = -2
 
         private const val ICE_POOL = "loc.amoxliatl_ice"
 

@@ -10,7 +10,6 @@ import org.rsmod.api.combat.formulas.attributes.CombatNpcAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMeleeAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.CombatNpcAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
-import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.combat.maxhit.player.PlayerMeleeMaxHit
 import org.rsmod.api.combat.weapon.WeaponSpeeds
 import org.rsmod.api.player.bonus.WornBonuses
@@ -70,14 +69,7 @@ constructor(
             computeModifiedDamage(source, attackStyle, meleeAttributes, npcAttributes)
         val scaled = modifiedDamage * specialMultiplier
         val specMaxHit = if (roundUp) ceil(scaled).toInt() else scaled.toInt()
-        val postSpecDamage = modifyPostSpec(source, specMaxHit, meleeAttributes, npcAttributes)
-
-        val reductionAttributes = reductions.collectPvP(target, random)
-        return MaxHitOperations.applyDamageReductions(
-            startDamage = postSpecDamage,
-            activeDefenceBonus = null,
-            reductionAttributes = reductionAttributes,
-        )
+        return modifyPostSpec(source, specMaxHit, meleeAttributes, npcAttributes)
     }
 
     /**

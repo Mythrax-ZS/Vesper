@@ -35,6 +35,8 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.entity.util.EntityExactMove
 import org.rsmod.game.entity.util.PathingEntityCommon
 import org.rsmod.game.headbar.Headbar as EngineHeadbar
+import org.rsmod.game.hit.HitDefenceType
+import org.rsmod.game.hit.NpcDamageContext
 import org.rsmod.game.map.collision.isWalkBlocked
 import org.rsmod.game.proj.ProjAnim
 import org.rsmod.map.CoordGrid
@@ -359,11 +361,11 @@ class EffectInterpreter internal constructor(
                 hit.spotanim?.let { t.spotanim(it, delay = hit.spotanimDelay ?: 0, height = hit.spotanimHeight) }
             }
             if (hit.hazard) {
-                t.queueHit(npc, delay, hit.type.toEngine(), damage, deps.playerHitModifier)
+                t.queueHit(npc, delay, hit.type.toEngine(), damage, deps.playerHitModifier, damageContext = damageContext(hit))
                 continue
             }
             val landed =
-                t.finishNpcHit(npc, delay, hit.type.toEngine(), damage, deps.playerHitModifier, hit.penetration)
+                t.finishNpcHit(npc, delay, hit.type.toEngine(), damage, deps.playerHitModifier, hit.penetration, damageContext(hit))
             scheduleLanding(access, hit, t, damage, landed.damage, delay, clientDelay = 0)
         }
     }
@@ -374,6 +376,29 @@ class EffectInterpreter internal constructor(
         val max = damageMax(hit.damage, hit.type, t)
         val cap = DragonfireProtection.resolveMaxHit(t, dragonfire, max)
         return if (cap <= 0) 0 else deps.random.of(cap + 1)
+    }
+
+    private fun damageContext(hit: Effect.Hit): NpcDamageContext? {
+        val policy = hit.mitigation ?: when {
+            hit.hazard -> return null
+            hit.type == BossHitType.Melee || hit.type == BossHitType.Ranged || hit.type == BossHitType.Magic -> HitMitigation()
+            else -> return null
+        }
+        val defence = policy.defenceType ?: when (hit.type) {
+            BossHitType.Melee -> meleeDefence(hit.damage)
+            BossHitType.Ranged -> HitDefenceType.Ranged
+            BossHitType.Magic -> HitDefenceType.Magic
+            else -> null
+        }
+        return NpcDamageContext(npc.visType.id, defence, policy.equipment, policy.demonWard)
+    }
+
+    private fun meleeDefence(damage: DamageExpr): HitDefenceType? = when (damage) {
+        is DamageExpr.Accuracy -> damage.meleeAttackType?.toHitDefenceType() ?: meleeDefence(damage.on)
+        is DamageExpr.NpcMaxHit -> damage.meleeAttackType?.toHitDefenceType()
+        is DamageExpr.Min -> meleeDefence(damage.a)?.takeIf { it == meleeDefence(damage.b) }
+        is DamageExpr.Max -> meleeDefence(damage.a)?.takeIf { it == meleeDefence(damage.b) }
+        else -> null
     }
 
     private fun impactTicks(anim: ProjAnim, rounding: ImpactRounding): Int =
@@ -478,13 +503,14 @@ class EffectInterpreter internal constructor(
                 damage,
                 impactModifier(access, hit, damage),
                 penetration = if (conditionalPenetration) 0 else hit.penetration,
+                damageContext = damageContext(hit),
             )
             showMissSpotanim(hit, player, damage, projAnim.clientCycles)
             return
         }
         val hitType = hit.type.toEngine()
         val landed =
-            player.finishNpcHit(npc, ticks, hitType, damage, deps.playerHitModifier, hit.penetration).damage
+            player.finishNpcHit(npc, ticks, hitType, damage, deps.playerHitModifier, hit.penetration, damageContext(hit)).damage
         scheduleLanding(access, hit, player, damage, landed, ticks, projAnim.clientCycles)
     }
 

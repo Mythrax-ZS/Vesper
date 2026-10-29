@@ -43,19 +43,20 @@ class DualMacuahuitlWeapons @Inject constructor() : WeaponMap {
             target: PathingEntity,
             attack: CombatAttack.Melee,
         ): Int {
+            val wholeMax = manager.calculateMeleeMaxHit(this, target, attack.type, attack.style, 1.0)
+            val firstMax = wholeMax / 2
+            var previousAccurate = true
             var totalDamage = 0
-            for ((delay, roundUp) in listOf(1 to false, 2 to true)) {
+            for ((index, hitMax) in intArrayOf(firstMax, wholeMax - firstMax).withIndex()) {
+                // The second accuracy check is only attempted when the first check succeeded.
+                // Damage can still become zero later through armour, immunity, or protection.
+                val accurate = previousAccurate && manager.rollMeleeAccuracy(this, target, attack.type, attack.style, attack.type, 1.0)
                 val damage =
-                    manager.rollMeleeDamage(
-                        source = this,
-                        target = target,
-                        attack = attack,
-                        accuracyMultiplier = 1.0,
-                        maxHitMultiplier = 0.5,
-                        roundMaxHitUp = roundUp,
-                    )
-                totalDamage += damage
-                manager.queueMeleeHit(this, target, damage, delay = delay)
+                    if (accurate) manager.rollSuccessfulDamage(this, 0..hitMax, damagingAttack = wholeMax > 0)
+                    else 0
+                previousAccurate = accurate
+                val hit = manager.queueMeleeHit(this, target, damage, delay = index + 1)
+                totalDamage += if (target is Npc) hit.damage else damage
             }
             return totalDamage
         }

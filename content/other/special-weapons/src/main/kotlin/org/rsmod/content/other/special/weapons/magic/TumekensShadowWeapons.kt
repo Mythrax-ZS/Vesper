@@ -3,10 +3,13 @@ package org.rsmod.content.other.special.weapons.magic
 import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.manager.CombatChargeManager
+import org.rsmod.api.death.PvPAttackValidateResult
 import org.rsmod.api.obj.charges.ObjChargeManager.Companion.isFailure
 import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.stat.magicLvl
 import org.rsmod.api.weapons.MagicWeapon
+import org.rsmod.api.weapons.MagicWeaponPvPValidator
+import org.rsmod.api.weapons.MinigameStaffPvPPermission
 import org.rsmod.api.weapons.WeaponAttackManager
 import org.rsmod.api.weapons.WeaponMap
 import org.rsmod.api.weapons.WeaponRepository
@@ -14,17 +17,24 @@ import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.PathingEntity
 import org.rsmod.game.entity.Player
 
-class TumekensShadowWeapons @Inject constructor(private val charges: CombatChargeManager) :
-    WeaponMap {
+class TumekensShadowWeapons
+@Inject
+constructor(
+    private val charges: CombatChargeManager,
+    private val pvpPermissions: Set<MinigameStaffPvPPermission>,
+) : WeaponMap {
+    constructor(charges: CombatChargeManager) : this(charges, emptySet())
+
     override fun WeaponRepository.register(manager: WeaponAttackManager) {
-        register("obj.tumekens_shadow_uncharged", UnchargedTumekensShadow(manager))
-        register("obj.tumekens_shadow", TumekensShadow(manager, charges))
+        register("obj.tumekens_shadow_uncharged", UnchargedTumekensShadow(manager, pvpPermissions))
+        register("obj.tumekens_shadow", TumekensShadow(manager, charges, pvpPermissions))
     }
 
     private class TumekensShadow(
         private val manager: WeaponAttackManager,
         private val charges: CombatChargeManager,
-    ) : MagicWeapon {
+        pvpPermissions: Set<MinigameStaffPvPPermission>,
+    ) : MagicWeapon, MagicWeaponPvPValidator by ShadowPvPValidator(pvpPermissions) {
         override suspend fun ProtectedAccess.attack(
             target: Npc,
             attack: CombatAttack.Staff,
@@ -42,8 +52,9 @@ class TumekensShadowWeapons @Inject constructor(private val charges: CombatCharg
         }
 
         private fun ProtectedAccess.cast(target: PathingEntity, attack: CombatAttack.Staff) {
-            val chargeResult = charges.attemptDetractWeapon(player, "varobj.tumeken_charges")
-            if (chargeResult.isFailure()) {
+            if (charges.getWeaponCharges(player, "varobj.tumeken_charges") <= 0) {
+                // Preserve normalization of a charged item with an empty charge counter.
+                charges.attemptDetractWeapon(player, "varobj.tumeken_charges")
                 manager.stopCombat(this)
                 return
             }
@@ -85,6 +96,12 @@ class TumekensShadowWeapons @Inject constructor(private val charges: CombatCharg
                 manager.queueMagicHit(this, target, damage, clientDelay, serverDelay)
             }
 
+            // The final cast still uses the charged weapon's bonuses and hit metadata.
+            val chargeResult = charges.attemptDetractWeapon(player, "varobj.tumeken_charges")
+            if (chargeResult.isFailure()) {
+                manager.stopCombat(this)
+                return
+            }
             if (chargeResult.fullyUncharged) {
                 manager.stopCombat(this)
                 mes("Tumeken's shadow has run out of charges.")
@@ -96,7 +113,10 @@ class TumekensShadowWeapons @Inject constructor(private val charges: CombatCharg
         private fun getMaxHit(magicLvl: Int): Int = (magicLvl / 3) + 1
     }
 
-    private class UnchargedTumekensShadow(private val manager: WeaponAttackManager) : MagicWeapon {
+    private class UnchargedTumekensShadow(
+        private val manager: WeaponAttackManager,
+        pvpPermissions: Set<MinigameStaffPvPPermission>,
+    ) : MagicWeapon, MagicWeaponPvPValidator by ShadowPvPValidator(pvpPermissions) {
         override suspend fun ProtectedAccess.attack(
             target: Npc,
             attack: CombatAttack.Staff,
@@ -120,5 +140,22 @@ class TumekensShadowWeapons @Inject constructor(private val charges: CombatCharg
             )
             manager.stopCombat(this)
         }
+    }
+
+    private class ShadowPvPValidator(
+        private val permissions: Set<MinigameStaffPvPPermission>,
+    ) : MagicWeaponPvPValidator {
+        override fun validatePvPAttack(
+            attacker: Player,
+            target: Player,
+            attack: CombatAttack.Staff,
+        ): PvPAttackValidateResult =
+            if (permissions.any { it.permits(attacker, target, attack) }) {
+                PvPAttackValidateResult.Pass
+            } else {
+                PvPAttackValidateResult.Deny(
+                    "You can't use this staff's built-in spell against players here."
+                )
+            }
     }
 }

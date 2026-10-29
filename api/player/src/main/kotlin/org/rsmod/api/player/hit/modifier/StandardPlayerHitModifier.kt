@@ -9,14 +9,41 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.HitBuilder
 import org.rsmod.game.hit.HitType
 
-public class StandardPlayerHitModifier @Inject constructor(private val eventBus: EventBus) :
+public class StandardPlayerHitModifier @Inject constructor(
+    private val eventBus: EventBus,
+    private val npcReductions: NpcIncomingDamageReducer = NoopNpcIncomingDamageReducer(),
+    private val pvpReductions: PvpIncomingDamageReducer,
+) :
     PlayerHitModifier {
+    public constructor(
+        eventBus: EventBus,
+        npcReductions: NpcIncomingDamageReducer = NoopNpcIncomingDamageReducer(),
+    ) : this(eventBus, npcReductions, NoopPvpIncomingDamageReducer())
+
     override fun HitBuilder.modify(target: Player) {
+        val beforeEvent = damage
+        val beforeReflection = reflectionDamage
         target.publishEvent(this)
+        if (damage != beforeEvent && reflectionDamage == beforeReflection) {
+            reflectionDamage = damage
+        }
+        var reflectedBasis = reflectionDamage ?: damage
 
         if (target.adminGodMode) {
             damage = 0
+            reflectionDamage = 0
             return
+        }
+
+        if (isFromNpc) {
+            with(npcReductions) { reduce(target) }
+            if (npcDamageContext != null) reflectedBasis = damage
+            npcDamageCap?.let { damage = minOf(damage, it) }
+        }
+
+        if (isFromPlayer && pvpDamageReduction) {
+            with(pvpReductions) { reduce(target) }
+            reflectedBasis = damage
         }
 
         val protectionPrayer =
@@ -31,15 +58,20 @@ public class StandardPlayerHitModifier @Inject constructor(private val eventBus:
             val baseReduction = if (isFromPlayer) 40 else 100
             val reduction = (baseReduction - penetration).coerceIn(0, 100)
             damage = (damage * (100 - reduction)) / 100
+            reflectedBasis = (reflectedBasis.toLong() * (100 - reduction) / 100).toInt()
         }
 
         if (isFromNpc) {
+            val absorptionBefore = PlayerAbsorption.points(target)
             damage =
                 PlayerAbsorption.absorb(
                     player = target,
                     incomingDamage = damage,
                 )
+            val absorbed = absorptionBefore - PlayerAbsorption.points(target)
+            reflectedBasis = (reflectedBasis - absorbed).coerceAtLeast(0)
         }
+        reflectionDamage = reflectedBasis.coerceAtLeast(0)
     }
 
     private fun Player.publishEvent(hit: HitBuilder) {

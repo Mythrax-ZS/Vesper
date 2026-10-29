@@ -28,6 +28,7 @@ constructor(
     private val playerList: PlayerList,
 ) : InstantPlayerHitProcessor {
     override fun Player.process(hit: Hit) {
+        if (worldTypeSwitching || forceDisconnect || persistenceInvalidated) return
         if (adminGodMode) {
             return
         }

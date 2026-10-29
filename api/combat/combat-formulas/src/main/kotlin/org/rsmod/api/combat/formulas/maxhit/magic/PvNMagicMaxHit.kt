@@ -183,11 +183,13 @@ constructor(
         staffAttributes: EnumSet<CombatStaffAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
     ): Int {
-        val magicDmgBonus = bonuses.magicDamageBonusBase(source)
+        val equipmentDmgBonus = bonuses.equipmentMagicDamageBonus(source)
+        val eliteVoidDmgBonus = bonuses.eliteVoidMagicDamageBonus(source)
         val prayerDmgBonus = MagicMaxHitOperations.getMagicDamagePrayerBonus(source)
         return MagicMaxHitOperations.modifyStaffBaseDamage(
             baseDamage = baseDamage,
-            sourceBaseMagicDmgBonus = magicDmgBonus,
+            sourceEquipmentMagicDmgBonus = equipmentDmgBonus,
+            sourceEliteVoidMagicDmgBonus = eliteVoidDmgBonus,
             sourceMagicPrayerBonus = prayerDmgBonus,
             staffAttributes = staffAttributes,
             npcAttributes = npcAttributes,

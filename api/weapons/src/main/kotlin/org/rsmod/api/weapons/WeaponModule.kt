@@ -9,5 +9,6 @@ public class WeaponModule : PluginModule() {
         bindInstance<WeaponRepository>()
 
         newSetBinding<WeaponMap>()
+        newSetBinding<MinigameStaffPvPPermission>()
     }
 }

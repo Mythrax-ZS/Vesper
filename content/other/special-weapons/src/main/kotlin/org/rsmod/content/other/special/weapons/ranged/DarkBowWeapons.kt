@@ -3,7 +3,6 @@ package org.rsmod.content.other.special.weapons.ranged
 import dev.openrune.rscm.RSCM
 import dev.openrune.rscm.RSCMType
 import dev.openrune.types.ItemServerType
-import dev.openrune.types.aconverted.SpotanimType
 import jakarta.inject.Inject
 import org.rsmod.api.combat.commons.CombatAttack
 import org.rsmod.api.combat.manager.RangedAmmoManager
@@ -73,7 +72,7 @@ class DarkBowWeapons @Inject constructor(private val ammunition: RangedAmmoManag
             val quiverCount = player.quiver?.count ?: 0
 
             if (quiverCount == 1) {
-                shootSingleArrow(target, attack, quiverType, RSCM.getReverseMapping(RSCMType.SPOTANIM,launchSpotanim!!.id), RSCM.getReverseMapping(RSCMType.SPOTANIM,travelSpotanim.id))
+                shootSingleArrow(target, attack, quiverType, RSCM.getReverseMapping(RSCMType.SPOTANIM, launchSpotanim!!.id), RSCM.getReverseMapping(RSCMType.SPOTANIM, travelSpotanim.id))
                 manager.continueCombat(this, target)
                 return
             }
@@ -81,7 +80,7 @@ class DarkBowWeapons @Inject constructor(private val ammunition: RangedAmmoManag
             if (quiverCount >= 2) {
                 val doubleLaunchSpotanim =
                     quiverType.paramOrNull(params.proj_launch_double) ?: launchSpotanim
-                shootDoubleArrow(target, attack, quiverType, RSCM.getReverseMapping(RSCMType.SPOTANIM,doubleLaunchSpotanim!!.id), RSCM.getReverseMapping(RSCMType.SPOTANIM,travelSpotanim.id))
+                shootDoubleArrow(target, attack, quiverType, RSCM.getReverseMapping(RSCMType.SPOTANIM, doubleLaunchSpotanim!!.id), RSCM.getReverseMapping(RSCMType.SPOTANIM, travelSpotanim.id))
                 manager.continueCombat(this, target)
                 return
             }
@@ -101,16 +100,17 @@ class DarkBowWeapons @Inject constructor(private val ammunition: RangedAmmoManag
             val projanim = manager.spawnProjectile(this, target, travelSpot, "projanim.arrow")
             val (serverDelay, clientDelay) = projanim.durations
 
+            val damage = manager.rollRangedDamage(this, target, attack)
+            if (target is Player) manager.giveCombatXp(this, target, attack, damage)
+            val hit = manager.queueRangedHit(this, target, quiverType, damage, clientDelay, serverDelay)
+            if (target is Npc) manager.giveCombatXp(this, target, attack, hit.damage)
+
             ammunition.useQuiverAmmo(
                 player = player,
                 quiverType = quiverType,
                 dropCoord = target.coords,
                 dropDelay = projanim.serverCycles,
             )
-
-            val damage = manager.rollRangedDamage(this, target, attack)
-            manager.giveCombatXp(this, target, attack, damage)
-            manager.queueRangedHit(this, target, quiverType, damage, clientDelay, serverDelay)
         }
 
         private fun ProtectedAccess.shootDoubleArrow(
@@ -133,6 +133,14 @@ class DarkBowWeapons @Inject constructor(private val ammunition: RangedAmmoManag
             val hitDelay1 = proj1.serverCycles
             val hitDelay2 = proj2.serverCycles
 
+            val damage1 = manager.rollRangedDamage(this, target, attack)
+            val damage2 = manager.rollRangedDamage(this, target, attack)
+            if (target is Player) manager.giveCombatXp(this, target, attack, damage1 + damage2)
+            val hit1 = manager.queueRangedHit(this, target, quiverType, damage1, proj2.clientCycles, hitDelay1)
+
+            val hit2 = manager.queueRangedDamage(this, target, quiverType, damage2, hitDelay2)
+            if (target is Npc) manager.giveCombatXp(this, target, attack, hit1.damage + hit2.damage)
+
             ammunition.useQuiverAmmo(
                 player = player,
                 quiverType = quiverType,
@@ -140,21 +148,12 @@ class DarkBowWeapons @Inject constructor(private val ammunition: RangedAmmoManag
                 dropDelay = hitDelay1,
             )
 
-            val damage1 = manager.rollRangedDamage(this, target, attack)
-            val damage2 = manager.rollRangedDamage(this, target, attack)
-            val totalDamage = damage1 + damage2
-
-            manager.giveCombatXp(this, target, attack, totalDamage)
-            manager.queueRangedHit(this, target, quiverType, damage1, proj2.clientCycles, hitDelay1)
-
             ammunition.useQuiverAmmo(
                 player = player,
                 quiverType = quiverType,
                 dropCoord = target.coords,
                 dropDelay = hitDelay2,
             )
-
-            manager.queueRangedDamage(this, target, quiverType, damage2, hitDelay2)
 
             if (player.quiver?.count == 1) {
                 mes("You now have only 1 arrow left in your quiver.")

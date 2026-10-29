@@ -110,6 +110,117 @@ mutable, and nullable.
 - Pros
   - TODO:
 
+## NPC damage and splash outcomes
+
+NPC attacks with `NpcDamageContext` reduce sampled damage before the stored launch
+HP cap, prayer and absorption. Ordinary NPC queues still capture the HP limit at
+launch; deferred hits retain their impact-time modifier policy. Legacy NPC hits
+without a context keep their previous cap and modifier behavior. Do not apply
+equipment reductions inside an NPC maximum-hit calculation or a custom boss
+expression that also opts into shared mitigation.
+
+`Hit.isMagicSplash` records an explicit splash before modifiers. A false value is
+not proof of accuracy, and final zero damage cannot distinguish a splash from an
+accurate hit reduced by armour. Copying hits must preserve the marker.
+
+Flat armour is a persistent per-hit stat for positive player melee/ranged damage;
+it is not consumed as an absorption pool. Magic (including splashes), typeless and
+non-player hits bypass it. Style immunity and incoming zero damage stay zero, so
+negative armour cannot revive a blocked hit or a physical miss. Positive armour
+can reduce a successful hit to zero. A separate physical accuracy outcome would
+be needed to distinguish an accurate zero from a miss after earlier modifiers.
+
+Static NPC armour comes from the server-only `enum.npc_flat_armour` in the generic
+NPC pack. `Npc.flatArmour` reads the current `visType` baseline unless
+`varn.flat_armour` is present. A stored zero is an override, not an absent value;
+`clearFlatArmourOverride()` restores the baseline. Overrides survive a transmog
+until cleared, while respawn clears them and resets the visible type. Queued hits
+retain the armour calculation performed at queue time.
+
+The table contains 149 main-game NPC definitions, with source revisions and
+exclusions in the pack's `flat-armour-sources.json`. Amoxliatl now uses this data
+instead of a spawn-time constant. Dusk's first-form definitions have -1; its
+second-form definitions keep the default zero. Eclipse Moon's regular baseline is
+6, but its eventual clone-phase handler must temporarily override that to 4 on the
+actual damage recipient. The clone actor's name alone does not establish that
+recipient. Echo/Deadman-specific rows are excluded. These values do not implement
+the corresponding encounters or their immunity, phase and world-mode behavior.
+
+Physical PvN XP callers use damage from the returned queued `Hit`, after hit
+modifiers, immunity and flat armour. The existing grouped attacks add their queued
+damage against each NPC before one XP award, retaining their current HP cap and XP
+rounding. Venator retains separate primary/bounce awards. Its bounced hits suppress
+only negative flat-armour bonuses; positive armour, immunity and hooks still apply.
+This exception follows the current Wiki correction and lacks primary/live
+confirmation. Venator's target-selection and XP timing are not independently
+verified against the current game. Public prose describes ricochets after a hit,
+but does not establish when the server chooses or rolls their targets.
+XP is still awarded at launch; a later HP change or impact
+floor does not retroactively recalculate it. Modifiers and armour are not run again
+for XP. NPC XP bonuses, account/world rates and combat-style splits remain in the
+existing XP calculation.
+
+The public integer-based XP APIs retain their signatures and behavior. External
+physical-combat plugins must pass queued damage rather than raw rolls, retaining
+the verified award boundaries for their attacks. Magic/cast XP and PvP damage bases are separate policies;
+the physical PvN correction does not certify their ordering or encounter exceptions.
+
+## Weapon launch state and depletion
+
+Ordinary ranged attacks, Dark bow and Venator resolve damage and capture queued
+weapon/ammunition identity before consuming their ammunition. Removing the final
+arrow first loses its strength bonus. Removing a final thrown weapon also loses
+its accuracy/strength and can incorrectly enable unrelated quiver bonuses.
+Misses still spend ammunition; empty-quiver validation still precedes firing.
+
+Venator and Tumeken's Shadow check charges before firing and spend one charge
+after their shot/cast is queued. Empty charged variants retain the existing
+normalization to the uncharged item. The final paid attack retains charged weapon
+identity, and then stops continued attacks when charges reach zero. Shadow's
+charged identity is required by its accuracy and damage attribute collectors.
+The exact live transformation tick is not established by these launch-state tests.
+Magic XP rules and the separate Shadow PvP/ToA multiplier gaps are unchanged.
+
+Venator's original victim must pass the same next-target eligibility predicate as
+other candidates: current registered object, plane, availability, attack option,
+existing centre-distance limit and attack-validation hooks. A dead origin or
+miss does not itself stop onward ricochets. The existing nearest-target ordering,
+geometry and synchronous scheduling remain subject to current-game verification.
+
+## Player damage rolls and PvP equipment reduction
+
+Successful damaging player attacks sample their full inclusive range, then convert a
+rolled zero to one. A maximum of three has outcomes `1, 1, 2, 3`; sampling uniformly
+from `1..3` changes the distribution. Non-damaging attacks and failed accuracy stay
+zero. Positive spell minima keep their original range. Later armour, prayer and
+immunity can reduce an accurate hit to zero again.
+
+Multi-hit handlers calculate one whole-attack maximum before splitting it. A rounded
+zero subhit of a damaging attack remains eligible for the minimum hit. Dual
+macuahuitl's second accuracy check depends on the first accuracy result, not on
+damage after mitigation. This does not implement missing scythe area targeting or
+other weapon-specific effects.
+
+PvP maxima no longer sample Elysian's proc. Standard typed player combat queues set
+`pvpDamageReduction` explicitly and apply it to each sampled hit before prayer.
+Direct legacy queues default to no equipment policy; external callers must opt in
+only when their damage has not already been reduced. Typeless and other special
+damage do not acquire eligibility merely from their source. NPC mitigation remains
+its separate policy. Existing Elysian residual-floor rounding and prayer ordering
+remain provisional pending stronger live evidence.
+
+The original queue overload and modifier constructors, including Kotlin default
+signatures, remain available to compiled plugins. External combat plugins that
+use the now-raw PvP maximum helpers must adopt the explicit queue policy; retaining
+their binary entry points does not migrate their combat logic automatically.
+
+Combat XP and primary PvP hit callbacks still consume their caller's pre-queue
+damage. It is now pre-Elysian as well as pre-prayer, unlike the old reduction of
+the sampled maximum. Exact OSRS PvP XP ordering has not been established. Do not
+replace every callback input with final damage: Corruption uses it as a success
+proxy, and a successful minimum hit can become zero through mitigation. A complete
+accuracy/XP outcome model and special-hit callback coverage remain open work.
+
 ## Player timer phases
 
 Soft timers normally run before interactions. `softTimer(..., afterInteractions = true)`

@@ -51,8 +51,9 @@ class DragonLongswordSpecialAttack : SpecialAttackMap {
                     maxHitMultiplier = 1.25,
                     blockType = MeleeAttackType.Slash,
                 )
-            manager.giveCombatXp(this, target, attack, damage)
-            manager.queueMeleeHit(this, target, damage)
+            val hit = manager.queueMeleeHit(this, target, damage)
+            val xpDamage = if (target is Npc) hit.damage else damage
+            manager.giveCombatXp(this, target, attack, xpDamage)
             manager.continueCombat(this, target)
         }
     }

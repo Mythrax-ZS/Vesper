@@ -23,6 +23,7 @@ import org.rsmod.api.script.advanced.onOpPlayer1
 import org.rsmod.api.script.advanced.onOpPlayer2
 import org.rsmod.api.script.onApPlayerT
 import org.rsmod.api.spells.MagicSpellRegistry
+import org.rsmod.api.spells.NonAttackSpellRegistry
 import org.rsmod.api.spells.autocast.AutocastWeapons
 import org.rsmod.game.entity.Player
 import org.rsmod.game.type.getOrNull
@@ -39,13 +40,25 @@ constructor(
     private val runes: MagicRuneManager,
     private val autocast: AutocastWeapons,
     private val attackValidateHooks: Set<PvPAttackValidateHook>,
+    private val nonAttackSpells: NonAttackSpellRegistry,
 ) : PluginScript() {
+    constructor(
+        styles: AttackStyles,
+        types: AttackTypes,
+        combat: PvPCombat,
+        spells: MagicSpellRegistry,
+        runes: MagicRuneManager,
+        autocast: AutocastWeapons,
+        attackValidateHooks: Set<PvPAttackValidateHook>,
+    ) : this(styles, types, combat, spells, runes, autocast, attackValidateHooks, NonAttackSpellRegistry(emptySet()))
+
     override fun ScriptContext.startup() {
         onApPlayer1 { attemptCombatAp(it.target) }
         onApPlayer2 { attemptCombatAp(it.target) }
         onOpPlayer1 { attemptCombatOp(it.target) }
         onOpPlayer2 { attemptCombatOp(it.target) }
         for (spell in spells.combatSpells()) {
+            if (spell in nonAttackSpells) continue
             onApPlayerT(spell.component) { attemptCombatSpell(it.target, spell) }
         }
     }

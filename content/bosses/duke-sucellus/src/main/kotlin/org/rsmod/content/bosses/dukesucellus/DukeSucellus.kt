@@ -14,8 +14,8 @@ import org.rsmod.api.bosses.runtime.bossProjectile
 import org.rsmod.api.bosses.spec.BossSpec
 import org.rsmod.api.bosses.spec.Condition
 import org.rsmod.api.bosses.spec.Effect
+import org.rsmod.api.bosses.spec.HitMitigation
 import org.rsmod.api.combat.commons.player.finishNpcHit
-import org.rsmod.api.player.events.PlayerHitEvents
 import org.rsmod.api.player.isValidTarget
 import org.rsmod.api.player.output.mes
 import org.rsmod.api.player.output.runClientScript
@@ -28,12 +28,11 @@ import org.rsmod.api.player.ui.ifSetAnim
 import org.rsmod.api.script.onEvent
 import org.rsmod.events.EventBus
 import org.rsmod.game.entity.Npc
-import org.rsmod.game.entity.NpcList
 import org.rsmod.game.entity.Player
 import org.rsmod.game.entity.npc.NpcStateEvents
-import org.rsmod.game.entity.npc.NpcUid
-import org.rsmod.game.hit.HitBuilder
+import org.rsmod.game.hit.HitDefenceType
 import org.rsmod.game.hit.HitType as EngineHitType
+import org.rsmod.game.hit.NpcDamageContext
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.ScriptContext
 
@@ -42,7 +41,6 @@ class DukeSucellus
 constructor(
     deps: BossDeps,
     private val eventBus: EventBus,
-    private val npcList: NpcList,
 ) : BossPluginScript(deps) {
 
     override fun ScriptContext.startup() {
@@ -67,7 +65,6 @@ constructor(
         onEvent<NpcStateEvents.Respawn> {
             if (npc.type.id in bossNpcIds) resetFlareState(npc)
         }
-        onEvent<PlayerHitEvents.Modify> { applyWardOfArceuus(player, hit) }
         deps.extensionRegistry.register(GAZE_RESOLVE) { _, npc, target, _ ->
             if (isFighting(npc) && target.isValidTarget()) resolveGaze(npc, target)
         } }
@@ -79,13 +76,6 @@ constructor(
     private fun isFighting(npc: Npc): Boolean = npc.isSlotAssigned && npc.isVisType(BOSS_NPC)
 
     private fun Player.hasWardOfArceuus(): Boolean = vars[WARD_OF_ARCEUUS_VARBIT] == 1
-
-    private fun applyWardOfArceuus(player: Player, hit: HitBuilder) {
-        if (!hit.isFromNpc || !player.hasWardOfArceuus()) return
-        val source = hit.sourceUid?.let { NpcUid(it).resolve(npcList) } ?: return
-        if (source.type.id !in bossNpcIds) return
-        hit.damage -= hit.damage / 10
-    }
 
     private fun behindPillar(npc: Npc, target: Player): Boolean {
         val west = npc.coords.x
@@ -241,7 +231,10 @@ constructor(
             if (!player.isValidTarget() || player.coords !in tiles) continue
             val damage = range.first + deps.random.of(range.last - range.first + 1)
             val modifier = deps.playerHitModifier
-            player.finishNpcHit(npc, 1, EngineHitType.Melee, damage, modifier, MELEE_SLAM_PENETRATION)
+            player.finishNpcHit(
+                npc, 1, EngineHitType.Melee, damage, modifier, MELEE_SLAM_PENETRATION,
+                damageContext = NpcDamageContext(npc.visType.id, HitDefenceType.Crush, equipment = false),
+            )
         }
     }
 
@@ -255,6 +248,7 @@ constructor(
                 damage(MELEE_CHIP_DAMAGE)
                 type(Melee)
                 penetration(MELEE_CHIP_PENETRATION)
+                mitigation(HitMitigation(defenceType = HitDefenceType.Crush))
             },
             wait(MELEE_SLAM_DELAY),
             external(MELEE_SLAM),

@@ -1,0 +1,63 @@
+{
+  "primary": {
+    "url": "https://secure.runescape.com/m=news/project-rebalance-combat-changes?oldschool=1",
+    "date": "2024-05-29",
+    "maxThreeOutcomes": [
+      1,
+      1,
+      2,
+      3
+    ],
+    "failedAccuracyDamage": 0
+  },
+  "corroboratingSources": [
+    {
+      "url": "https://github.com/weirdgloop/osrs-dps-calc/blob/c1f7737a7fea01adc9d0c1fe59e88d4584c5bc48/src/lib/PlayerVsNPCCalc.ts",
+      "role": "Whole-zero maximum, explicit non-damaging spells, positive Sunfire minimum and rounded-zero multihit eligibility."
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Maximum_magic_hit?oldid=15374102",
+      "role": "Successful magic damage uses the same zero conversion."
+    },
+    {
+      "url": "https://oldschool.runescape.wiki/w/Bind?oldid=15165009",
+      "role": "Intentionally non-damaging spell boundary."
+    }
+  ],
+  "localEvidenceReceipt": ".tools/parity-validation/player-damage-rolls/audit.json (workspace root)",
+  "implementationScope": "Shared player melee/ranged/powered-staff/spell sampling, with an explicit positive-whole-attack eligibility seam for split hits. Accuracy, maximum formulas, NPC sampling and downstream modifiers are unchanged.",
+  "testBoundary": "Real PlayerAttackManager, native cache entities and standard target hit modifiers; maximum/accuracy formula dependencies are controlled to enumerate sampling outcomes. Existing MagicSplashHitTest covers queued impact and HP-floor/cap behavior.",
+  "limits": [
+    "Whole-max-zero and rounded-zero-subhit exceptions are corroborated by the pinned current calculator; no exhaustive primary Jagex statement for all unusual equipment/stat configurations was located.",
+    "This does not certify weapon-specific damage transformations, claw specials, proc timing, PvP damage-reduction ordering or every hit distribution."
+  ],
+  "pvpElysianMigration": {
+    "scope": "PvP maximum helpers return raw maxima without Elysian RNG. Ordinary typed player-attack queues explicitly opt into one shield proc per positive hit. Legacy direct/deferred/instant and unrelated player-sourced hits remain opt-out.",
+    "preservedPolicy": "Existing collectPvP eligibility is Elysian only (7 of10 proc slots); damage uses floor(3*sampledDamage/4), before existing PvP protection-prayer reduction. This preserves previous rounding and ordering policy, not a new full live-OSRS rounding/order certification.",
+    "probabilityExample": {
+      "rawRolls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "successfulRolls": [
+        1,
+        1,
+        2,
+        3
+      ],
+      "elysianProcResults": [
+        0,
+        0,
+        1,
+        2
+      ]
+    },
+    "exclusions": [
+      "No Dinh, Justiciar or Ward PvP mitigation is added.",
+      "The existing caller contract computes combat XP before queuing damage and is unchanged. With raw maxima, XP now sees pre-Elysian sampled damage rather than the former Elysian-reduced maximum; exact live PvP XP behavior and shield/prayer order remain unverified. PvP hook inputs remain pre-mitigation; the Wilderness hook ignores amount and Corruption uses it as a successful-hit proxy."
+    ],
+    "hookAuditReceipt": ".tools/parity-validation/pvp-hit-hooks/review.json (workspace root)"
+  }
+}

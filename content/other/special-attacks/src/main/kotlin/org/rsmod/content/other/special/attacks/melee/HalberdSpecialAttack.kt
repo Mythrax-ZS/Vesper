@@ -91,8 +91,8 @@ constructor(private val worldRepo: WorldRepository, private val npcList: NpcList
                     maxHitMultiplier = 1.1,
                     blockType = MeleeAttackType.Slash,
                 )
-            manager.queueMeleeHit(this, target, damage)
-            return damage
+            val hit = manager.queueMeleeHit(this, target, damage)
+            return if (target is Npc) hit.damage else damage
         }
 
         private fun ProtectedAccess.hitNeighbours(

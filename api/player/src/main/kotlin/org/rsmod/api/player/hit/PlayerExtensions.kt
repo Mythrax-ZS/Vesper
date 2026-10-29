@@ -18,6 +18,7 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.Hit
 import org.rsmod.game.hit.HitBuilder
 import org.rsmod.game.hit.HitType
+import org.rsmod.game.hit.NpcDamageContext
 
 /* Standard hit functions. */
 /**
@@ -68,13 +69,14 @@ public fun Player.queueHit(
     sourceWeapon: ItemServerType? = null,
     sourceSecondary: ItemServerType? = null,
     penetration: Int = 0,
+    damageContext: NpcDamageContext? = null,
 ): Hit {
-    val cappedDamage = min(hitpoints, damage)
+    val launchHitpoints = hitpoints
     val builder =
         InternalPlayerHits.createBuilder(
             source = source,
             type = type,
-            damage = cappedDamage,
+            damage = if (damageContext == null) min(launchHitpoints, damage) else damage,
             righthand = sourceWeapon,
             secondaryObj = sourceSecondary,
             hitmark = hitmark,
@@ -82,7 +84,10 @@ public fun Player.queueHit(
             specific = specific,
         )
     builder.penetration = penetration
-    return modifyAndStrongQueueHit(delay, builder, modifier)
+    builder.npcDamageContext = damageContext
+    builder.npcDamageCap = launchHitpoints.takeIf { damageContext != null }
+    builder.reflectionDamage = damage
+    return modifyAndStrongQueueHit(delay, builder, modifier, capToHitpoints = true)
 }
 
 /**
@@ -114,6 +119,8 @@ public fun Player.queueHit(
  * @param sourceSecondary The "secondary" obj used in the attack by [source]. If the hit is from a
  *   ranged attack, this should be set to the ammunition obj (if applicable). If the attack is from
  *   a magic spell, this should be the associated spell obj.
+ * @param isMagicSplash Whether this was explicitly a magic splash before modification. A zero
+ *   [damage] alone does not mark a splash. See [Hit.isMagicSplash].
  * @param modifier A [PlayerHitModifier] used to adjust damage and other hit properties. By default,
  *   this is set to [StandardPlayerHitModifier], which applies standard modifications, such as
  *   damage reduction from protection prayers.
@@ -127,6 +134,23 @@ public fun Player.queueHit(
     modifier: PlayerHitModifier,
     hitmark: HitmarkTypeGroup = hitmark_groups.regular_damage,
     sourceSecondary: ItemServerType? = null,
+    isMagicSplash: Boolean = false,
+): Hit = queueHit(
+    source, delay, type, damage, modifier, hitmark, sourceSecondary, isMagicSplash,
+    pvpDamageReduction = false,
+)
+
+/** Queues a player hit with an explicit equipment-reduction policy. */
+public fun Player.queueHit(
+    source: Player,
+    delay: Int,
+    type: HitType,
+    damage: Int,
+    modifier: PlayerHitModifier,
+    hitmark: HitmarkTypeGroup = hitmark_groups.regular_damage,
+    sourceSecondary: ItemServerType? = null,
+    isMagicSplash: Boolean = false,
+    pvpDamageReduction: Boolean,
 ): Hit {
     val builder =
         InternalPlayerHits.createBuilder(
@@ -138,7 +162,9 @@ public fun Player.queueHit(
             hitmark = hitmark,
             clientDelay = 0,
             specific = false,
+            isMagicSplash = isMagicSplash,
         )
+    builder.pvpDamageReduction = pvpDamageReduction
     return modifyAndStrongQueueHit(delay, builder, modifier)
 }
 
@@ -205,8 +231,10 @@ private fun Player.modifyAndStrongQueueHit(
     delay: Int,
     builder: HitBuilder,
     modifier: PlayerHitModifier,
+    capToHitpoints: Boolean = false,
 ): Hit {
     modifier.modify(builder, this)
+    if (capToHitpoints) builder.damage = min(hitpoints, builder.damage)
     val hit = builder.build()
     strongQueue("queue.hit", delay, hit)
     return hit
@@ -318,6 +346,7 @@ public fun Player.queueImpactHit(
     sourceWeapon: ItemServerType? = null,
     sourceSecondary: ItemServerType? = null,
     penetration: Int = 0,
+    damageContext: NpcDamageContext? = null,
 ) {
     val builder =
         InternalPlayerHits.createBuilder(
@@ -331,6 +360,7 @@ public fun Player.queueImpactHit(
             specific = specific,
         )
     builder.penetration = penetration
+    builder.npcDamageContext = damageContext
     strongQueueImpactHit(delay, builder, modifier)
 }
 

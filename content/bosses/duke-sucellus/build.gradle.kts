@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("game-cache-test-conventions")
 }
 
 dependencies {
@@ -18,4 +19,6 @@ dependencies {
     implementation(projects.api.route)
     implementation(projects.engine.game)
     implementation(projects.engine.plugin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.fastutil)
 }

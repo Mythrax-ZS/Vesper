@@ -143,6 +143,7 @@ class HitBuilder internal constructor() {
     private var onHitEffect: Effect? = null
     private var onHitEvenOnMiss: Boolean = false
     private var lifestealPercent: Int = 0
+    private var hitMitigation: HitMitigation? = null
 
     fun damage(expr: DamageExpr) {
         damageExpr = expr
@@ -191,6 +192,10 @@ class HitBuilder internal constructor() {
         lifestealPercent = percent
     }
 
+    fun mitigation(policy: HitMitigation) {
+        hitMitigation = policy
+    }
+
     internal fun commitDamage(expr: DamageExpr) {
         damageExpr = expr
     }
@@ -215,6 +220,7 @@ class HitBuilder internal constructor() {
             spotanimUnlessPraying = spotanimUnlessPraying,
             penetrationWhen = penetrationWhen,
             hazard = hazardHit,
+            mitigation = hitMitigation,
         )
 }
 

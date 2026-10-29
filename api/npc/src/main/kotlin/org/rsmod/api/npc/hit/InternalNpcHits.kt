@@ -11,6 +11,7 @@ import org.rsmod.api.config.refs.done.hitmark_groups
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.HitBuilder
+import org.rsmod.game.hit.HitSourceSnapshot
 import org.rsmod.game.hit.HitType
 import org.rsmod.game.inv.InvObj
 
@@ -41,7 +42,7 @@ internal object InternalNpcHits {
             sourcePlayerSlot = null,
             clientDelay = clientDelay,
             isPrivateHit = false,
-        )
+        ).also { it.sourceSnapshot = HitSourceSnapshot.capture(source) }
     }
 
     fun createBuilder(
@@ -52,6 +53,7 @@ internal object InternalNpcHits {
         hitmark: HitmarkTypeGroup,
         clientDelay: Int,
         specific: Boolean,
+        isMagicSplash: Boolean = false,
     ): HitBuilder {
         val righthand = source.righthand?.id
         val secondary = secondaryObj?.id
@@ -69,7 +71,8 @@ internal object InternalNpcHits {
             sourcePlayerSlot = source.slotId,
             clientDelay = clientDelay,
             isPrivateHit = specific,
-        )
+            isMagicSplash = isMagicSplash,
+        ).also { it.sourceSnapshot = HitSourceSnapshot.capture(source) }
     }
 
     fun createBuilder(
@@ -109,6 +112,7 @@ internal object InternalNpcHits {
         sourcePlayerSlot: Int?,
         clientDelay: Int,
         isPrivateHit: Boolean,
+        isMagicSplash: Boolean = false,
     ): HitBuilder {
         val publicHitmark =
             when {
@@ -135,6 +139,7 @@ internal object InternalNpcHits {
             maxDamageHitmarkLit = hitmark.max?.asRSCM(RSCMType.HITMARK),
             targetMaxDamageThreshold = Int.MAX_VALUE,
             sourceMaxDamageThreshold = sourceMaxDamageThreshold ?: Int.MAX_VALUE,
+            isMagicSplash = isMagicSplash,
         )
     }
 

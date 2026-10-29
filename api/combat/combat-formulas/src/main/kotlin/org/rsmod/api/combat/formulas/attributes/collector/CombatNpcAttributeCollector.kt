@@ -107,6 +107,11 @@ public class CombatNpcAttributeCollector {
             attributes += CombatNpcAttributes.Vampyre
         }
 
+        // The quest encounter's garlic weakness does not apply to the Nightmare Zone copies.
+        if (type.isType("npc.count_draynor")) {
+            attributes += CombatNpcAttributes.CountDraynor
+        }
+
         if (type.param(params.tormented_demon) != 0 && npc != null) {
             if (npc.vars["varn.td_shield_up"] == 0) {
                 attributes += CombatNpcAttributes.TormentedDemonUnshielded

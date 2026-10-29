@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.guice)
     implementation(projects.api.combat.combatCommons)
     implementation(projects.api.combat.combatManager)
+    implementation(projects.api.death)
     implementation(projects.api.player)
     implementation(projects.engine.game)
     implementation(projects.engine.map)

@@ -1,5 +1,6 @@
 package org.rsmod.api.combat.formulas.attributes.collector
 
+import dev.openrune.types.NpcServerType
 import jakarta.inject.Inject
 import java.util.EnumSet
 import org.rsmod.api.combat.commons.styles.AttackStyle
@@ -27,29 +28,40 @@ constructor(private val attackStyles: AttackStyles) {
         player: Player,
         npc: Npc,
         random: GameRandom,
+    ): EnumSet<DamageReductionAttributes> =
+        collectIncoming(player, npc.visType, random, equipment = true, demonWard = true)
+
+    public fun collectIncoming(
+        player: Player,
+        sourceType: NpcServerType?,
+        random: GameRandom,
+        equipment: Boolean,
+        demonWard: Boolean,
     ): EnumSet<DamageReductionAttributes> {
         val attributes = EnumSet.noneOf(DamageReductionAttributes::class.java)
 
-        val shield = player.lefthand
-        if (shield.isType("obj.elysian") && random.of(maxExclusive = 10) < 7) {
-            attributes += DamageReductionAttributes.ElysianProc
-        }
+        if (equipment) {
+            val shield = player.lefthand
+            if (shield.isType("obj.elysian") && random.of(maxExclusive = 10) < 7) {
+                attributes += DamageReductionAttributes.ElysianProc
+            }
 
-        val weaponType = getOrNull(player.righthand)
-        if (weaponType != null && weaponType.isCategoryType("category.dinhs_bulwark")) {
-            val attackStyle = attackStyles.get(player)
-            val passiveDelay = player.vars["varp.dinhs_passive_delay"]
-            val isPassiveDelayed = player.currentMapClock < passiveDelay
-            if (attackStyle == AttackStyle.AggressiveMelee && !isPassiveDelayed) {
-                attributes += DamageReductionAttributes.DinhsBlock
+            val weaponType = getOrNull(player.righthand)
+            if (weaponType != null && weaponType.isCategoryType("category.dinhs_bulwark")) {
+                val attackStyle = attackStyles.get(player)
+                val passiveDelay = player.vars["varp.dinhs_passive_delay"]
+                val isPassiveDelayed = player.currentMapClock < passiveDelay
+                if (attackStyle == AttackStyle.AggressiveMelee && !isPassiveDelayed) {
+                    attributes += DamageReductionAttributes.DinhsBlock
+                }
+            }
+
+            if (EquipmentChecks.isJusticiarSet(player.hat, player.torso, player.legs)) {
+                attributes += DamageReductionAttributes.Justiciar
             }
         }
 
-        if (EquipmentChecks.isJusticiarSet(player.hat, player.torso, player.legs)) {
-            attributes += DamageReductionAttributes.Justiciar
-        }
-
-        val demonAttacker = npc.visType.param(params.demon) != 0
+        val demonAttacker = demonWard && sourceType != null && sourceType.param(params.demon) != 0
         if (demonAttacker && player.vars["varbit.ward_of_arceuus_active"] == 1) {
             attributes += DamageReductionAttributes.WardOfArceuus
         }

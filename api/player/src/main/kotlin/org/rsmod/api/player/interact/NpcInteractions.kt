@@ -9,8 +9,11 @@ import org.rsmod.api.player.events.interact.ApEvent
 import org.rsmod.api.player.events.interact.NpcContentEvents
 import org.rsmod.api.player.events.interact.NpcDefaultEvents
 import org.rsmod.api.player.events.interact.NpcEvents
+import org.rsmod.api.player.events.interact.NpcOverrideEvent
 import org.rsmod.api.player.events.interact.NpcUnimplementedEvents
 import org.rsmod.api.player.events.interact.OpEvent
+import org.rsmod.api.player.hook.NpcOpOverrideHook
+import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.events.EventBus
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.Player
@@ -20,7 +23,10 @@ import org.rsmod.game.movement.RouteRequestPathingEntity
 import org.rsmod.game.vars.VarPlayerIntMap
 import org.rsmod.utils.bits.getBits
 
-public class NpcInteractions @Inject constructor(private val eventBus: EventBus) {
+public class NpcInteractions @Inject constructor(
+    private val eventBus: EventBus,
+    private val talkHooks: Set<@JvmSuppressWildcards NpcOpOverrideHook> = emptySet(),
+) {
     public fun interact(player: Player, npc: Npc, op: InteractionOp) {
         val opTrigger = hasOpTrigger(player, npc, op)
         val apTrigger = hasApTrigger(player, npc, op)
@@ -51,6 +57,12 @@ public class NpcInteractions @Inject constructor(private val eventBus: EventBus)
             }
         }
 
+        if (multiNpcType == null && type.actions.getOpOrNull(op.slot - 1) == "Talk-to") {
+            val claimed = talkHooks.filter { it.claims(player, npc, type) }
+            check(claimed.size <= 1) { "Conflicting NPC talk overrides for ${type.internalName}" }
+            claimed.singleOrNull()?.let { return NpcOverrideEvent(npc, type, op, it) }
+        }
+
         val typeEvent = npc.toOp(op, type)
         if (eventBus.contains(typeEvent::class.java, type.id)) {
             return typeEvent
@@ -72,6 +84,15 @@ public class NpcInteractions @Inject constructor(private val eventBus: EventBus)
         }
 
         return null
+    }
+
+    public suspend fun dispatchOverride(access: ProtectedAccess, event: NpcOverrideEvent) {
+        val current = opTrigger(access.player, event.npc, event.op) ?: return
+        if (current is NpcOverrideEvent) {
+            with(current.hook) { access.talk(current.npc, current.type) }
+        } else {
+            eventBus.publish(access, current)
+        }
     }
 
     public fun hasOpTrigger(player: Player, npc: Npc, op: InteractionOp): Boolean =

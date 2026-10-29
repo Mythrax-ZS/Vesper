@@ -235,27 +235,42 @@ public object MagicMaxHitOperations {
         return modifiedMin..modifiedMax
     }
 
-    /**
-     * @param sourceBaseMagicDmgBonus The source's base magic damage bonus as calculated by
-     *   [WornBonuses.magicDamageBonusBase].
-     * @param sourceMagicPrayerBonus The source's current prayer magic damage bonus as calculated by
-     *   [getMagicDamagePrayerBonus].
-     */
+    /** This overload cannot separate Elite Void from a combined base bonus for Shadow's passive. */
+    @Deprecated("Use the overload with separate equipment and Elite Void damage bonuses.")
     public fun modifyStaffBaseDamage(
         baseDamage: Int,
         sourceBaseMagicDmgBonus: Int,
         sourceMagicPrayerBonus: Int,
         staffAttributes: EnumSet<CombatStaffAttributes>,
         npcAttributes: EnumSet<CombatNpcAttributes>,
+    ): Int =
+        modifyStaffBaseDamage(
+            baseDamage = baseDamage,
+            sourceEquipmentMagicDmgBonus = sourceBaseMagicDmgBonus,
+            sourceEliteVoidMagicDmgBonus = 0,
+            sourceMagicPrayerBonus = sourceMagicPrayerBonus,
+            staffAttributes = staffAttributes,
+            npcAttributes = npcAttributes,
+        )
+
+    public fun modifyStaffBaseDamage(
+        baseDamage: Int,
+        sourceEquipmentMagicDmgBonus: Int,
+        sourceEliteVoidMagicDmgBonus: Int,
+        sourceMagicPrayerBonus: Int,
+        staffAttributes: EnumSet<CombatStaffAttributes>,
+        npcAttributes: EnumSet<CombatNpcAttributes>,
     ): Int {
         var modified = baseDamage
 
-        var modifiedMagicDmgBonus = sourceBaseMagicDmgBonus
+        var modifiedMagicDmgBonus = sourceEquipmentMagicDmgBonus
 
         if (StaffAttr.TumekensShadow in staffAttributes) {
-            val multiplier = if (NpcAttr.Amascut in npcAttributes) 4 else 3
-            modifiedMagicDmgBonus *= multiplier
+            val multiplier = if (StaffAttr.TumekensShadowInAmascut in staffAttributes) 4 else 3
+            modifiedMagicDmgBonus = (modifiedMagicDmgBonus * multiplier).coerceAtMost(1000)
         }
+
+        modifiedMagicDmgBonus += sourceEliteVoidMagicDmgBonus
 
         var applyBlackMaskMod = false
 

@@ -24,6 +24,10 @@ public class CombatMeleeAttributeCollector {
     ): EnumSet<CombatMeleeAttributes> {
         val attributes = EnumSet.noneOf(CombatMeleeAttributes::class.java)
 
+        if (player.inv.contains("obj.garlic")) {
+            attributes += CombatMeleeAttributes.Garlic
+        }
+
         if (attackType == MeleeAttackType.Crush) {
             attributes += CombatMeleeAttributes.Crush
         } else if (attackType == MeleeAttackType.Stab) {

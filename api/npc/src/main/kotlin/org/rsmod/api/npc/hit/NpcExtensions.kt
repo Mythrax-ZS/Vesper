@@ -17,6 +17,7 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.hit.Hit
 import org.rsmod.game.hit.HitBuilder
 import org.rsmod.game.hit.HitType
+import org.rsmod.game.hit.NpcFlatArmourPolicy
 
 /* Standard hit functions. */
 /**
@@ -110,6 +111,8 @@ public fun Npc.queueHit(
  *   reference [hitmark_groups] for a list of available hitmark groups.
  * @param specific If `true`, only [source] will see the hitsplat; this does not affect actual
  *   damage calculations.
+ * @param isMagicSplash Whether this was explicitly a magic splash before modification. A zero
+ *   [damage] alone does not mark a splash. See [Hit.isMagicSplash].
  * @param sourceSecondary The "secondary" obj used in the attack by [source]. If the hit is from a
  *   ranged attack, this should be set to the ammunition obj (if applicable). If the attack is from
  *   a magic spell, this should be the associated spell obj.
@@ -132,6 +135,28 @@ public fun Npc.queueHit(
     hitmark: HitmarkTypeGroup = visHitmark(),
     specific: Boolean = false,
     sourceSecondary: ItemServerType? = null,
+    isMagicSplash: Boolean = false,
+): Hit = queueHit(
+    source, delay, type, damage, modifier, hitmark, specific, sourceSecondary, isMagicSplash,
+    npcFlatArmourPolicy = NpcFlatArmourPolicy.Standard,
+)
+
+/**
+ * Queues a player-sourced hit with explicit NPC flat-armour eligibility. All ordinary hit
+ * hooks, immunity checks and positive armour remain active. The original overload retains its
+ * default behavior and JVM signature.
+ */
+public fun Npc.queueHit(
+    source: Player,
+    delay: Int,
+    type: HitType,
+    damage: Int,
+    modifier: NpcHitModifier,
+    hitmark: HitmarkTypeGroup = visHitmark(),
+    specific: Boolean = false,
+    sourceSecondary: ItemServerType? = null,
+    isMagicSplash: Boolean = false,
+    npcFlatArmourPolicy: NpcFlatArmourPolicy,
 ): Hit {
     val builder =
         InternalNpcHits.createBuilder(
@@ -142,7 +167,9 @@ public fun Npc.queueHit(
             hitmark = hitmark,
             clientDelay = 0,
             specific = specific,
+            isMagicSplash = isMagicSplash,
         )
+    builder.npcFlatArmourPolicy = npcFlatArmourPolicy
     return modifyAndQueueHit(delay, builder, modifier)
 }
 

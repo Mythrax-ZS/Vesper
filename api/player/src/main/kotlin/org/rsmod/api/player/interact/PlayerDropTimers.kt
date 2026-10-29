@@ -4,13 +4,13 @@ import dev.openrune.types.ItemServerType
 import org.rsmod.api.player.hook.GroundItemDropParams
 import org.rsmod.game.type.uncert
 
-internal object PlayerDropTimers {
-    const val TRADEABLE_REVEAL: Int = 100
-    const val DESPAWN: Int = 300
-    const val CLUE_DESPAWN: Int = 6100
-    const val NEVER_REVEAL: Int = Int.MAX_VALUE
+public object PlayerDropTimers {
+    internal const val TRADEABLE_REVEAL: Int = 100
+    internal const val DESPAWN: Int = 300
+    internal const val CLUE_DESPAWN: Int = 6100
+    internal const val NEVER_REVEAL: Int = Int.MAX_VALUE
 
-    fun resolve(type: ItemServerType): GroundItemDropParams {
+    public fun resolve(type: ItemServerType): GroundItemDropParams {
         val uncert = uncert(type)
         return when {
             isClueItem(uncert) -> GroundItemDropParams(CLUE_DESPAWN, NEVER_REVEAL)

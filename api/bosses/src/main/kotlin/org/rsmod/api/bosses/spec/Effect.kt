@@ -102,6 +102,8 @@ sealed interface Effect {
         val penetrationWhen: Condition? = null,
         /** Environmental damage (falling rocks etc.): no retaliation and no defend anim. */
         val hazard: Boolean = false,
+        /** Null uses ordinary melee/ranged/magic mitigation; special or hazard hits opt in. */
+        val mitigation: HitMitigation? = null,
     ) : Effect
 
     data class Projectile(

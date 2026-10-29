@@ -34,4 +34,5 @@ public enum class CombatMeleeAttributes {
     KerisProc,
     BerserkerNeck,
     CorpBaneWeapon,
+    Garlic,
 }

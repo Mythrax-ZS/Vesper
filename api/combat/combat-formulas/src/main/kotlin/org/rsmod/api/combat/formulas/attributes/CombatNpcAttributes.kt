@@ -18,6 +18,7 @@ public enum class CombatNpcAttributes {
     Size5OrMore,
     Shade,
     Vampyre,
+    CountDraynor,
     TormentedDemonUnshielded,
     GuaranteedHit,
     TormentedDemonOverheadMelee,

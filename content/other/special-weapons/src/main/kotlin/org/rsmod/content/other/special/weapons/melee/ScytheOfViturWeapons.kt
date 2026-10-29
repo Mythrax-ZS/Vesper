@@ -33,20 +33,17 @@ class ScytheOfViturWeapons @Inject constructor(private val worldRepo: WorldRepos
             playSpecGfx(target)
 
             val extraHits = (target.size - 1).coerceIn(0, 2)
-            val multipliers = listOf(1.0, 0.5, 0.25).take(1 + extraHits)
+            val wholeMax = manager.calculateMeleeMaxHit(this, target, attack.type, attack.style, 1.0)
 
             var totalDamage = 0
-            for (multiplier in multipliers) {
+            for (index in 0..extraHits) {
+                val accurate = manager.rollMeleeAccuracy(this, target, attack.type, attack.style, attack.type, 1.0)
+                val hitMax = wholeMax / (1 shl index)
                 val damage =
-                    manager.rollMeleeDamage(
-                        source = this,
-                        target = target,
-                        attack = attack,
-                        accuracyMultiplier = 1.0,
-                        maxHitMultiplier = multiplier,
-                    )
-                totalDamage += damage
-                manager.queueMeleeHit(this, target, damage)
+                    if (accurate) manager.rollSuccessfulDamage(this, 0..hitMax, damagingAttack = wholeMax > 0)
+                    else 0
+                val hit = manager.queueMeleeHit(this, target, damage)
+                totalDamage += hit.damage
             }
 
             manager.giveCombatXp(this, target, attack, totalDamage)

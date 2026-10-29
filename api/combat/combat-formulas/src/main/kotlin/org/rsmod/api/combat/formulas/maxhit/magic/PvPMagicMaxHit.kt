@@ -7,7 +7,6 @@ import org.rsmod.api.combat.commons.magic.Spellbook
 import org.rsmod.api.combat.formulas.attributes.CombatSpellAttributes
 import org.rsmod.api.combat.formulas.attributes.collector.CombatMagicAttributeCollector
 import org.rsmod.api.combat.formulas.attributes.collector.DamageReductionAttributeCollector
-import org.rsmod.api.combat.formulas.maxhit.MaxHitOperations
 import org.rsmod.api.player.bonus.WornBonuses
 import org.rsmod.api.player.stat.magicLvl
 import org.rsmod.api.player.vars.intVarp
@@ -74,32 +73,7 @@ constructor(
             magicAttributes.spellCollect(source, spell, spellbook, usedSunfireRune, random)
 
         val modifiedDamage = computeSpellModifiedDamage(source, baseMaxHit, spellAttributes)
-        val modifiedDamageRange =
-            MagicMaxHitOperations.modifySpellDamageRange(modifiedDamage, spellAttributes)
-
-        val defenceBonus = bonuses.defensiveMagicBonus(target)
-        val reductionAttributes = reductions.collectPvP(target, random)
-
-        // We could add a fast-path here and return early if `reductionAttributes` is empty.
-        // However, avoiding branching can sometimes be preferable, as it may prevent subtle,
-        // hard-to-detect bugs. Since `applyDamageReductions` is (currently) cheap, this is
-        // one of those cases.
-
-        val reducedMinHit =
-            MaxHitOperations.applyDamageReductions(
-                startDamage = modifiedDamageRange.first,
-                activeDefenceBonus = defenceBonus,
-                reductionAttributes = reductionAttributes,
-            )
-
-        val reducedMaxHit =
-            MaxHitOperations.applyDamageReductions(
-                startDamage = modifiedDamageRange.last,
-                activeDefenceBonus = defenceBonus,
-                reductionAttributes = reductionAttributes,
-            )
-
-        return reducedMinHit..reducedMaxHit
+        return MagicMaxHitOperations.modifySpellDamageRange(modifiedDamage, spellAttributes)
     }
 
     public fun computeSpellModifiedDamage(
@@ -149,16 +123,7 @@ constructor(
         specialMultiplier: Double,
     ): Int {
         val modifiedDamage = computeStaffModifiedDamage(source, baseMaxHit)
-        val specMaxHit = (modifiedDamage * specialMultiplier).toInt()
-
-        val defenceBonus = bonuses.defensiveMagicBonus(target)
-        val reductionAttributes = reductions.collectPvP(target, random)
-
-        return MaxHitOperations.applyDamageReductions(
-            startDamage = specMaxHit,
-            activeDefenceBonus = defenceBonus,
-            reductionAttributes = reductionAttributes,
-        )
+        return (modifiedDamage * specialMultiplier).toInt()
     }
 
     public fun computeStaffModifiedDamage(source: Player, baseDamage: Int): Int {

@@ -25,6 +25,7 @@ import org.rsmod.api.weapons.WeaponRepository
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.PathingEntity
 import org.rsmod.game.entity.Player
+import org.rsmod.game.hit.NpcFlatArmourPolicy
 import org.rsmod.game.interact.InteractionOp
 import org.rsmod.game.proj.ProjAnim
 import org.rsmod.game.type.getInvObj
@@ -93,8 +94,8 @@ constructor(
                 return
             }
 
-            val chargeResult = charges.attemptDetractWeapon(player, CHARGE_VAROBJ)
-            if (chargeResult.isFailure()) {
+            if (charges.getWeaponCharges(player, CHARGE_VAROBJ) <= 0) {
+                charges.attemptDetractWeapon(player, CHARGE_VAROBJ)
                 manager.stopCombat(this)
                 return
             }
@@ -110,16 +111,9 @@ constructor(
             val primaryProj = manager.spawnProjectile(this, target, travelSpotanimName, "projanim.arrow")
             val (primaryServerDelay, primaryClientDelay) = primaryProj.durations
 
-            ammunition.useQuiverAmmo(
-                player = player,
-                quiverType = quiverType,
-                dropCoord = target.coords,
-                dropDelay = primaryServerDelay,
-            )
-
             val primaryDamage = manager.rollRangedDamage(this, target, attack)
-            manager.giveCombatXp(this, target, attack, primaryDamage)
-            manager.queueRangedHit(
+            if (target is Player) manager.giveCombatXp(this, target, attack, primaryDamage)
+            val primaryHit = manager.queueRangedHit(
                 this,
                 target,
                 quiverType,
@@ -127,6 +121,8 @@ constructor(
                 primaryClientDelay,
                 primaryServerDelay,
             )
+
+            if (target is Npc) manager.giveCombatXp(this, target, attack, primaryHit.damage)
 
             if (bounce && target is Npc && mapMultiway()) {
                 fireBounceChain(
@@ -141,6 +137,18 @@ constructor(
                     remainingBounces = 2,
                 )
             }
+
+            val chargeResult = charges.attemptDetractWeapon(player, CHARGE_VAROBJ)
+            if (chargeResult.isFailure()) {
+                error("Venator charges changed during the synchronous attack.")
+            }
+
+            ammunition.useQuiverAmmo(
+                player = player,
+                quiverType = quiverType,
+                dropCoord = target.coords,
+                dropDelay = primaryServerDelay,
+            )
 
             val remainingCharges = charges.getWeaponCharges(player, CHARGE_VAROBJ)
             notifyChargeThreshold(remainingCharges)
@@ -169,9 +177,11 @@ constructor(
                 return
             }
 
-            val candidates = candidatesNear(access.player, origin, exclude = excluded)
+            val candidates = candidatesNear(origin, exclude = excluded)
             val pool = if (remainingBounces == 1) candidates + primary else candidates
-            val nextTarget = pool.minByOrNull { centreDistance(origin, it) } ?: return
+            val nextTarget = pool
+                .filter { eligible(access, origin, it) }
+                .minByOrNull { centreDistance(origin, it) } ?: return
 
             val travelSpotanimId = travelSpotanimName.asRSCM(RSCMType.SPOTANIM)
             val raw =
@@ -190,8 +200,16 @@ constructor(
                     attack = attack,
                     maxHitMultiplier = BOUNCE_MAX_HIT_MULTIPLIER,
                 )
-            manager.giveCombatXp(access, nextTarget, attack, damage)
-            manager.queueRangedHit(access, nextTarget, quiverType, damage, clientDelay, serverDelay)
+            val hit = manager.queueRangedHit(
+                access,
+                nextTarget,
+                quiverType,
+                damage,
+                clientDelay,
+                serverDelay,
+                npcFlatArmourPolicy = NpcFlatArmourPolicy.IgnoreNegative,
+            )
+            manager.giveCombatXp(access, nextTarget, attack, hit.damage)
 
             fireBounceChain(
                 access = access,
@@ -206,15 +224,19 @@ constructor(
             )
         }
 
-        private fun candidatesNear(player: Player, origin: Npc, exclude: Set<Npc>): List<Npc> =
+        private fun candidatesNear(origin: Npc, exclude: Set<Npc>): List<Npc> =
             npcRepo
                 .findAll(ZoneKey.from(origin.coords), zoneRadius = 1)
                 .filter { it !in exclude }
-                .filter { it.isValidTarget() }
-                .filter { it.visType.hasOp(InteractionOp.Op2.slot) }
-                .filter { centreDistance(origin, it) <= BOUNCE_RADIUS }
-                .filter { canAttack(player, it) }
                 .toList()
+
+        private fun eligible(access: ProtectedAccess, origin: Npc, candidate: Npc): Boolean =
+            access.findUid(candidate.uid) === candidate &&
+                candidate.coords.level == origin.coords.level &&
+                candidate.isValidTarget() &&
+                candidate.visType.hasOp(InteractionOp.Op2.slot) &&
+                centreDistance(origin, candidate) <= BOUNCE_RADIUS &&
+                canAttack(access.player, candidate)
 
         private fun canAttack(player: Player, npc: Npc): Boolean =
             attackValidateHooks.none { it.validate(player, npc) is NpcAttackValidateResult.Deny }

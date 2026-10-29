@@ -799,9 +799,25 @@ fun hit(block: HitBuilder.() -> Unit): Effect.Hit
 | `hazard()` | `hazard` | Environmental damage: no retaliation, no defend anim. |
 | `onHit(effect, evenOnMiss = false)` | `onHit`, `onHitEvenOnMiss` | Effect run when the hit lands. |
 | `lifesteal(percent)` | `lifesteal` | Heals the boss for `percent` of the landed damage. |
+| `mitigation(HitMitigation(...))` | `mitigation` | Explicit equipment/Ward eligibility and defence subtype. `HitMitigation.NONE` disables both. |
 
 `HitType`s `Dragonfire`, `DragonfireMetal` and `WyvernIce` roll through
 `DragonfireProtection.resolveMaxHit` (shields, potions) instead of using the expression directly.
+
+Ordinary non-hazard `Melee`, `Ranged` and `Magic` hits pass their sampled damage to
+the shared NPC reducer. `NpcMaxHit` supplies an unmitigated maximum; reductions do
+not narrow the range before sampling. Melee defence is taken from an explicit
+`HitMitigation.defenceType`, or the hit's `Accuracy`/`NpcMaxHit` expression. Without
+a known subtype, Justiciar is skipped rather than assuming Stab. Ranged and Magic
+use their corresponding defence bonuses.
+
+Typeless, dragonfire and hazard hits have no implicit equipment/Ward eligibility.
+Use explicit `HitMitigation` when the individual attack is verified to permit it;
+prayer bypass alone does not establish equipment bypass. Its `equipment` and
+`demonWard` flags are independent. External attacks must pass `NpcDamageContext`
+to the NPC hit helper when eligible; a raw external hit retains its prior policy.
+Custom damage expressions should return damage before this shared mitigation or
+explicitly disable mitigation if they have already applied it.
 
 Runtime (`applyHit`), for each resolved player:
 
@@ -896,11 +912,11 @@ Runtime (`fireProjectile`), all on the launch tick unless stated:
 4. If there is a `hit` and a target player: roll damage now. If > 0 and not `unlessPraying`, send
    the hit spotanim now with client delay `spotanimDelay ?: projAnim.clientCycles`, so it appears
    as the projectile lands.
-5. Without `resolveOnImpact`: `finishNpcHit(npc, ticks, ...)`, so prayer and penetration are
+5. Without `resolveOnImpact`: `finishNpcHit(npc, ticks, ...)`, so equipment, prayer and penetration are
    decided **at launch** (switching prayer mid-flight does nothing), then `onHit`/`lifesteal` are
    scheduled for `ticks` later.
 6. With `resolveOnImpact`: queue retaliation and an impact hit for `ticks`. On the impact tick the
-   modifier decides prayer, applies `penetration` (or only when `penetrationWhen` holds for the
+   modifier resolves eligible equipment/Ward reductions and prayer, applies `penetration` (or only when `penetrationWhen` holds for the
    target then), plays the defend anim, shows the `unlessPraying` spotanim if the target is not
    protecting from the hit type, heals `lifesteal` and runs `onHit` against the struck player.
 
@@ -912,8 +928,9 @@ Notes:
 - The destination (and therefore `impact` and `ImpactTile`) is fixed at launch; a homing
   projectile follows the player visually, but the impact graphic and `onImpact` use the launch-time
   tile.
-- Damage is always rolled at launch, even with `resolveOnImpact`; only prayer/penetration and the
-  landing extras move to impact.
+- Base damage is always rolled at launch, even with `resolveOnImpact`; equipment/Ward mitigation,
+  prayer/penetration and the landing extras move to impact. These are engine policies; each
+  encounter still needs its live sampling time verified.
 - The hit's own `target` and `delay` are ignored on a projectile hit; the projectile's `target` and
   flight time are used.
 - `hazard()` on a projectile hit is rejected by the validator; projectile hits always resolve as
@@ -1843,7 +1860,8 @@ launched (see Effects reference for when that damage lands).
 
 - `NpcMaxHit` uses the ranged formula for `Ranged`, the magic formula for `Magic` and the
   dragonfire types, and the melee formula (with `meleeAttackType`) for `Melee` and `Typeless`.
-  `minHit` is clamped into `0..max`.
+  `minHit` is clamped into `0..max`. NPC formula maxima are pure: target equipment and mitigation
+  procs are evaluated later against the actual sampled hit, according to its mitigation policy.
 - `Accuracy` rolls melee accuracy (using `meleeAttackType`), ranged or magic accuracy by hit type;
   `Typeless` always lands.
 - Dragonfire hit types (`Dragonfire`, `DragonfireMetal`, `WyvernIce`) discard the rolled value: the
@@ -1965,7 +1983,9 @@ as a hit reaction or `runAbility`), so external handlers invoked from it receive
    `npc.hitpoints - hit.damage <= 0`, it sets `lethalHandled = true` and calls `onLethal(npc)`.
 
 After the event returns, the engine's `StandardNpcHitModifier` applies style immunity and
-`varn.flat_armour`.
+`varn.flat_armour`. Style immunity stops further damage adjustment. Flat armour remains
+unchanged between hits and subtracts from positive player melee/ranged damage, flooring at
+zero; negative armour adds damage. Magic, typeless, non-player and zero-damage hits bypass it.
 
 Note: because rules run after the invulnerable/scale step, the `HitContext.damage` a rule sees is
 already scaled, and a matching `floorPercentOfMaxHit` can raise a 0 from `invulnerable` back up.
