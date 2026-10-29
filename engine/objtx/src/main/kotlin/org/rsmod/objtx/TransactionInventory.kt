@@ -8,6 +8,8 @@ public class TransactionInventory<T>(
     public val image: Array<TransactionObj?>,
     public val placeholders: Boolean = false,
     public val modifiedSlots: BitSet? = null,
+    /** Observes final contents only after every inventory in a successful transaction commits. */
+    public val onCommit: (() -> Unit)? = null,
 ) {
     internal val stackAll: Boolean
         get() = stackType == AlwaysStack

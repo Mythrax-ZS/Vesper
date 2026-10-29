@@ -27,6 +27,10 @@ constructor(
     }
 
     private suspend fun ProtectedAccess.triggerTake(obj: Obj) {
+        if (!player.canTake(obj)) {
+            mes(Constants.dm_take_taken)
+            return
+        }
         val type = ServerCacheManager.getItem(obj.type) ?: return
         val denial = takeValidator.validate(player, obj, type)
         if (denial != null) {
@@ -54,18 +58,34 @@ constructor(
     }
 
     private fun Player.takeClose(obj: Obj) {
-        val removed = repo.del(obj)
-        if (!removed) {
+        if (!canTake(obj)) {
             mes(Constants.dm_take_taken)
+            return
+        }
+        val type = ServerCacheManager.getItem(obj.type) ?: return
+        val denial = takeValidator.validate(this, obj, type)
+        if (denial != null) {
+            mes(denial)
             return
         }
         val take = transaction(obj)
         if (take.failure) {
             mes(Constants.dm_take_invspace)
-        } else {
-            take.commitAll()
+            return
         }
+        if (!repo.del(obj)) {
+            mes(Constants.dm_take_taken)
+            return
+        }
+        take.commitAll()
+        takeValidator.onTake(this, obj, type)
     }
+
+    private fun Player.canTake(obj: Obj): Boolean =
+        obj.isVisibleTo(this) && coords.level == obj.level &&
+            kotlin.math.abs(coords.x - obj.x) <= 1 && kotlin.math.abs(coords.z - obj.z) <= 1 &&
+            (obj.despawnCycle == Obj.NO_TIMER || obj.despawnCycle > currentMapClock) &&
+            repo.findAll(obj.coords).any { it === obj }
 
     private fun Player.hasInvSpace(obj: Obj): Boolean = transaction(obj).success
 

@@ -18,7 +18,9 @@ public object InvWeight {
 
             for (i in inv.indices) {
                 val obj = inv[i] ?: continue
-                ServerCacheManager.getItem(obj.id)?.let { grams += it.weight.toInt() }
+                ServerCacheManager.getItem(obj.id)?.let {
+                    if (!it.isStackable) grams += it.weight.toInt()
+                }
             }
         }
         return grams

@@ -21,12 +21,37 @@ public class HitBuilder(
     private val maxDamageHitmarkLit: Int?,
     private val targetMaxDamageThreshold: Int,
     private val sourceMaxDamageThreshold: Int,
+    /**
+     * Original splash outcome, independent of damage changes made by modifiers.
+     * See [Hit.isMagicSplash].
+     */
+    public val isMagicSplash: Boolean = false,
 ) {
+    init {
+        require(!isMagicSplash || type == HitType.Magic) { "Only magic hits can splash." }
+    }
+
     /**
      * Percentage (0-100) of a protection prayer's damage block that this hit ignores. `0` (the
      * default) preserves the prayer's normal full block.
      */
     public var penetration: Int = 0
+
+    /** NPC attack details used by damage modifiers, including deferred impact processing. */
+    public var npcDamageContext: NpcDamageContext? = null
+
+    /** Launch-time health limit, applied after NPC mitigation and before prayer protection. */
+    public var npcDamageCap: Int? = null
+
+    /** Explicit equipment mitigation policy for ordinary player-versus-player attack hits. */
+    public var pvpDamageReduction: Boolean = false
+
+    /** Per-hit NPC armour eligibility. It does not change the target's baseline or override. */
+    public var npcFlatArmourPolicy: NpcFlatArmourPolicy = NpcFlatArmourPolicy.Standard
+
+    public var reflectionDamage: Int? = null
+    public var isReflected: Boolean = false
+    public var sourceSnapshot: HitSourceSnapshot? = null
 
     public fun isRighthandObj(type: ItemServerType): Boolean = type.id == righthandType
 
@@ -46,7 +71,8 @@ public class HitBuilder(
             sourceUid = sourceUid,
             righthandObj = righthandType,
             secondaryObj = secondaryType,
-        )
+            isMagicSplash = isMagicSplash,
+        ).withRetaliation(HitRetaliation(reflectionDamage ?: damage, isReflected, sourceSnapshot))
     }
 
     private fun buildHitmark(): Hitmark {

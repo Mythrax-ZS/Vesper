@@ -179,10 +179,26 @@ public class Player(
      *
      * _This value is **always** expected to be set on login._
      */
-    public var worldType: WorldType by Delegates.notNull()
+    private var loadedWorldType: WorldType? = null
+
+    public var worldType: WorldType
+        get() = checkNotNull(loadedWorldType) { "Property worldType should be initialized before get." }
+        set(value) {
+            if (loadedWorldType != value) hitGeneration++
+            loadedWorldType = value
+        }
+
+    public var hitGeneration: Long = 0
+        private set
 
     /** Blocks background saves while this player's state is deliberately inconsistent. */
     public var persistenceSuspended: Boolean = false
+
+    /** Holds gameplay while an outgoing mode's detached checkpoint is saved and its target loads. */
+    public var worldTypeSwitching: Boolean = false
+
+    /** Recovery failed; remove this session without overwriting its last durable checkpoint. */
+    public var persistenceInvalidated: Boolean = false
 
     // Currently unsure of the exact requirements for this value's use case, however, it should
     // **always** be set on login (like the other player identifiers).
@@ -324,7 +340,7 @@ public class Player(
      * their account has been fully saved.
      */
     public val canProcess: Boolean
-        get() = !loggingOut
+        get() = !loggingOut && !worldTypeSwitching && !forceDisconnect && !persistenceInvalidated
 
     public val isDelayed: Boolean
         get() = delay > processedMapClock && !pendingShutdown
@@ -341,16 +357,16 @@ public class Player(
         get() = interaction != null || routeDestination.isNotEmpty()
 
     public val isAccessProtected: Boolean
-        get() = (isBusy || activeCoroutine?.isSuspended == true) && !pendingShutdown
+        get() = worldTypeSwitching || forceDisconnect || persistenceInvalidated || ((isBusy || activeCoroutine?.isSuspended == true) && !pendingShutdown)
 
     public val isModalButtonProtected: Boolean
-        get() = isDelayed || activeCoroutine?.isSuspended == true
+        get() = worldTypeSwitching || forceDisconnect || persistenceInvalidated || isDelayed || activeCoroutine?.isSuspended == true
 
     private val hasPendingQueue: Boolean
         get() = queueList.isNotEmpty || weakQueueList.isNotEmpty || engineQueueList.isNotEmpty
 
     public val canProcessMovement: Boolean
-        get() = !isHaltMovementRequired()
+        get() = !worldTypeSwitching && !forceDisconnect && !persistenceInvalidated && !isHaltMovementRequired()
 
     private fun isHaltMovementRequired(): Boolean {
         // It seems that only "old" interactions (active for > 1 cycle) will bypass this movement
@@ -366,11 +382,13 @@ public class Player(
     public fun assignUid() {
         check(slotId != INVALID_SLOT) { "`slotId` must be set before assigning a uid." }
         val uuid = checkNotNull(uuid) { "`uuid` must be set before assigning a uid." }
+        hitGeneration++
         this.uid = PlayerUid(slotId, uuid)
     }
 
     @InternalApi
     public fun clearUid() {
+        hitGeneration++
         this.uid = PlayerUid.NULL
     }
 

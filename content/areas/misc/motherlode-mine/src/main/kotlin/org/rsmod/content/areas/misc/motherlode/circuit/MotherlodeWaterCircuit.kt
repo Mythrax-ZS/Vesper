@@ -100,6 +100,8 @@ constructor(
         val iterator = batches.entries.iterator()
         while (iterator.hasNext()) {
             val (player, queue) = iterator.next()
+            // This global circuit must respect the same suspension as the player processing loop.
+            if (!player.canProcess) continue
             for (batch in queue) {
                 batch.remainingCycles--
             }

@@ -2,13 +2,15 @@ package org.rsmod.api.core.module
 
 import com.google.inject.Provider
 import jakarta.inject.Inject
-import org.rsmod.api.player.music.MusicPlayer
 import org.rsmod.api.player.hook.GroundItemDropResolver
+import org.rsmod.api.player.hook.NpcOpOverrideHook
 import org.rsmod.api.player.hook.PlayerGroundItemDropHook
 import org.rsmod.api.player.hook.PlayerObjTakeValidateHook
 import org.rsmod.api.player.hook.PlayerObjTakeValidator
+import org.rsmod.api.player.hook.PlayerRunRecoveryHook
 import org.rsmod.api.player.hook.PlayerTeleportValidateHook
 import org.rsmod.api.player.hook.PlayerTeleportValidator
+import org.rsmod.api.player.music.MusicPlayer
 import org.rsmod.api.player.protect.ProtectedAccessContextFactory
 import org.rsmod.api.player.protect.ProtectedAccessLauncher
 import org.rsmod.game.entity.PlayerList
@@ -17,9 +19,11 @@ import org.rsmod.module.ExtendedModule
 
 public object PlayerModule : ExtendedModule() {
     override fun bind() {
+        newSetBinding<NpcOpOverrideHook>()
         newSetBinding<PlayerTeleportValidateHook>()
         newSetBinding<PlayerGroundItemDropHook>()
         newSetBinding<PlayerObjTakeValidateHook>()
+        newSetBinding<PlayerRunRecoveryHook>()
         bindInstance<MusicPlayer>()
         bindInstance<ProtectedAccessContextFactory>()
         bindInstance<ProtectedAccessLauncher>()

@@ -100,11 +100,13 @@ constructor(
     }
 
     private fun Player.processRunUpdates() {
+        if (!canProcess) return
         runUpdates.process(this)
     }
 
     private fun Player.processPostTickHooks() {
         for (hook in postTickHooks) {
+            if (!canProcess) break
             hook.onPostTick(this)
         }
     }

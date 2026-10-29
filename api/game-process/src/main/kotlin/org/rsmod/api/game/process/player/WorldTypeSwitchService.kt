@@ -5,222 +5,293 @@ import dev.openrune.types.InvScope
 import dev.or2.central.account.Rights
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import java.util.concurrent.ConcurrentHashMap
+import java.util.IdentityHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
+import org.rsmod.annotations.InternalApi
 import org.rsmod.api.account.AccountManager
 import org.rsmod.api.account.loader.request.AccountLoadResponse
+import org.rsmod.api.account.saver.CharacterSaveSnapshot
 import org.rsmod.api.account.saver.request.AccountSaveResponse
 import org.rsmod.api.player.isLogoutBlocked
 import org.rsmod.api.player.logoutBlockedMessage
 import org.rsmod.api.player.output.mes
+import org.rsmod.api.player.protect.clearPendingAction
 import org.rsmod.api.player.vars.boolVarBit
 import org.rsmod.api.realm.Realm
-import org.rsmod.api.registry.account.AccountRegistry
 import org.rsmod.events.EventBus
 import org.rsmod.game.entity.Player
+import org.rsmod.game.entity.PlayerList
 import org.rsmod.game.entity.player.SessionStateEvent
 import org.rsmod.game.entity.player.WorldTypeChangedEvent
 import org.rsmod.game.entity.util.PathingEntityCommon
 import org.rsmod.game.map.collision.isZoneValid
+import org.rsmod.game.queue.QueueCategory
 import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.routefinder.collision.CollisionFlagMap
 
-/**
- * Swaps an online player's save for another world type's without dropping their connection: write
- * out the current mode, read in the target mode, then replace the player's mode-scoped state with
- * what was read and re-run the login sequence against it.
- *
- * Each step hops threads - the save runs on the saver service, the load on the loader service, and
- * the swap itself back on the game thread through [AccountRegistry].
- *
- * See `docs/world-types.md` for why the swap does each of the things it does; several of the steps
- * are load-bearing in ways that are not obvious from reading them.
- */
 @Singleton
+@OptIn(InternalApi::class)
 public class WorldTypeSwitchService
 @Inject
 constructor(
     private val accountManager: AccountManager,
-    private val accountRegistry: AccountRegistry,
+    private val players: PlayerList,
     private val eventBus: EventBus,
     private val collision: CollisionFlagMap,
     private val realm: Realm,
+    private val engineQueues: PlayerEngineQueueProcessor,
 ) {
     private val logger = InlineLogger()
-
-    private val inFlight: MutableSet<Int> = ConcurrentHashMap.newKeySet()
-
-    private val pendingFailures = ConcurrentLinkedQueue<FailedSwitch>()
-
-    private data class FailedSwitch(val player: Player, val message: String)
-
+    private val inFlight = IdentityHashMap<Player, Attempt>()
+    private val completions = ConcurrentLinkedQueue<Completion>()
     private var Player.newAccount: Boolean by boolVarBit("varbit.new_player_account")
+
+    private enum class Stage { PREPARING, SAVING, LOADING }
+
+    private class Attempt(
+        val player: Player,
+        val target: WorldType,
+        val firstVisitSpawn: CoordGrid?,
+        val startedAt: Long,
+    ) {
+        val source = player.worldType
+        val characterId = player.characterId
+        val accountId = player.accountId
+        val username = player.username
+        val uid = player.uid
+        val slot = player.slotId
+        val client = player.client
+        var stage = Stage.PREPARING
+        var checkpoint: CharacterSaveSnapshot? = null
+    }
+
+    private sealed interface Completion {
+        val attempt: Attempt
+        data class Saved(override val attempt: Attempt, val response: AccountSaveResponse) : Completion
+        data class Loaded(override val attempt: Attempt, val response: AccountLoadResponse) : Completion
+    }
 
     public sealed class Result {
         public data object Started : Result()
-
         public data object AlreadyOnWorldType : Result()
-
         public data object NotServed : Result()
-
         public data object AlreadySwitching : Result()
-
         public data class Busy(val message: String) : Result()
     }
 
-    public fun isSwitching(player: Player): Boolean = inFlight.contains(player.characterId)
+    public fun isSwitching(player: Player): Boolean = inFlight.containsKey(player)
 
-    /**
-     * Begins a switch to [target], or explains why it cannot start.
-     *
-     * [served] is the set this world serves. [firstVisitSpawn] is where to put the player when they
-     * have never played [target], since there is no saved position to restore; `null` keeps whatever
-     * the load defaulted to.
-     */
     public fun switch(
         player: Player,
         target: WorldType,
         served: Collection<WorldType>,
         firstVisitSpawn: CoordGrid? = null,
     ): Result {
-        if (player.worldType == target) {
-            return Result.AlreadyOnWorldType
-        }
-        if (target !in served) {
-            return Result.NotServed
-        }
-        if (player.characterId <= 0 || !inFlight.add(player.characterId)) {
-            return Result.AlreadySwitching
-        }
-        if (!canSwitchNow(player)) {
-            inFlight.remove(player.characterId)
-            return Result.Busy(player.logoutBlockedMessage())
-        }
-        accountManager.save(player) { response ->
-            onCurrentModeSaved(player, target, firstVisitSpawn, response)
-        }
+        if (isSwitching(player) || player.worldTypeSwitching) return Result.AlreadySwitching
+        if (player.worldType == target) return Result.AlreadyOnWorldType
+        if (target !in served) return Result.NotServed
+        if (!isRegistered(player) || player.accountId <= 0 || player.characterId <= 0 ||
+            player.persistenceSuspended || player.persistenceInvalidated || unavailable(player) || player.isDelayed || hasRequiredWork(player)
+        ) return Result.Busy("You can't switch world type until your current action has finished.")
+        if (player.isLogoutBlocked()) return Result.Busy(player.logoutBlockedMessage())
+        val attempt = Attempt(player, target, firstVisitSpawn, System.nanoTime())
+        inFlight[player] = attempt
+        player.persistenceSuspended = true
+        player.worldTypeSwitching = true
         return Result.Started
     }
 
-    /** Shared with the logout path so the two cannot drift; a switch discards the same state. */
-    private fun canSwitchNow(player: Player): Boolean {
-        if (player.loggingOut || player.pendingLogout || player.forceDisconnect) {
-            return false
-        }
-        return !player.isLogoutBlocked()
-    }
-
-    /** Saver thread. */
-    private fun onCurrentModeSaved(
-        player: Player,
-        target: WorldType,
-        firstVisitSpawn: CoordGrid?,
-        response: AccountSaveResponse,
-    ) {
-        if (response !is AccountSaveResponse.Success) {
-            abort(player, target, "save failed (${response::class.simpleName})")
-            return
-        }
-        val queued =
-            accountManager.loadWorldTypeSwitch(player.username, target) { loadResponse ->
-                onTargetModeLoaded(player, target, firstVisitSpawn, loadResponse)
+    /** Called on the game thread after player actions and before post-tick persistence. */
+    public fun processPendingSwitches(now: Long = System.nanoTime()) {
+        for (attempt in inFlight.values.toList()) {
+            if (!validSession(attempt) || unavailable(attempt.player)) {
+                abort(attempt, "session ended", notify = false)
+            } else if (now - attempt.startedAt >= TIMEOUT_NANOS) {
+                abort(attempt, "timed out")
+            } else if (attempt.stage == Stage.PREPARING) {
+                prepare(attempt)
             }
-        if (!queued) {
-            abort(player, target, "loader rejected the request")
+        }
+        repeat(MAX_COMPLETIONS_PER_CYCLE) {
+            val completion = completions.poll() ?: return
+            val attempt = completion.attempt
+            if (inFlight[attempt.player] !== attempt) return@repeat
+            if (!validSession(attempt) || unavailable(attempt.player)) {
+                abort(attempt, "session ended", notify = false)
+                return@repeat
+            }
+            when (completion) {
+                is Completion.Saved -> saved(attempt, completion.response)
+                is Completion.Loaded -> loaded(attempt, completion.response)
+            }
         }
     }
 
-    /** Loader thread. */
-    private fun onTargetModeLoaded(
-        player: Player,
-        target: WorldType,
-        firstVisitSpawn: CoordGrid?,
-        response: AccountLoadResponse,
-    ) {
-        if (response !is AccountLoadResponse.Ok) {
-            abort(player, target, "load failed ($response)")
-            return
-        }
-        accountRegistry.queueLogin(player, response) { queued, ok ->
-            applySwitch(queued, ok, firstVisitSpawn)
-        }
-    }
-
-    /** Game thread, via [AccountRegistry.handleLogins]. */
-    private fun applySwitch(
-        player: Player,
-        response: AccountLoadResponse.Ok,
-        firstVisitSpawn: CoordGrid?,
-    ) {
-        val target = response.worldType
-        // The save and load take cycles, so the guard is re-checked against the player as they are
-        // now rather than as they were when they asked.
-        if (!canSwitchNow(player)) {
-            inFlight.remove(player.characterId)
-            player.mes(player.logoutBlockedMessage())
-            return
-        }
+    private fun prepare(attempt: Attempt) {
+        val player = attempt.player
         try {
-            val origin = player.coords
-            val from = player.worldType
-            val before = snapshot(player)
+            // Interface close hooks settle outgoing inventory state before the snapshot is taken.
+            player.worldTypeSwitching = false
+            player.clearPendingAction(eventBus)
+            player.abortRoute()
+            player.resetAnim()
+            // Exit the outgoing save's areas while it is still installed. If a cleanup suspends
+            // or queues required work, abort preparation and let that work finish in its mode.
+            for (area in player.activeAreas) player.engineQueueAreaExit(area)
+            player.activeAreas.clear()
+            player.pendingAreas.clear()
+            player.lastProcessedAreaCoord = CoordGrid.NULL
+            engineQueues.process(player)
+            player.worldTypeSwitching = true
+            if (!validSession(attempt) || unavailable(player) || hasRequiredWork(player) || player.isDelayed || player.activeCoroutine?.isSuspended == true || player.isLogoutBlocked()) {
+                abort(attempt, "outgoing action still pending")
+                return
+            }
+            val checkpoint = accountManager.capture(player)
+            attempt.checkpoint = checkpoint
+            attempt.stage = Stage.SAVING
+            accountManager.save(player, checkpoint) { completions += Completion.Saved(attempt, it) }
+        } catch (error: Exception) {
+            logger.error(error) { "Could not prepare world-type switch for character=${attempt.characterId}" }
+            abort(attempt, "preparation failed")
+        }
+    }
 
-            player.persistenceSuspended = true
+    private fun saved(attempt: Attempt, response: AccountSaveResponse) {
+        if (attempt.stage != Stage.SAVING) return
+        if (response !is AccountSaveResponse.Success || response.player !== attempt.player) {
+            abort(attempt, "save failed")
+            return
+        }
+        attempt.stage = Stage.LOADING
+        try {
+            val accepted = accountManager.loadWorldTypeSwitch(attempt.username, attempt.target) {
+                completions += Completion.Loaded(attempt, it)
+            }
+            if (!accepted) abort(attempt, "loader rejected the request")
+        } catch (error: Exception) {
+            logger.error(error) { "Could not queue world-type load for character=${attempt.characterId}" }
+            abort(attempt, "load failed")
+        }
+    }
 
+    private fun loaded(attempt: Attempt, response: AccountLoadResponse) {
+        if (attempt.stage != Stage.LOADING) return
+        if (response !is AccountLoadResponse.Ok || response.worldType != attempt.target ||
+            response.account.accountId != attempt.accountId ||
+            response.account.characterData.characterId != attempt.characterId
+        ) {
+            abort(attempt, "load failed or returned a different character")
+            return
+        }
+        val player = attempt.player
+        val checkpoint = checkNotNull(attempt.checkpoint)
+        val origin = player.coords
+        val destination: CoordGrid
+        try {
+            if (hasRequiredWork(player) || accountManager.capture(player) != checkpoint) {
+                abort(attempt, "outgoing state changed while switching")
+                return
+            }
             clearWorldTypeScopedState(player)
-            for (transform in response.transforms) {
-                transform.apply(player)
-            }
-            player.worldType = target
-            if (response.firstVisitToWorldType) {
-                player.newAccount = true
-            }
-            // The applier reloads `modLevel` from the account row, so a dev realm has to re-grant.
-            if (realm.config.devMode) {
-                player.modLevel = Rights.ADMINISTRATOR
-            }
-            val after = snapshot(player)
-
-            // The appliers assign `coords` outright, which skips the zone bookkeeping a registered
-            // player needs; put them back and move through the engine instead.
-            val loaded = player.coords
-            val destination =
-                if (response.firstVisitToWorldType) firstVisitSpawn ?: loaded else loaded
+            for (transform in response.transforms) transform.apply(player)
+            player.worldType = attempt.target
+            if (response.firstVisitToWorldType) player.newAccount = true
+            if (realm.config.devMode) player.modLevel = Rights.ADMINISTRATOR
+            val loadedCoords = player.coords
             player.coords = origin
-            telejumpTo(player, destination)
-
-            // A switch usually lands on the same tile, and the scene is otherwise only resent when
-            // the build area changes.
-            player.clientCycle.forceSceneRebuild()
-
-            val prepareLogin = eventBus.publish(SessionStateEvent.PrepareLogin(player))
-            val initialize = eventBus.publish(SessionStateEvent.Initialize(player))
-            val login = eventBus.publish(SessionStateEvent.Login(player))
-            val engineLogin = eventBus.publish(SessionStateEvent.EngineLogin(player))
-
-            eventBus.publish(WorldTypeChangedEvent(player, from = from, to = target))
-
-            player.mes("You are now playing ${target.label}.")
-            logger.info {
-                "World type switched: player=${player.username} from='${from.key}' " +
-                    "to='${target.key}' firstVisit=${response.firstVisitToWorldType} " +
-                    "coords=$destination transforms=${response.transforms.size} " +
-                    "events(prepare/init/login/engine)=" +
-                    "$prepareLogin/$initialize/$login/$engineLogin " +
-                    "state[$before -> $after]"
+            destination = if (response.firstVisitToWorldType) attempt.firstVisitSpawn ?: loadedCoords else loadedCoords
+        } catch (error: Exception) {
+            logger.error(error) { "Could not apply world-type load for character=${attempt.characterId}" }
+            try {
+                accountManager.restore(player, checkpoint)
+            } catch (restoreError: Exception) {
+                logger.error(restoreError) { "Could not restore world-type checkpoint for character=${attempt.characterId}" }
+                // Do not persist a partially transformed save during forced logout.
+                player.forceDisconnect = true
+                player.persistenceInvalidated = true
+                // No teleport has completed when a data transform fails. Keep registry teardown
+                // at the registered outgoing tile even if a partial applier changed coordinates.
+                player.coords = origin
+                inFlight.remove(player)
+                player.worldTypeSwitching = false
+                return
             }
-        } catch (e: Exception) {
-            // A half-swapped player holds a mix of two saves; the outgoing one is already written.
+            abort(attempt, "target state could not be applied", notify = false)
             player.forceDisconnect = true
-            logger.error(e) {
-                "Could not switch world type, disconnecting: player=${player.username} " +
-                    "target='${target.key}'"
+            return
+        }
+        player.queueList.clear()
+        player.weakQueueList.clear()
+        player.timerMap.clear()
+        player.softTimerMap.clear()
+        player.postInteractionSoftTimerMap?.clear()
+        player.worldTypeSwitching = false
+        try {
+            telejumpTo(player, destination)
+            player.clientCycle.forceSceneRebuild()
+            player.regionRebuildPending = true
+            eventBus.publish(SessionStateEvent.PrepareLogin(player))
+            eventBus.publish(SessionStateEvent.Initialize(player))
+            eventBus.publish(SessionStateEvent.Login(player))
+            eventBus.publish(SessionStateEvent.EngineLogin(player))
+        } catch (error: Exception) {
+            // The target save is installed. Rolling it back after login effects could duplicate rewards.
+            player.forceDisconnect = true
+            logger.error(error) { "World-type login hook failed for character=${attempt.characterId}" }
+        } finally {
+            // The save has changed even if target login initialization failed. Outgoing global
+            // activities must detach from this Player before another cycle can see target state.
+            val changed = WorldTypeChangedEvent(player, from = attempt.source, to = attempt.target)
+            // Cleanup listeners are independent owners. One failing owner cannot suppress the
+            // remaining owners' notification of an already committed state change.
+            for (listener in eventBus.unbound[WorldTypeChangedEvent::class.java].orEmpty()) {
+                try {
+                    listener(changed)
+                } catch (error: Exception) {
+                    player.forceDisconnect = true
+                    logger.error(error) { "World-type change hook failed for character=${attempt.characterId}" }
+                }
+            }
+            if (!player.forceDisconnect) player.mes("You are now playing ${attempt.target.label}.")
+            player.persistenceSuspended = false
+            inFlight.remove(player)
+        }
+    }
+
+    private fun isRegistered(player: Player): Boolean =
+        player.isSlotAssigned && players[player.slotId] === player
+
+    private fun validSession(attempt: Attempt): Boolean = with(attempt.player) {
+        isRegistered(this) && uid == attempt.uid && slotId == attempt.slot && client === attempt.client &&
+            characterId == attempt.characterId && accountId == attempt.accountId && worldType == attempt.source
+    }
+
+    private fun unavailable(player: Player): Boolean =
+        player.loggingOut || player.pendingLogout || player.manualLogout || player.forceDisconnect ||
+            player.pendingShutdown || player.clientDisconnected.get()
+
+    private fun hasRequiredWork(player: Player): Boolean {
+        if (player.engineQueueList.isNotEmpty) return true
+        val iterator = player.queueList.iterator() ?: return false
+        try {
+            while (iterator.hasNext()) {
+                if (iterator.next().category != QueueCategory.LongDiscard.id) return true
             }
         } finally {
-            player.persistenceSuspended = false
-            inFlight.remove(player.characterId)
+            iterator.cleanUp()
         }
+        return false
+    }
+
+    private fun abort(attempt: Attempt, reason: String, notify: Boolean = true) {
+        if (inFlight[attempt.player] !== attempt) return
+        inFlight.remove(attempt.player)
+        attempt.player.worldTypeSwitching = false
+        attempt.player.persistenceSuspended = false
+        logger.warn { "World-type switch cancelled: character=${attempt.characterId} reason=$reason" }
+        if (notify && isRegistered(attempt.player)) attempt.player.mes("Could not switch world type right now. Please try again.")
     }
 
     private fun telejumpTo(player: Player, destination: CoordGrid) {
@@ -232,21 +303,6 @@ constructor(
             return
         }
         PathingEntityCommon.telejump(player, collision, destination)
-    }
-
-    private fun snapshot(player: Player): String {
-        var objs = 0
-        for (inventory in player.invMap.values) {
-            if (inventory.type.scope != InvScope.Perm) {
-                continue
-            }
-            for (slot in inventory.indices) {
-                if (inventory[slot] != null) {
-                    objs++
-                }
-            }
-        }
-        return "objs=$objs varps=${player.vars.backing.size} coords=${player.coords}"
     }
 
     /**
@@ -269,20 +325,8 @@ constructor(
         player.attr.clear()
     }
 
-    /** Game thread. Delivers what the save and load callbacks could not say from their own. */
-    public fun processPendingFailures() {
-        while (true) {
-            val failed = pendingFailures.poll() ?: break
-            failed.player.mes(failed.message)
-        }
-    }
-
-    private fun abort(player: Player, target: WorldType, reason: String) {
-        inFlight.remove(player.characterId)
-        logger.warn {
-            "Could not switch world type: player=${player.username} " +
-                "from='${player.worldType.key}' target='${target.key}' ($reason)"
-        }
-        pendingFailures += FailedSwitch(player, "Could not switch world type right now.")
+    private companion object {
+        const val TIMEOUT_NANOS = 60_000_000_000L
+        const val MAX_COMPLETIONS_PER_CYCLE = 100
     }
 }

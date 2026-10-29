@@ -79,6 +79,9 @@ public class Npc(
     public var uid: NpcUid = NpcUid.NULL
         private set
 
+    public var hitGeneration: Long = 0
+        private set
+
     public var spawnCoords: CoordGrid = coords
     public var defaultMoveSpeed: MoveSpeed = MoveSpeed.Walk
     public var respawnDir: Direction = type.respawnDir
@@ -230,6 +233,7 @@ public class Npc(
 
     @InternalApi
     public fun clearUid() {
+        hitGeneration++
         this.uid = NpcUid.NULL
     }
 
@@ -342,6 +346,7 @@ public class Npc(
 
     @InternalApi
     public fun setRespawnValues() {
+        hitGeneration++
         pendingTelejump = true
         if (transmog != null) {
             infoProtocol.resetTransmog(originalType = id)

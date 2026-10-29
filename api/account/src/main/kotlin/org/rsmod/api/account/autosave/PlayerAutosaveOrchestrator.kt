@@ -4,7 +4,9 @@ import com.github.michaelbull.logging.InlineLogger
 import dev.openrune.types.InvScope
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import java.util.concurrent.ConcurrentHashMap
+import java.util.Collections
+import java.util.IdentityHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 import org.rsmod.api.account.AccountManager
 import org.rsmod.api.account.saver.request.AccountSaveResponse
 import org.rsmod.api.attr.AttributeKey
@@ -24,8 +26,12 @@ constructor(
 ) {
     private val logger = InlineLogger()
 
-    private val queuedSave: MutableSet<Player> =
-        ConcurrentHashMap.newKeySet()
+    private val queuedSave = IdentityHashMap<Player, Any>()
+    private val dirty: MutableSet<Player> = Collections.newSetFromMap(IdentityHashMap())
+    private val completions = ConcurrentLinkedQueue<Completion>()
+    private val retryAfter = IdentityHashMap<Player, Int>()
+
+    private data class Completion(val player: Player, val token: Any, val response: AccountSaveResponse)
 
     private var periodicCounter: Int = PERIODIC_INTERVAL_CYCLES
 
@@ -41,20 +47,45 @@ constructor(
      * report [org.rsmod.game.inv.Inventory.hasModifiedSlots]).
      */
     public fun processEndOfTick(players: Iterable<Player>) {
+        processCompletions()
         for (player in players) {
-            if (!player.canProcess) {
-                continue
-            }
-            if (player.invMap.values.any { it.type.scope == InvScope.Perm && it.hasModifiedSlots() }) {
+            if (player.canProcess && player.invMap.values.any { it.type.scope == InvScope.Perm && it.hasModifiedSlots() }) {
                 onPersistenceRelevantChange(player)
             }
         }
-        periodicCounter--
-        if (periodicCounter <= 0) {
+        if (--periodicCounter <= 0) {
             periodicCounter = PERIODIC_INTERVAL_CYCLES
             for (player in players) {
-                if (player.canProcess && player.persistenceSaveEligible()) {
-                    requestBackgroundSave(player)
+                if (player.canProcess && player.persistenceSaveEligible()) dirty += player
+            }
+        }
+        for (player in dirty.toList()) {
+            if (player.loggingOut || player.pendingLogout || !player.isSlotAssigned) {
+                dirty.remove(player)
+                retryAfter.remove(player)
+                continue
+            }
+            if (player.canProcess && player.persistenceSaveEligible() && player !in queuedSave &&
+                player.currentMapClock >= retryAfter.getOrDefault(player, 0)) {
+                requestBackgroundSave(player)
+            }
+        }
+    }
+
+    private fun processCompletions() {
+        while (true) {
+            val completion = completions.poll() ?: break
+            val (player, token, response) = completion
+            if (queuedSave[player] !== token) continue
+            queuedSave.remove(player)
+            when (response) {
+                is AccountSaveResponse.Success -> {}
+                is AccountSaveResponse.InvalidState -> dirty.remove(player)
+                is AccountSaveResponse.ExcessiveRetries,
+                is AccountSaveResponse.InternalShutdownError -> {
+                    dirty += player
+                    retryAfter[player] = player.currentMapClock + PERIODIC_INTERVAL_CYCLES
+                    logger.error { "Background autosave failed for ${player.displayName}: ${response::class.simpleName}" }
                 }
             }
         }
@@ -66,28 +97,21 @@ constructor(
     }
 
     private fun onPersistenceRelevantChange(player: Player) {
-        if (!player.persistenceSaveEligible()) {
-            return
-        }
-        requestBackgroundSave(player)
+        if (player.persistenceSaveEligible()) dirty += player
     }
 
     private fun requestBackgroundSave(player: Player) {
-        if (!player.persistenceSaveEligible()) {
-            return
-        }
-        if (!queuedSave.add(player)) {
-            return
-        }
-        accountManager.save(player) { response ->
+        val token = Any()
+        queuedSave[player] = token
+        dirty.remove(player)
+        retryAfter.remove(player)
+        try {
+            accountManager.save(player) { response -> completions += Completion(player, token, response) }
+        } catch (e: Exception) {
             queuedSave.remove(player)
-            when (response) {
-                is AccountSaveResponse.Success -> {}
-                is AccountSaveResponse.ExcessiveRetries ->
-                    logger.error { "Background autosave failed after retries for ${player.displayName}" }
-                is AccountSaveResponse.InternalShutdownError ->
-                    logger.error { "Background autosave shutdown error for ${player.displayName}" }
-            }
+            dirty += player
+            retryAfter[player] = player.currentMapClock + PERIODIC_INTERVAL_CYCLES
+            logger.error(e) { "Could not capture background save for ${player.displayName}" }
         }
     }
 
@@ -97,4 +121,4 @@ constructor(
 }
 
 private fun Player.persistenceSaveEligible(): Boolean =
-    accountId > 0 && characterId > 0 && processedMapClock > 0 && !persistenceSuspended
+    accountId > 0 && characterId > 0 && processedMapClock > 0 && !persistenceSuspended && !persistenceInvalidated

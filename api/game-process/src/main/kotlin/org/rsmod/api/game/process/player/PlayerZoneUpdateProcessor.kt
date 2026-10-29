@@ -17,6 +17,7 @@ import org.rsmod.api.utils.zone.SharedZoneEnclosedBuffers
 import org.rsmod.game.entity.Player
 import org.rsmod.game.loc.LocInfo
 import org.rsmod.game.obj.Obj
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.map.zone.ZoneKey
 
@@ -128,7 +129,7 @@ constructor(
     ) {
         val updates = ArrayList<ZoneProt>()
         for (obj in objs) {
-            val prot = ZoneUpdateTransformer.toPersistentObjAdd(obj, observerId, currentMapClock) ?: continue
+            val prot = ZoneUpdateTransformer.toPersistentObjAdd(obj, observerId, currentMapClock, uuid, worldType) ?: continue
             updates += prot
         }
         if (updates.isNotEmpty()) {
@@ -157,7 +158,7 @@ constructor(
     ) {
         val updates = updates[zone] ?: return
         check(updates.isNotEmpty) { "`updates` for zone should not be empty: $zone" }
-        val playerSpecific = updates.toPlayerSpecificEnclosed(observerUUID)
+        val playerSpecific = updates.toPlayerSpecificEnclosed(observerUUID, uuid, worldType)
         sendZonePlayerEnclosedUpdates(buildArea, zoneBase, playerSpecific)
     }
 
@@ -189,12 +190,12 @@ constructor(
         client.write(prot)
     }
 
-    private fun Iterable<ZoneProt>.toPlayerSpecificEnclosed(observerId: Long?): List<ZoneProt> {
+    private fun Iterable<ZoneProt>.toPlayerSpecificEnclosed(observerId: Long?, playerId: Long?, worldType: WorldType): List<ZoneProt> {
         val enclosed = ArrayList<ZoneProt>()
         for (update in this) {
             val prot =
                 (update as? ZoneUpdateTransformer.PartialFollowsZoneProt)
-                    ?.toEnclosed(observerId)
+                    ?.toEnclosed(observerId, playerId, worldType)
             if (prot != null) {
                 enclosed += prot
             }
@@ -204,12 +205,14 @@ constructor(
 
     private fun ZoneUpdateTransformer.PartialFollowsZoneProt.toEnclosed(
         observerId: Long?,
+        playerId: Long?,
+        worldType: WorldType,
     ): ZoneProt? =
         when (this) {
             is ZoneUpdateTransformer.ObjPrivateZoneProt ->
-                if (isVisibleTo(observerId)) backing else null
+                if (isVisibleTo(observerId, playerId, worldType)) backing else null
             is ZoneUpdateTransformer.ObjReveal ->
-                if (observerId == obj.receiverId) null else backing
+                if (observerId == obj.receiverId || !obj.isVisibleTo(observerId, playerId, worldType)) null else backing
             else -> backing
         }
 

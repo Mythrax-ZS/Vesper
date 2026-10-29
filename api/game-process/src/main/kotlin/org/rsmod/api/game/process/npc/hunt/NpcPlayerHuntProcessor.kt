@@ -172,7 +172,7 @@ constructor(
             }
 
             count++
-            if (random.of(minInclusive = 0, maxInclusive = count) == 0) {
+            if (random.of(minInclusive = 0, maxInclusive = count - 1) == 0) {
                 target = player.uid
             }
         }

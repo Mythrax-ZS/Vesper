@@ -1,15 +1,16 @@
 package org.rsmod.api.account.saver.request
 
+import org.rsmod.api.account.saver.CharacterSaveSnapshot
 import org.rsmod.game.entity.Player
 
-/**
- * [player] is held live, not snapshotted, and carries no world type: the schema has to be resolved
- * from it at execution time, or a mode captured here could go stale before the save runs.
- */
-public data class AccountSaveRequest(
-    val accountId: Int,
-    val characterId: Int,
-    val player: Player,
-    val callback: AccountSaveCallback,
-    var attempts: Int = 0,
-)
+/** The live player is retained only for completion notification, never database values. */
+public class AccountSaveRequest(
+    public val player: Player,
+    public val snapshot: CharacterSaveSnapshot,
+    public val callback: AccountSaveCallback,
+) {
+    public var attempts: Int = 0
+        internal set
+    internal var sequence: Long = 0
+    internal var completed: Boolean = false
+}

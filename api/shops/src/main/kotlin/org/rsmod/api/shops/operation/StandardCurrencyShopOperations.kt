@@ -160,8 +160,7 @@ public open class StandardCurrencyShopOperations(
         val uncert = uncert(obj)
         val objType = getInvObj(uncert)
 
-        val tradeable = objType.tradeable || objType.stockmarket
-        if (!tradeable) {
+        if (!canSell(objType, shop)) {
             player.mes("You can't sell this item.")
             return
         }
@@ -197,8 +196,7 @@ public open class StandardCurrencyShopOperations(
         val objType = getInvObj(obj)
         val uncertType = uncert(objType)
 
-        val tradeable = uncertType.tradeable || uncertType.stockmarket
-        if (!tradeable) {
+        if (!canSell(uncertType, shop)) {
             player.mes("You can't sell this item.")
             return
         }
@@ -274,6 +272,9 @@ public open class StandardCurrencyShopOperations(
         val marketPrice = marketPrices[type] ?: 0
         player.objExamine(type, obj.count, marketPrice)
     }
+
+    protected open fun canSell(type: ItemServerType, shop: Shop): Boolean =
+        type.tradeable || type.stockmarket
 
     private fun Inventory.initialStockCount(obj: InvObj): Int = initialStockCount(obj.id)
 

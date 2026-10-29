@@ -49,9 +49,9 @@ public class ServerConfigLoader {
 
     private fun createDefault(): ServerConfig =
         ServerConfig(
-            name = "OpenRune",
+            name = "Vesper",
             gamePort = 43594,
-            revision = 233,
+            revision = 241,
             environment = "LIVE",
             world = DEFAULT_WORLD,
             database =

@@ -65,7 +65,17 @@ public class ObjRegistry @Inject constructor(private val updates: ZoneUpdateMap)
         return ObjRegistryResult.Delete.Success
     }
 
+    public fun take(obj: Obj, count: Int): Boolean {
+        if (count <= 0 || count > obj.count || findAll(obj.coords).none { it === obj }) return false
+        if (count == obj.count) return del(obj).isSuccess()
+        val previous = obj.count
+        obj.change(previous - count)
+        updates.objCount(obj, obj.count, previous)
+        return true
+    }
+
     public fun reveal(obj: Obj, cycle: Int = obj.revealCycle) {
+        if (obj.personalReceiverId != null) return
         val zoneKey = ZoneKey.from(obj.coords)
         val entryList = objs.getOrPut(zoneKey)
         if (obj !in entryList) {
@@ -90,17 +100,19 @@ public class ObjRegistry @Inject constructor(private val updates: ZoneUpdateMap)
     }
 
     public fun isValid(observer: Player, obj: Obj): Boolean =
-        findAll(obj.coords).any { it.type == obj.type && it.isVisibleTo(observer) }
+        obj.isVisibleTo(observer) && findAll(obj.coords).any { it === obj }
 
     public fun isPublicAndValid(obj: Obj): Boolean =
-        findAll(obj.coords).any { it.type == obj.type && it.isVisibleTo(null) }
+        obj.isVisibleTo(null) && findAll(obj.coords).any { it === obj }
 
     private fun Obj.canMergeWith(other: Obj, stackable: Boolean): Boolean {
         if (type != other.type) {
             return false
         }
         // Only private objs can merge.
-        if (!isPrivate || receiverId != other.nullableReceiverId) {
+        if (!isPrivate || !other.isPrivate || receiverId != other.nullableReceiverId ||
+            ownerId != other.ownerId || personalReceiverId != other.personalReceiverId || worldType != other.worldType
+        ) {
             return false
         }
         if (!stackable) {
@@ -111,7 +123,7 @@ public class ObjRegistry @Inject constructor(private val updates: ZoneUpdateMap)
     }
 
     private fun Obj.singleCopy(): Obj =
-        Obj(coords, entity.copy(count = 1), creationCycle, receiverId, ownerId).also {
+        Obj(coords, entity.copy(count = 1), creationCycle, receiverId, ownerId, personalReceiverId, worldType).also {
             it.copyTimers(this)
         }
 

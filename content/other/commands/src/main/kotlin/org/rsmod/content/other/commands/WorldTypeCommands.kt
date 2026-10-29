@@ -12,6 +12,7 @@ import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.protect.ProtectedAccessLauncher
 import org.rsmod.api.realm.Realm
 import org.rsmod.api.script.onCommand
+import org.rsmod.api.script.onWorldTypeChanged
 import org.rsmod.api.server.config.ServerConfig
 import org.rsmod.game.entity.Player
 import org.rsmod.game.world.WorldType
@@ -36,6 +37,7 @@ constructor(
     }
 
     override fun ScriptContext.startup() {
+        onWorldTypeChanged { rememberChoice(player, to) }
         onCommand("worldtype") {
             desc = "Pick a world type to play"
             cheat { protectedAccess.launch(player) { worldTypeMenu() } }
@@ -76,7 +78,6 @@ constructor(
         when (val result = switchService.switch(player, target, served, realm.config.spawnCoord)) {
             is WorldTypeSwitchService.Result.Started -> {
                 player.mes("Switching to ${target.label}...")
-                rememberChoice(player, target)
             }
             is WorldTypeSwitchService.Result.Busy -> player.mes(result.message)
             is WorldTypeSwitchService.Result.AlreadySwitching ->

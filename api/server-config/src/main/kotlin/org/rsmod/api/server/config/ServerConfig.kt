@@ -52,7 +52,7 @@ public data class GameplayConfig(
     @JsonProperty("drop-rates")
     val dropRates: DropRatesYaml = DropRatesYaml(),
     @JsonProperty("level-up-popups")
-    val levelUpPopups: Boolean = false,
+    val levelUpPopups: Boolean = true,
     @JsonProperty("idle-logout")
     val idleLogout: Boolean = true,
     @JsonProperty("home-teleport-cooldown")
@@ -72,7 +72,7 @@ public data class DropRatesYaml(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public data class QuestRequirementsYaml(
-    val mode: String = "assume-completed",
+    val mode: String = "respect-progress",
     @JsonProperty("virtual-completions")
     val virtualCompletions: Set<String> = emptySet(),
     @JsonProperty("virtual-lines")

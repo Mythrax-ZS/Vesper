@@ -43,13 +43,18 @@ constructor(
             try {
                 player.tryOrDisconnect {
                     resumePausedProcess()
+                    if (!canProcess) return@tryOrDisconnect
                     refreshFaceEntity()
                     processIfCloseQueue()
                     processIfCloseModal()
                     processEngineQueues()
+                    if (!canProcess) return@tryOrDisconnect
                     processQueues()
+                    if (!canProcess) return@tryOrDisconnect
                     processTimers()
+                    if (!canProcess) return@tryOrDisconnect
                     processAreas()
+                    if (!canProcess) return@tryOrDisconnect
                     processInteractions()
                     timers.processAfterInteractions(this)
                     processIfCloseDisconnect()

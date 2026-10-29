@@ -70,7 +70,7 @@ public interface GameRandom {
 
     /** Returns one of the five provided values randomly. */
     public fun <T> pick(first: T, second: T, third: T, fourth: T, fifth: T): T =
-        when (of(maxExclusive = 4)) {
+        when (of(maxExclusive = 5)) {
             0 -> first
             1 -> second
             2 -> third

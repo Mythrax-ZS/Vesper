@@ -20,7 +20,7 @@ import org.rsmod.game.movement.MoveSpeed
 @Execution(ExecutionMode.SAME_THREAD)
 @ResourceLock("ServerCacheManager")
 class RunAutoEnableTest {
-    private val processor = PlayerRunUpdateProcessor()
+    private val processor = PlayerRunUpdateProcessor(emptySet())
 
     @Test
     fun `energy climbing past the threshold while standing leaves run off`() {

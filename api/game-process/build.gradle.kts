@@ -5,6 +5,10 @@ plugins {
 
 kotlin {
     explicitApi()
+    // These engine processors own queue, movement and timer lifecycle internals.
+    compilerOptions {
+        optIn.add("org.rsmod.annotations.InternalApi")
+    }
 }
 
 dependencies {
@@ -33,12 +37,17 @@ dependencies {
     implementation(projects.api.utils.utilsMap)
     implementation(projects.api.utils.utilsZone)
     implementation(projects.engine.events)
+    implementation(projects.engine.annotations)
+    implementation(projects.engine.coroutine)
     implementation(projects.engine.game)
     implementation(projects.engine.interact)
     implementation(projects.engine.map)
     implementation(projects.engine.routefinder)
 
     testImplementation(projects.api.areaChecker)
+    testImplementation(projects.api.invStorage)
+    testImplementation(projects.api.invtx)
+    testImplementation(projects.engine.plugin)
     testImplementation(projects.api.market)
-    testImplementation(projects.engine.coroutine)
+    testImplementation(libs.mockk)
 }

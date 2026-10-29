@@ -16,6 +16,7 @@ constructor(
     private val protectedAccess: ProtectedAccessLauncher,
 ) {
     public fun process(player: Player) {
+        if (!player.canProcess) return
         if (player.timerMap.isNotEmpty) {
             player.processTimers()
         }
@@ -25,6 +26,7 @@ constructor(
     }
 
     public fun processAfterInteractions(player: Player) {
+        if (!player.canProcess) return
         val timers = player.postInteractionSoftTimerMap ?: return
         if (timers.isNotEmpty) {
             player.processSoftTimers(timers)
@@ -39,6 +41,7 @@ constructor(
 
         val expired = timerMap.toExpiredKeys()
         for (timerType in expired) {
+            if (!canProcess) break
             if (isAccessProtected) {
                 break
             }
@@ -58,6 +61,7 @@ constructor(
     private fun Player.processSoftTimers(timers: PlayerTimerMap) {
         val expired = timers.toExpiredKeys()
         for (timerType in expired) {
+            if (!canProcess) break
             val event = PlayerTimerEvent.Soft(this, timerType.toInt() and 0xFFFF)
             eventBus.publish(event)
 

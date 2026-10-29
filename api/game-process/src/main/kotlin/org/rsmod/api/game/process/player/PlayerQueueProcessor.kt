@@ -13,6 +13,7 @@ public class PlayerQueueProcessor
 @Inject
 constructor(private val eventBus: EventBus, private val protectedAccess: ProtectedAccessLauncher) {
     public fun process(player: Player) {
+        if (!player.canProcess) return
         if (player.queueList.strongQueues > 0) {
             player.ifClose(eventBus)
         }
@@ -21,11 +22,11 @@ constructor(private val eventBus: EventBus, private val protectedAccess: Protect
     }
 
     private fun Player.publishExpiredQueues() {
-        while (queueList.isNotEmpty) {
+        while (queueList.isNotEmpty && canProcess) {
             var processedNone = true
 
             val iterator = queueList.iterator() ?: break
-            while (iterator.hasNext()) {
+            while (iterator.hasNext() && canProcess) {
                 val queue = iterator.next()
 
                 if (queue.shouldCloseModals()) {
@@ -81,11 +82,11 @@ constructor(private val eventBus: EventBus, private val protectedAccess: Protect
     }
 
     private fun Player.publishExpiredWeakQueues() {
-        while (weakQueueList.isNotEmpty) {
+        while (weakQueueList.isNotEmpty && canProcess) {
             var processedNone = true
 
             val iterator = weakQueueList.iterator() ?: break
-            while (iterator.hasNext()) {
+            while (iterator.hasNext() && canProcess) {
                 val queue = iterator.next()
 
                 if (queue.processedCycle != currentMapClock) {

@@ -17,7 +17,7 @@ constructor(private val objRegistry: ObjRegistry, private val marketPrices: Mark
         val coords = CoordGrid(message.x, message.z, player.level)
         val type = ServerCacheManager.getItem(message.id) ?: return
         val stack = objRegistry.findAll(coords)
-        val obj = stack.firstOrNull { it.type == type.id } ?: return
+        val obj = stack.firstOrNull { it.type == type.id && it.isVisibleTo(player) } ?: return
         val marketPrice = marketPrices[type] ?: 0
         player.objExamine(type, obj.count, marketPrice)
     }

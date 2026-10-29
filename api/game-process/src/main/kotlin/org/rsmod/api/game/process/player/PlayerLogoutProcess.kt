@@ -32,6 +32,10 @@ constructor(
     private fun processPendingLogouts() {
         for (player in playerList) {
             player.tryOrDisconnect {
+                if (persistenceInvalidated) {
+                    processInvalidPersistenceLogout()
+                    return@tryOrDisconnect
+                }
                 processServerShutdown()
                 processForcedDisconnect()
                 processClientDisconnect()
@@ -39,6 +43,27 @@ constructor(
                 processPendingLogout()
             }
         }
+    }
+
+    /** A failed restore must never run gameplay cleanup against a partially installed save. */
+    private fun Player.processInvalidPersistenceLogout() {
+        if (loggingOut) return
+        pendingLogout = false
+        pendingCloseClient = false
+        forceDisconnect = false
+        worldTypeSwitching = false
+        loggingOut = true
+        closeClient = true
+        abortRoute()
+        clearInteraction()
+        queueList.clear()
+        weakQueueList.clear()
+        timerMap.clear()
+        softTimerMap.clear()
+        postInteractionSoftTimerMap?.clear()
+        // InvalidState is acknowledged without a write. The registry still publishes Delete,
+        // allowing global owners to detach without interpreting corrupt inventories or vars.
+        accountRegistry.queueLogout(this)
     }
 
     private fun Player.processServerShutdown() {

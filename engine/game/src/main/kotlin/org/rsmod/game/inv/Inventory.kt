@@ -19,6 +19,36 @@ public class Inventory(public val type: InventoryServerType, public val objs: Ar
 
     public val modifiedSlots: BitSet = BitSet()
 
+    private val changeListeners: MutableSet<InventoryChangeListener> = LinkedHashSet()
+    private var notifyingChanges: Boolean = false
+
+    /** Registration is idempotent for the same listener and lives only with this inventory. */
+    public fun addChangeListener(listener: InventoryChangeListener) {
+        changeListeners.add(listener)
+    }
+
+    public fun removeChangeListener(listener: InventoryChangeListener) {
+        changeListeners.remove(listener)
+    }
+
+    /** Used by inventory transactions after every participating inventory has committed. */
+    public fun notifyChanged() {
+        if (notifyingChanges || changeListeners.isEmpty()) return
+        notifyingChanges = true
+        try {
+            for (listener in changeListeners.toList()) {
+                try {
+                    listener.onInventoryChanged(this)
+                } catch (error: Exception) {
+                    System.getLogger(Inventory::class.java.name)
+                        .log(System.Logger.Level.ERROR, "Inventory change listener failed after commit", error)
+                }
+            }
+        } finally {
+            notifyingChanges = false
+        }
+    }
+
     public val internalName: String
         get() = RSCM.getReverseMapping(RSCMType.INV, type.id)
 
@@ -66,13 +96,16 @@ public class Inventory(public val type: InventoryServerType, public val objs: Ar
         objs.mapNotNull { if (it != null && predicate(it)) it else null }
 
     public fun fillNulls() {
+        var changed = false
         for (i in objs.indices) {
             if (objs[i] == null) {
                 continue
             }
             objs[i] = null
             modifiedSlots.set(i)
+            changed = true
         }
+        if (changed) notifyChanged()
     }
 
     public fun hasModifiedSlots(): Boolean = !modifiedSlots.isEmpty
@@ -87,8 +120,10 @@ public class Inventory(public val type: InventoryServerType, public val objs: Ar
     public operator fun get(slot: Int): InvObj? = objs.getOrNull(slot)
 
     public operator fun set(slot: Int, obj: InvObj?) {
+        val previous = objs[slot]
         objs[slot] = obj
         modifiedSlots.set(slot)
+        if (previous != obj) notifyChanged()
     }
 
     public operator fun contains(type: String): Boolean {

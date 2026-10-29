@@ -1,11 +1,13 @@
 package org.rsmod.api.game.process.player
 
 import dev.openrune.util.Wearpos
+import jakarta.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 import org.rsmod.api.config.constants
 import org.rsmod.api.config.refs.params
 import org.rsmod.api.inv.weight.InvWeight
+import org.rsmod.api.player.hook.PlayerRunRecoveryHook
 import org.rsmod.api.player.output.UpdateRun
 import org.rsmod.api.player.stat.agilityLvl
 import org.rsmod.api.player.vars.armRunAutoEnable
@@ -15,7 +17,9 @@ import org.rsmod.game.entity.Player
 import org.rsmod.game.movement.MoveSpeed
 import org.rsmod.game.type.getOrNull
 
-public class PlayerRunUpdateProcessor {
+public class PlayerRunUpdateProcessor @Inject constructor(
+    private val recoveryHooks: Set<PlayerRunRecoveryHook>,
+) {
     public fun process(player: Player) {
         player.updateRunWeight()
         player.updateRunEnergy()
@@ -32,7 +36,7 @@ public class PlayerRunUpdateProcessor {
 
         if (pendingStepCount > 1) {
             decreaseRunEnergy()
-        } else {
+        } else if (recoveryHooks.all { it.canRecover(this) }) {
             restoreRunEnergy()
         }
 
@@ -46,10 +50,10 @@ public class PlayerRunUpdateProcessor {
         val baseLoss = 60 + (67 * weightKg) / 64
 
         var loss = baseLoss * (300 - agilityLvl) / 300
-        if (hasImprovedStaminaEffect()) {
-            loss = (loss * 85) / 100
-        } else if (hasStaminaEffect()) {
+        if (hasStaminaEffect()) {
             loss = (loss * 30) / 100
+        } else if (hasImprovedStaminaEffect()) {
+            loss = (loss * 85) / 100
         }
 
         runEnergy = max(0, runEnergy - loss)
@@ -78,11 +82,11 @@ public class PlayerRunUpdateProcessor {
             return
         }
         val baseRecover = 15 + (agilityLvl / 10)
-        val recover = (restorationRateMod() * baseRecover).toInt()
+        val recover = ((10_000L + restorationBonus()) * baseRecover / 10_000).toInt()
         runEnergy = min(constants.run_max_energy, runEnergy + recover)
     }
 
-    private fun Player.restorationRateMod(): Double {
+    private fun Player.restorationBonus(): Int {
         var wornRate = 0
         var pieces = 0
 
@@ -97,7 +101,7 @@ public class PlayerRunUpdateProcessor {
             wornRate = FULL_GRACEFUL_RESTORE_RATE
         }
 
-        return 1.0 + (wornRate / 10_000.0)
+        return wornRate
     }
 
     private fun Player.updateRunWeight() {

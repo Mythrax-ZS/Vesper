@@ -20,8 +20,18 @@ public data class TransactionResultList<T>(
 
     public fun commitAll() {
         check(!commited) { "Transaction already commited!" }
-        inventories.commitAll()
+        check(success) { "Cannot commit an unsuccessful transaction." }
+        val changed = inventories.filter { it.commit() }
         commited = true
+        for (inventory in changed) {
+            try {
+                inventory.onCommit?.invoke()
+            } catch (error: Exception) {
+                // Item moves have already committed. Observer failure must not report rollback.
+                System.getLogger(TransactionResultList::class.java.name)
+                    .log(System.Logger.Level.ERROR, "Inventory transaction observer failed after commit", error)
+            }
+        }
     }
 
     public fun single(): TransactionResult = results.single()
@@ -54,13 +64,14 @@ public data class TransactionResultList<T>(
 
     public operator fun get(index: Int): TransactionResult? = results.getOrNull(index)
 
-    private fun List<TransactionInventory<T>>.commitAll() = forEach { it.commit() }
-
-    private fun TransactionInventory<T>.commit() {
+    private fun TransactionInventory<T>.commit(): Boolean {
+        var changed = false
         for (i in output.indices) {
             val converted = output(this[i])
+            if (output[i] != converted) changed = true
             output[i] = converted
         }
+        return changed
     }
 
     override fun toString(): String =

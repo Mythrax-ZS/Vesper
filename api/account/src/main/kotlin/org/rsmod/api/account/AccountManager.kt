@@ -1,28 +1,64 @@
 package org.rsmod.api.account
 
 import jakarta.inject.Inject
+import org.rsmod.api.account.character.CharacterDataStage
+import org.rsmod.api.account.character.main.CharacterAccountRepository
 import org.rsmod.api.account.loader.AccountLoaderService
 import org.rsmod.api.account.loader.request.AccountLoadAuth
 import org.rsmod.api.account.loader.request.AccountLoadCallback
 import org.rsmod.api.account.loader.request.AccountLoadRequest
 import org.rsmod.api.account.saver.AccountSavingService
+import org.rsmod.api.account.saver.CharacterSaveSnapshot
 import org.rsmod.api.account.saver.request.AccountSaveCallback
 import org.rsmod.api.account.saver.request.AccountSaveRequest
+import org.rsmod.api.account.saver.request.AccountSaveResponse
 import org.rsmod.game.entity.Player
 import org.rsmod.game.world.WorldType
 
 public class AccountManager
 @Inject
-constructor(private val loader: AccountLoaderService, private val saver: AccountSavingService) {
+constructor(
+    private val loader: AccountLoaderService,
+    private val saver: AccountSavingService,
+    private val repository: CharacterAccountRepository,
+    private val pipelines: Set<CharacterDataStage.Pipeline>,
+) {
+    public fun capture(player: Player): CharacterSaveSnapshot = CharacterSaveSnapshot(
+        accountId = player.accountId,
+        characterId = player.characterId,
+        worldType = player.worldType,
+        main = repository.capture(player),
+        segments = java.util.Map.copyOf(pipelines.associate { it.javaClass.name to it.capture(player) }),
+    )
+
+    public fun restore(player: Player, snapshot: CharacterSaveSnapshot) {
+        require(player.accountId == snapshot.accountId && player.characterId == snapshot.characterId)
+        val suspended = player.persistenceSuspended
+        player.persistenceSuspended = true
+        try {
+            player.worldType = snapshot.worldType
+            repository.restore(player, snapshot.main)
+            for (pipeline in pipelines) pipeline.restore(player, snapshot.segments.getValue(pipeline.javaClass.name))
+        } finally {
+            player.persistenceSuspended = suspended
+        }
+    }
+
     public fun save(player: Player, callback: AccountSaveCallback) {
-        val request =
-            AccountSaveRequest(
-                accountId = player.accountId,
-                characterId = player.characterId,
-                player = player,
-                callback = callback,
-            )
-        saver.queue(request)
+        if (player.persistenceInvalidated) {
+            callback(AccountSaveResponse.InvalidState(player))
+            return
+        }
+        saver.queue(AccountSaveRequest(player, capture(player), callback))
+    }
+
+    public fun save(player: Player, snapshot: CharacterSaveSnapshot, callback: AccountSaveCallback) {
+        if (player.persistenceInvalidated) {
+            callback(AccountSaveResponse.InvalidState(player))
+            return
+        }
+        require(capture(player) == snapshot) { "Cannot enqueue a stale character checkpoint" }
+        saver.queue(AccountSaveRequest(player = player, snapshot = snapshot, callback = callback))
     }
 
     public fun load(

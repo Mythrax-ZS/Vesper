@@ -106,6 +106,11 @@ constructor(private val mapClock: MapClock, private val registry: ObjRegistry) {
         return true
     }
 
+    public fun take(obj: Obj, count: Int): Boolean {
+        if (count <= 0 || count > obj.count) return false
+        return if (count == obj.count) del(obj) else registry.take(obj, count)
+    }
+
     private fun Obj.respawnRate(): Int = getObj(this).respawnRate
 
     private fun Obj.canRespawn(): Boolean = scope == ObjScope.Perm
@@ -131,7 +136,7 @@ constructor(private val mapClock: MapClock, private val registry: ObjRegistry) {
             return
         }
         val deleteCycle = mapClock + duration
-        val revealCycle = mapClock + reveal
+        val revealCycle = if (obj.personalReceiverId == null) mapClock + reveal else Obj.NO_TIMER
         val objDuration = ObjAddDuration(obj, deleteCycle, revealCycle)
         addDurations.add(objDuration)
     }
@@ -142,7 +147,7 @@ constructor(private val mapClock: MapClock, private val registry: ObjRegistry) {
         }
         val oldDuration = addDurations.firstOrNull { it.obj === obj } ?: return
         oldDuration.triggerCycle = mapClock + newDuration
-        oldDuration.revealCycle = mapClock + newReveal
+        oldDuration.revealCycle = if (obj.personalReceiverId == null) mapClock + newReveal else Obj.NO_TIMER
         obj.setTimers(mapClock.cycle, oldDuration.revealCycle, oldDuration.triggerCycle)
     }
 

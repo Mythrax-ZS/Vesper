@@ -58,10 +58,12 @@ import org.rsmod.api.player.hit.modifier.PlayerHitModifier
 import org.rsmod.api.player.hit.modifier.StandardPlayerHitModifier
 import org.rsmod.api.player.hit.processor.DamageOnlyPlayerHitProcessor
 import org.rsmod.api.player.hit.processor.InstantPlayerHitProcessor
+import org.rsmod.api.player.hook.NpcOpOverrideHook
 import org.rsmod.api.player.hook.PlayerGroundItemDropHook
 import org.rsmod.api.player.hook.PlayerInvUpdateHook
 import org.rsmod.api.player.hook.PlayerObjTakeValidateHook
 import org.rsmod.api.player.hook.PlayerPostTickHook
+import org.rsmod.api.player.hook.PlayerRunRecoveryHook
 import org.rsmod.api.player.hook.PlayerTeleportValidateHook
 import org.rsmod.api.player.protect.ProtectedAccess
 import org.rsmod.api.player.protect.ProtectedAccessLauncher
@@ -912,8 +914,10 @@ constructor(
             Multibinder.newSetBinder(binder(), NpcHitpointsFloorHook::class.java)
             Multibinder.newSetBinder(binder(), PlayerInvUpdateHook::class.java)
             Multibinder.newSetBinder(binder(), PlayerPostTickHook::class.java)
+            Multibinder.newSetBinder(binder(), PlayerRunRecoveryHook::class.java)
             Multibinder.newSetBinder(binder(), PlayerGroundItemDropHook::class.java)
             Multibinder.newSetBinder(binder(), PlayerObjTakeValidateHook::class.java)
+            Multibinder.newSetBinder(binder(), NpcOpOverrideHook::class.java)
             Multibinder.newSetBinder(binder(), PlayerTeleportValidateHook::class.java)
             bind(NpcHitModifier::class.java).to(StandardNpcHitModifier::class.java)
             bind(PlayerHitModifier::class.java).to(StandardPlayerHitModifier::class.java)

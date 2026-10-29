@@ -86,64 +86,75 @@ client change.
 
 | Step | Thread | What |
 |---|---|---|
-| 1. Guard | game | Refused whenever a **logout** would be refused |
-| 2. Save | saver service | Current mode written out |
-| 3. Load | loader service | Target mode read back (pinned, no re-negotiation) |
-| 4. Swap | game | State replaced, client resynced, login events re-fired |
+| 1. Guard | game | Reject combat/logout restrictions, delayed actions, required queues, invalid sessions and concurrent switches |
+| 2. Prepare | game | Hold gameplay, settle interface/area exits in the outgoing mode, then capture an immutable save checkpoint |
+| 3. Save | saver service | Write that checkpoint to its captured mode schema |
+| 4. Load | loader service | Read the requested target mode; enqueue a completion without mutating the player |
+| 5. Validate and swap | game | Verify the exact session/attempt and unchanged persistent checkpoint; install the target, rebuild its scene and publish lifecycle events |
 
-**The guard is shared with logout.** Both call `Player.isLogoutBlocked()`, because a switch discards
-exactly the state a logout would — so they cannot drift apart. It is `preventLogoutUntil` **or**
-`isInCombat()`: the timer alone is only set when a player takes a hit or retaliates, so an aggressor
-who is never hit back would otherwise slip through both. The player gets the same message.
+The existing combat/logout restrictions remain shared through `Player.isLogoutBlocked()`. A switch
+also refuses delayed or non-discardable queued work. Preparation happens after player processing,
+so the command's current script can finish before its checkpoint is taken. Interface-close and
+area-exit handlers execute against the outgoing save. If cleanup suspends or leaves required work,
+preparation aborts before saving; that work continues in the outgoing mode and its rewards remain.
 
-The guard runs **twice** — at the command, and again when the swap lands, since steps 2–3 take
-cycles and the player keeps playing. Aborting at the second check costs nothing: the outgoing save
-already landed, and that is the mode they stay on.
+`Player.worldTypeSwitching` holds input dispatch, movement, protected scripts, player queues,
+timers, combat targeting, direct damage, run updates and post-tick gameplay hooks. Network input
+is drained and discarded while the flag is set. Background content that mutates a player outside
+those paths must also honor `Player.canProcess`; Motherlode batches do so and detach/rebuild their
+mode-specific state on `WorldTypeChangedEvent`.
 
-### Step 4 in detail
+Every save now contains detached inventory, stat, persistent variable and serialized attribute
+values, with its account, character and world type. The saver never derives database values or the
+schema from the live `Player`. This also protects timeout recovery from a late asynchronous save.
+The saver orders retries per character/mode, and separately orders shared identity writes, so an
+older retry cannot overwrite a newer committed checkpoint.
 
-In order, on the game thread (`WorldTypeSwitchService.applySwitch`):
+A completion can apply only to its original `Player`, slot/UID, connection, character and current
+attempt. Save/load callbacks only enqueue messages; validation and all gameplay mutations occur
+on the game thread. Before installation, the service recaptures persistent state and requires
+value equality with the outgoing checkpoint. Unexpected external changes cancel the switch and
+retain the current outgoing state, including those changes.
 
-1. Suspend autosave (`Player.persistenceSuspended`).
-2. Clear the mode-scoped state.
-3. Apply the loaded save.
-4. Set `Player.worldType`, and mark the save new if this is a first visit.
-5. Telejump through the engine, force a scene rebuild.
-6. Publish `PrepareLogin` → `Initialize` → `Login` → `EngineLogin`.
-7. Publish `WorldTypeChangedEvent(from, to)`.
+### Commit, failure and timeout
 
-Re-publishing the login events is what makes it seamless — their handlers already do a full client
-resync (`VarpReset` and retransmit, inventory retransmit, stats, run energy, camera). Nothing new
-had to be written for the client.
+On successful target installation, the service clears outgoing queues/timers, telejumps through
+the engine, and forces both the client scene rebuild and server zone resend. Target initialization
+runs in order: `PrepareLogin` → `Initialize` → `Login` → `EngineLogin`, then `WorldTypeChangedEvent`.
+The reconnect preference is written only after an actual mode change. The wire protocol and client
+packet layouts are unchanged.
 
-> Because the login events re-fire on every switch, **any login handler that is not idempotent will
-> run again** — one-time grants, daily resets, welcome popups. Use
-> [`onWorldTypeChanged`](world-type-plugins.md#reacting-to-a-switch) for logic that should only
-> run on an actual switch.
+An attempt times out after 60 seconds. Save/load failures or session termination cancel it without
+installing the target. Late or duplicate callbacks cannot apply to a replacement connection or
+release the guard of a newer attempt. An immutable queued save may still finish after cancellation;
+its captured mode and ordered writes keep it from reading a resumed or replacement save.
 
-### Why each of those steps exists
+If a target data transform fails, the service restores the persistent outgoing checkpoint and
+forces disconnect. It does not resume partially reconstructed transient effects such as potion
+runtime state; ordinary login reconstructs them. If restoration itself fails,
+`Player.persistenceInvalidated` prevents another database write. Teardown bypasses gameplay logout
+hooks on that invalid state, but still emits `SessionStateEvent.Delete` for external-owner cleanup.
+The previous durable checkpoint remains authoritative.
 
-Each one is load-bearing; removing it reintroduces a bug that was fixed once already.
+After target installation, a failing login or change hook forces disconnect in the target mode;
+rolling back already emitted target rewards could duplicate items. Each change listener still
+receives the committed transition even when an earlier listener fails. Outgoing global activity
+must detach before a later cycle can access the newly installed save. Normal logout remains
+unchanged; global owners should also make Delete cleanup idempotent for failed-session teardown.
 
-- **Suspend autosave.** Clearing and re-applying mutates attrs and inventories, and those mutations
-  are themselves autosave triggers. `AccountSaveRequest` holds the player *live*, so an autosave
-  queued mid-swap would persist the half-built state.
-- **Clear before applying.** The appliers were written for a fresh `Player` and only write the rows
-  they loaded — they merge rather than replace. Without `clearWorldTypeScopedState`, anything the
-  incoming save has no row for survives from the mode being left; for inventories that means **items
-  crossing between modes**. It clears `Perm`-scope inventories (exactly what the save pipeline
-  persists), `statMap`, `vars` and `attr`.
-- **Mark a first visit new.** A mode's save is brand new on first entry, so it needs the new-account
-  initialisation — stats most visibly. Without it the character keeps an empty stat map, which reads
-  as level 1 everywhere, **1 hitpoint included**.
-- **Telejump, don't assign.** The appliers set `coords` outright, which is right for a login (the
-  player is not registered yet) but skips zone bookkeeping for one who is.
-- **Force the scene rebuild.** `RspCycle` only resends the scene when the build area changes, and a
-  switch usually leaves the player on the same tile. Without `ClientCycle.forceSceneRebuild()` the
-  client keeps showing the world of the mode being left.
+> Login handlers run again on a switch. One-time rewards must be gated by saved progress, and
+> global runtime owners must handle `WorldTypeChangedEvent` explicitly. The switch boundary is not
+> a substitute for idempotent content or the broader isolation requirements of a mixed world.
 
-If the swap throws, the player is force-disconnected rather than left holding a mix of two saves.
-The outgoing mode was written out before the load began, so nothing is lost.
+### Persistence extension compatibility
+
+External `CharacterDataStage.Pipeline` implementations must implement `capture(player): SaveData`,
+`save(connection, data: SaveData, characterId)` and `restore(player, data: SaveData)`. Capture on the
+game thread and detach nested collections and mutable attributes; save must not read live gameplay
+objects. `restore` restores persisted state for failure recovery, not a playable transient session.
+Rebuild external pipeline plugins against this API. `AccountManager.save(player, callback)` remains
+available and captures a snapshot; the explicit snapshot overload rejects a stale checkpoint before
+enqueueing. This is a server extension API change, with no client or wire-protocol change.
 
 ## Where data lives
 
@@ -206,15 +217,19 @@ Work that must span modes loops the served types and runs once per schema — se
 
 ### Saving and first entry
 
-`CharacterAccountRepository.save` writes identity and the save as two statements in one
-schema-scoped transaction. **The schema is resolved from `request.player.worldType` at execution
-time**, not from the request — the request holds the player live, so taking both from the same place
-is what stops a queued save writing one mode's state into another's tables.
+`AccountManager.capture` creates a `CharacterSaveSnapshot` on the game thread. The saver pins
+its transaction to `request.snapshot.worldType.key` and writes only the captured main and pipeline
+data. The live `request.player` is retained for completion notification, not persistence reads.
+Identity and mode progress are written in one schema-scoped transaction; an older mode retry can
+still save that mode when necessary, while skipping shared identity if a newer request already
+committed it. Ordered retries also skip a checkpoint superseded by a newer save of the same mode.
 
 The login query `LEFT JOIN`s `character_progress`, so a character with no save for a mode still
-resolves. The repository creates the row and reports it as
-`AccountLoadResponse.Ok.firstVisitToWorldType`, which starts the player at spawn on the base xp
-rate.
+resolves. The repository creates a missing row. A missing row **or a null saved `last_login`**
+reports `AccountLoadResponse.Ok.firstVisitToWorldType`, starting the player at spawn on the base xp
+rate. Creating the row during a load does not initialize the mode: its first successful character
+save supplies `last_login`. An aborted or timed-out first load therefore remains a first visit on
+retry, instead of loading empty stats as an established character.
 
 ### Cross-mode views
 

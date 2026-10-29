@@ -8,6 +8,7 @@ fun interface MessageHandler<in T : IncomingGameMessage> : MessageConsumer<Playe
     fun handle(player: Player, message: T)
 
     override fun consume(receiver: Player, message: T) {
+        if (receiver.worldTypeSwitching || receiver.forceDisconnect || receiver.persistenceInvalidated) return
         handle(receiver, message)
     }
 }

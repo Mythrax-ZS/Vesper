@@ -55,6 +55,7 @@ constructor(
         pendingLogouts.add(queued)
         when (response) {
             is AccountSaveResponse.Success -> {}
+            is AccountSaveResponse.InvalidState -> {}
             is AccountSaveResponse.ExcessiveRetries -> saveEmergencyBackup(response.player)
             is AccountSaveResponse.InternalShutdownError -> saveEmergencyBackup(response.player)
         }

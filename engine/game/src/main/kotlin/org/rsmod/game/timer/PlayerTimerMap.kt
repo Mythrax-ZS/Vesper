@@ -16,6 +16,10 @@ public class PlayerTimerMap(
     public val isNotEmpty: Boolean
         get() = timers.isNotEmpty()
 
+    public fun clear() {
+        timers.clear()
+    }
+
     public fun remove(timer: String) {
         timers.remove(timer.asRSCM(RSCMType.TIMER).toShort())
     }

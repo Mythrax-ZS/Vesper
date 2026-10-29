@@ -160,12 +160,12 @@ constructor(
                 if (check.npc != null && check.npc != npc.id) {
                     continue
                 }
-                if (check.category != null && check.npc != npc.type.category) {
+                if (check.category != null && check.category != npc.type.category) {
                     continue
                 }
             }
             count++
-            if (random.of(minInclusive = 0, maxInclusive = count) == 0) {
+            if (random.of(minInclusive = 0, maxInclusive = count - 1) == 0) {
                 target = npc.uid
             }
         }
@@ -187,12 +187,12 @@ constructor(
                     continue
                 }
                 val objType = ServerCacheManager.getItem(obj.type) ?: continue
-                if (check.category != null && check.obj != objType.category) {
+                if (check.category != null && check.category != objType.category) {
                     continue
                 }
             }
             count++
-            if (random.of(minInclusive = 0, maxInclusive = count) == 0) {
+            if (random.of(minInclusive = 0, maxInclusive = count - 1) == 0) {
                 target = obj
             }
         }
@@ -214,12 +214,12 @@ constructor(
                     continue
                 }
                 val locType = ServerCacheManager.getObject(loc.id)!!
-                if (check.category != null && check.loc != locType.category) {
+                if (check.category != null && check.category != locType.category) {
                     continue
                 }
             }
             count++
-            if (random.of(minInclusive = 0, maxInclusive = count) == 0) {
+            if (random.of(minInclusive = 0, maxInclusive = count - 1) == 0) {
                 target = loc
             }
         }

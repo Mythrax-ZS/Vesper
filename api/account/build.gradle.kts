@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("game-cache-test-conventions")
 }
 
 kotlin {
@@ -7,6 +8,9 @@ kotlin {
 }
 
 dependencies {
+    testImplementation(libs.mockk)
+    testImplementation(libs.embedded.postgres)
+    testImplementation(projects.engine.annotations)
     implementation(libs.openrune.central.common)
     implementation(projects.api.attr)
     implementation(libs.kotlin.inline.logger)

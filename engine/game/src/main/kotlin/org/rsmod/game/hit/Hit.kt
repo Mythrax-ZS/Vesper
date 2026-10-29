@@ -9,13 +9,26 @@ import org.rsmod.game.entity.PlayerList
 import org.rsmod.game.entity.npc.NpcUid
 import org.rsmod.game.entity.player.PlayerUid
 
-public data class Hit(
+public class Hit(
     public val type: HitType,
     public val hitmark: Hitmark,
     private val sourceUid: Int?,
     private val righthandObj: Int?,
     private val secondaryObj: Int?,
+    /**
+     * Whether the attack was explicitly declared a magic splash before damage modification.
+     * `false` does not imply a successful accuracy roll; ordinary misses and scripted hits also
+     * use the default. This outcome is independent of the final [damage].
+     */
+    public val isMagicSplash: Boolean = false,
 ) {
+    public var retaliation: HitRetaliation? = null
+        private set
+
+    init {
+        require(!isMagicSplash || type == HitType.Magic) { "Only magic hits can splash." }
+    }
+
     public val damage: Int
         get() = hitmark.damage
 
@@ -24,6 +37,42 @@ public data class Hit(
 
     public val isFromPlayer: Boolean
         get() = hitmark.isPlayerSource
+
+    public fun withRetaliation(retaliation: HitRetaliation?): Hit =
+        copy().also { it.retaliation = retaliation }
+
+    public fun copy(
+        type: HitType = this.type,
+        hitmark: Hitmark = this.hitmark,
+        sourceUid: Int? = this.sourceUid,
+        righthandObj: Int? = this.righthandObj,
+        secondaryObj: Int? = this.secondaryObj,
+        isMagicSplash: Boolean = this.isMagicSplash,
+    ): Hit = Hit(type, hitmark, sourceUid, righthandObj, secondaryObj, isMagicSplash).also {
+        it.retaliation = retaliation
+    }
+
+    public operator fun component1(): HitType = type
+    public operator fun component2(): Hitmark = hitmark
+    private operator fun component3(): Int? = sourceUid
+    private operator fun component4(): Int? = righthandObj
+    private operator fun component5(): Int? = secondaryObj
+    public operator fun component6(): Boolean = isMagicSplash
+
+    override fun equals(other: Any?): Boolean =
+        this === other || other is Hit && type == other.type && hitmark == other.hitmark &&
+            sourceUid == other.sourceUid && righthandObj == other.righthandObj &&
+            secondaryObj == other.secondaryObj && isMagicSplash == other.isMagicSplash
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + hitmark.hashCode()
+        result = 31 * result + (sourceUid ?: 0)
+        result = 31 * result + (righthandObj ?: 0)
+        result = 31 * result + (secondaryObj ?: 0)
+        result = 31 * result + isMagicSplash.hashCode()
+        return result
+    }
 
     public fun isRighthandObj(type: ItemServerType): Boolean = type.id == righthandObj
 
@@ -52,5 +101,5 @@ public data class Hit(
     }
 
     override fun toString(): String =
-        "Hit(type=$type, righthandObj=$righthandObj, secondaryObj=$secondaryObj, hitmark=$hitmark)"
+        "Hit(type=$type, isMagicSplash=$isMagicSplash, righthandObj=$righthandObj, secondaryObj=$secondaryObj, hitmark=$hitmark)"
 }

@@ -1,5 +1,6 @@
 plugins {
     id("base-conventions")
+    id("game-cache-test-conventions")
 }
 
 kotlin {
@@ -21,4 +22,7 @@ dependencies {
     implementation(projects.engine.map)
     implementation(projects.engine.objtx)
     implementation(projects.engine.plugin)
+    testImplementation(projects.api.invStorage)
+    testImplementation(projects.api.registry)
+    testImplementation(projects.engine.annotations)
 }

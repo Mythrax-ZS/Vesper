@@ -16,6 +16,7 @@ import org.rsmod.api.registry.loc.LocRegistry
 import org.rsmod.game.loc.LocInfo
 import org.rsmod.game.obj.Obj
 import org.rsmod.game.proj.ProjAnim
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 import org.rsmod.map.zone.ZoneGrid
 
@@ -60,15 +61,17 @@ public object ZoneUpdateTransformer {
         return LocAnim(seq, zoneGrid.x, zoneGrid.z, loc.shapeId, loc.angleId)
     }
 
-    public fun toPersistentObjAdd(obj: Obj, observerId: Long?, cycle: Int): ZoneProt? =
-        if (obj.isVisibleTo(observerId)) {
+    public fun toPersistentObjAdd(obj: Obj, observerId: Long?, cycle: Int, playerId: Long? = null, worldType: WorldType? = null): ZoneProt? =
+        if (obj.isVisibleTo(observerId, playerId, worldType)) {
             obj.toObjAdd(cycle)
         } else {
             null
         }
 
-    public fun toPublicObjAddProt(obj: Obj): ZoneProt =
-        obj.toObjAdd(obj.timerCycle)
+    public fun toPublicObjAddProt(obj: Obj): ZoneProt {
+        val prot = obj.toObjAdd(obj.timerCycle)
+        return if (obj.worldType == null) prot else ObjAddPrivate(obj.copy(), prot)
+    }
 
     public fun toPrivateObjAddProt(obj: Obj): ZoneProt {
         val prot = obj.toObjAdd(obj.timerCycle)
@@ -77,7 +80,8 @@ public object ZoneUpdateTransformer {
 
     public fun toPublicObjDelProt(obj: Obj): ZoneProt {
         val zoneGrid = ZoneGrid.from(obj.coords)
-        return ObjDel(obj.type, obj.count, zoneGrid.x, zoneGrid.z)
+        val prot = ObjDel(obj.type, obj.count, zoneGrid.x, zoneGrid.z)
+        return if (obj.worldType == null) prot else ObjDelPrivate(obj.copy(), prot)
     }
 
     public fun toPrivateObjDelProt(obj: Obj): ZoneProt {
@@ -156,7 +160,7 @@ public object ZoneUpdateTransformer {
     }
 
     private fun Obj.copy(): Obj =
-        Obj(coords, entity, creationCycle, receiverId, ownerId).also { it.copyTimers(this) }
+        Obj(coords, entity, creationCycle, receiverId, ownerId, personalReceiverId, worldType).also { it.copyTimers(this) }
 
     private const val OWNERSHIP_NONE = 0
     private const val OWNERSHIP_SELF = 1
@@ -175,7 +179,8 @@ public object ZoneUpdateTransformer {
     public interface ObjPrivateZoneProt : PartialFollowsZoneProt {
         public val obj: Obj
 
-        public fun isVisibleTo(observer: Long?): Boolean = obj.isVisibleTo(observer)
+        public fun isVisibleTo(observer: Long?, playerId: Long? = null, worldType: WorldType? = null): Boolean =
+            obj.isVisibleTo(observer, playerId, worldType)
     }
 
     public class ObjAddPrivate(override val obj: Obj, override val backing: ZoneProt) :

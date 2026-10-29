@@ -11,6 +11,6 @@ constructor(
 ) {
     public fun process() {
         accountRegistry.handleLogins()
-        worldTypeSwitches.processPendingFailures()
+        worldTypeSwitches.processPendingSwitches()
     }
 }

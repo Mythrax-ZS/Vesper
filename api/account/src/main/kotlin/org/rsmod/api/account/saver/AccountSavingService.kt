@@ -8,6 +8,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.min
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withTimeoutOrNull
@@ -32,11 +33,14 @@ constructor(
     private val logger = InlineLogger()
 
     private val pendingRequests = ConcurrentLinkedQueue<AccountSaveRequest>()
+    private val saveOrder = SaveOrderCoordinator()
 
     private val pendingBatch = ArrayList<AccountSaveRequest>(REQUESTS_PER_BATCH)
     private var consecutiveFailureCount = AtomicInteger(0)
 
     public fun queue(request: AccountSaveRequest) {
+        if (request.completed) return
+        if (request.sequence == 0L) saveOrder.register(request)
         pendingRequests.add(request)
     }
 
@@ -82,10 +86,16 @@ constructor(
     }
 
     private suspend fun handleRequest(request: AccountSaveRequest) {
+        if (request.completed) return
         try {
-            saveSegments(request)
+            if (!saveOrder.isSuperseded(request)) {
+                saveSegments(request)
+                saveOrder.committed(request)
+            }
             invokeSaveCallback(request)
             resetConsecutiveFailures()
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             incrementSaveAttempts(request)
             incrementConsecutiveFailures()
@@ -94,18 +104,12 @@ constructor(
     }
 
     private suspend fun saveSegments(request: AccountSaveRequest) {
-        // Schema and data both come from the player, so a request queued cycles ago cannot write
-        // one world type's state into another's tables.
-        database.withSchemaTransaction(request.player.worldType.key) { connection ->
-            repository.save(
-                connection,
-                request.player,
-                request.accountId,
-                request.characterId,
-                serverConfig.world,
-            )
+        val snapshot = request.snapshot
+        val writeIdentity = saveOrder.writesIdentity(request)
+        database.withSchemaTransaction(snapshot.worldType.key) { connection ->
+            repository.save(connection, snapshot.main, snapshot.characterId, serverConfig.world, writeIdentity)
             for (pipeline in pipelines) {
-                pipeline.save(connection, request.player, request.characterId)
+                pipeline.save(connection, snapshot.segments.getValue(pipeline.javaClass.name), snapshot.characterId)
             }
         }
     }
@@ -202,6 +206,7 @@ constructor(
     // executed on the service thread, we add a safeguard to prevent one faulty callback from
     // affecting other pending requests.
     private fun safeInvokeCallback(request: AccountSaveRequest, response: AccountSaveResponse) {
+        if (!saveOrder.complete(request)) return
         try {
             request.callback(response)
         } catch (e: Exception) {

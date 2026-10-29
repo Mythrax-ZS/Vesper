@@ -9,6 +9,8 @@ public sealed class AccountSaveResponse {
 
     public sealed class Failure : AccountSaveResponse()
 
+    public data class InvalidState(override val player: Player) : Failure()
+
     /**
      * Indicates a save request that failed to complete after the maximum number of retry attempts.
      *

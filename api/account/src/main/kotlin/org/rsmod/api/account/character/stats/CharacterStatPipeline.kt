@@ -1,9 +1,9 @@
 package org.rsmod.api.account.character.stats
 
 import dev.openrune.ServerCacheManager
-import dev.or2.sql.OpenRuneSql
 import dev.openrune.rscm.RSCM
 import dev.openrune.rscm.RSCMType
+import dev.or2.sql.OpenRuneSql
 import jakarta.inject.Inject
 import org.rsmod.api.account.character.CharacterDataStage
 import org.rsmod.api.account.character.CharacterMetadataList
@@ -39,26 +39,32 @@ public class CharacterStatPipeline @Inject constructor(private val applier: Char
         metadata.add(applier, CharacterStatData(stats))
     }
 
-    override fun save(connection: DatabaseConnection, player: Player, characterId: Int) {
-        val upsert =
-            connection.prepareStatement(
-                OpenRuneSql.text("game/stats/upsert_stat.sql"),
-            )
+    override fun capture(player: Player): CharacterStatData {
+        val stats = ServerCacheManager.getStats().values.sortedBy { it.id }.map { stat ->
+            val symbol = RSCM.getReverseMapping(RSCMType.STAT, stat.id)
+            Stat(stat.id, player.statMap.getCurrentLevel(symbol).toInt(), player.statMap.getBaseLevel(symbol).toInt(), player.statMap.getFineXP(symbol))
+        }
+        return CharacterStatData(java.util.List.copyOf(stats))
+    }
 
+    override fun restore(player: Player, data: CharacterDataStage.SaveData) {
+        player.statMap.clear()
+        applier.apply(player, data as CharacterStatData)
+    }
+
+    override fun save(connection: DatabaseConnection, data: CharacterDataStage.SaveData, characterId: Int) {
+        val stats = (data as CharacterStatData).stats
+        val upsert = connection.prepareStatement(OpenRuneSql.text("game/stats/upsert_stat.sql"))
         upsert.use {
-            for (stat in ServerCacheManager.getStats().values) {
-                val statType = RSCM.getReverseMapping(RSCMType.STAT, stat.id)
-                val visLevel = player.statMap.getCurrentLevel(statType).toInt()
-                val baseLevel = player.statMap.getBaseLevel(statType).toInt()
-                val fineXp = player.statMap.getFineXP(statType)
+            for (stat in stats) {
                 it.setInt(1, characterId)
-                it.setInt(2, stat.id)
-                it.setInt(3, visLevel)
-                it.setInt(4, baseLevel)
-                it.setInt(5, fineXp)
-                upsert.addBatch()
+                it.setInt(2, stat.type)
+                it.setInt(3, stat.vis)
+                it.setInt(4, stat.base)
+                it.setInt(5, stat.fineXp)
+                it.addBatch()
             }
-            upsert.executeBatch()
+            it.executeBatch()
         }
     }
 }

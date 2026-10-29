@@ -25,7 +25,7 @@ public fun Player.invAddOrDrop(
     coords: CoordGrid = this.coords,
     inv: Inventory = this.inv,
 ): Boolean {
-    val transaction = invAdd(inv, RSCM.getReverseMapping(RSCMType.OBJ,type.asRSCM(RSCMType.OBJ)), count = count)
+    val transaction = invAdd(inv, RSCM.getReverseMapping(RSCMType.OBJ, type.asRSCM(RSCMType.OBJ)), count = count)
     if (transaction.success) {
         return true
     }
@@ -537,7 +537,7 @@ public fun Transaction<InvObj>.select(inv: Inventory): TransactionInventory<InvO
     val image = Array(inv.objs.size) { input(inv.objs[it]) }
     val stack = inv.type.stack.toTransactionStackType()
     val transformed =
-        TransactionInventory(stack, inv.objs, image, inv.type.placeholders, inv.modifiedSlots)
+        TransactionInventory(stack, inv.objs, image, inv.type.placeholders, inv.modifiedSlots, inv::notifyChanged)
     register(transformed)
     return transformed
 }

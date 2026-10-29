@@ -12,6 +12,7 @@ import org.rsmod.api.script.onEvent
 import org.rsmod.api.script.onOpLoc1
 import org.rsmod.api.script.onPlayerLogin
 import org.rsmod.api.script.onPlayerLogout
+import org.rsmod.api.script.onWorldTypeChanged
 import org.rsmod.content.areas.misc.motherlode.MotherlodeMine
 import org.rsmod.content.areas.misc.motherlode.circuit.MotherlodeWaterCircuit
 import org.rsmod.content.areas.misc.motherlode.hasUpperLevel
@@ -20,6 +21,7 @@ import org.rsmod.content.areas.misc.motherlode.syncMotherlodeVars
 import org.rsmod.content.areas.misc.motherlode.veins.MotherlodeVeins
 import org.rsmod.content.interfaces.bank.tryOpenBank
 import org.rsmod.events.EventBus
+import org.rsmod.game.entity.player.SessionStateEvent
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.PluginScript
 import org.rsmod.plugin.scripts.ScriptContext
@@ -43,6 +45,13 @@ constructor(
             circuit.resume(player)
         }
         onPlayerLogout { circuit.remove(player) }
+        onEvent<SessionStateEvent.Delete> { circuit.remove(player) }
+        onWorldTypeChanged {
+            // Login is also published during a switch, but its resume keeps an existing queue.
+            // Discard that outgoing queue and rebuild from the target save before the next tick.
+            circuit.remove(player)
+            circuit.resume(player)
+        }
 
         onArea(MotherlodeMine.AREA) {
             player.onUpperLevel = MotherlodeMine.isUpperFloor(player.coords)

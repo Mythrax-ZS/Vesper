@@ -16,6 +16,7 @@ constructor(
 ) {
     public fun process() {
         for (player in playerList) {
+            if (!player.canProcess) continue
             player.cacheFollowCoord()
             val request = player.routeRequest
             if (request != null && request.clientRequest) {

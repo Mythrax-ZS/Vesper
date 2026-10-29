@@ -7,6 +7,7 @@ import org.rsmod.game.MapClock
 import org.rsmod.game.entity.Npc
 import org.rsmod.game.entity.Player
 import org.rsmod.game.inv.InvObj
+import org.rsmod.game.world.WorldType
 import org.rsmod.map.CoordGrid
 
 /**
@@ -20,6 +21,7 @@ import org.rsmod.map.CoordGrid
  * - [fromPvp] - For objs dropped from player vs. player combat.
  * - [fromPvn] - For objs dropped from player vs. npc combat.
  * - [fromOwner] - For objs dropped by or for a specific player.
+ * - [fromPersonal] - For rewards visible only to one player, including in group modes.
  * - [fromServer] - For server-spawned objs that should be instantly visible to everyone.
  *
  * **Visibility and Ownership**:
@@ -36,7 +38,13 @@ public class Obj(
     public val creationCycle: Int,
     public val receiverId: Long,
     public val ownerId: Long = NULL_OBSERVER_ID,
+    public val personalReceiverId: Long? = null,
+    public val worldType: WorldType? = null,
 ) {
+    init {
+        require(personalReceiverId == null || entity.scope == ObjScope.Private.id)
+    }
+
     public val x: Int
         get() = coords.x
 
@@ -110,11 +118,11 @@ public class Obj(
         private set
 
     public val neverBecomesPublic: Boolean
-        get() = isPrivate && despawnCycle != NO_TIMER && revealCycle == NO_TIMER
+        get() = personalReceiverId != null || (isPrivate && despawnCycle != NO_TIMER && revealCycle == NO_TIMER)
 
     public fun setTimers(cycle: Int, revealCycle: Int, despawnCycle: Int) {
         this.timerCycle = cycle
-        this.revealCycle = revealCycle
+        this.revealCycle = if (personalReceiverId == null) revealCycle else NO_TIMER
         this.despawnCycle = despawnCycle
     }
 
@@ -129,6 +137,7 @@ public class Obj(
         if (despawnCycle != NO_TIMER) (despawnCycle - cycle).coerceIn(0, MAX_TIMER) else 0
 
     public fun reveal() {
+        if (personalReceiverId != null) return
         val entity = entity.copy(scope = ObjScope.Temp.id)
         this.entity = entity
     }
@@ -139,13 +148,21 @@ public class Obj(
         this.entity = entity
     }
 
-    public fun isVisibleTo(player: Player): Boolean = isVisibleTo(player.observerUUID)
+    public fun isVisibleTo(player: Player): Boolean =
+        isVisibleTo(player.observerUUID, player.uuid, player.worldType)
 
-    public fun isVisibleTo(observer: Long?): Boolean = isPublic || observer == nullableReceiverId
+    public fun isVisibleTo(observer: Long?, playerId: Long? = null, worldType: WorldType? = null): Boolean =
+        belongsTo(worldType) &&
+            (personalReceiverId?.let { it == playerId } ?: (isPublic || observer == nullableReceiverId))
 
-    public fun isOriginalOwner(player: Player): Boolean = isOriginalOwner(player.observerUUID)
+    public fun isOriginalOwner(player: Player): Boolean =
+        isOriginalOwner(player.observerUUID, player.uuid, player.worldType)
 
-    public fun isOriginalOwner(observer: Long?): Boolean = observer == nullableOwnerId
+    public fun isOriginalOwner(observer: Long?, playerId: Long? = null, worldType: WorldType? = null): Boolean =
+        belongsTo(worldType) &&
+            (personalReceiverId?.let { it == playerId } ?: (observer == nullableOwnerId))
+
+    public fun belongsTo(worldType: WorldType?): Boolean = this.worldType == null || this.worldType == worldType
 
     override fun toString(): String =
         "Obj(" +
@@ -182,6 +199,7 @@ public class Obj(
                 creationCycle = killer.currentMapClock,
                 receiverId = killer.observerId(),
                 ownerId = target.observerId(),
+                worldType = target.worldType,
             )
         }
 
@@ -201,6 +219,7 @@ public class Obj(
                 creationCycle = killer.currentMapClock,
                 receiverId = killer.observerId(),
                 ownerId = killer.observerId(),
+                worldType = killer.worldType,
             )
         }
 
@@ -209,8 +228,9 @@ public class Obj(
             coords: CoordGrid,
             obj: ItemServerType,
             count: Int,
+            worldType: WorldType = player.worldType,
         ): Obj {
-            return fromOwner(player, coords, obj.id, count)
+            return fromOwner(player, coords, obj.id, count, worldType)
         }
 
         public fun fromOwner(
@@ -218,15 +238,16 @@ public class Obj(
             coords: CoordGrid,
             obj: String,
             count: Int,
+            worldType: WorldType = player.worldType,
         ): Obj {
-            return fromOwner(player, coords, obj.asRSCM(RSCMType.OBJ), count)
+            return fromOwner(player, coords, obj.asRSCM(RSCMType.OBJ), count, worldType)
         }
 
-        public fun fromOwner(player: Player, coords: CoordGrid, obj: InvObj): Obj {
-            return fromOwner(player, coords, obj.id, obj.count)
+        public fun fromOwner(player: Player, coords: CoordGrid, obj: InvObj, worldType: WorldType = player.worldType): Obj {
+            return fromOwner(player, coords, obj.id, obj.count, worldType)
         }
 
-        private fun fromOwner(player: Player, coords: CoordGrid, obj: Int, count: Int): Obj {
+        private fun fromOwner(player: Player, coords: CoordGrid, obj: Int, count: Int, worldType: WorldType): Obj {
             val entity = ObjEntity(obj, count, ObjScope.Private.id)
             return Obj(
                 coords = coords,
@@ -234,25 +255,47 @@ public class Obj(
                 creationCycle = player.currentMapClock,
                 receiverId = player.observerId(),
                 ownerId = player.observerId(),
+                worldType = worldType,
             )
         }
+
+        public fun fromPersonal(player: Player, coords: CoordGrid, obj: String, count: Int): Obj =
+            fromPersonal(player, coords, obj.asRSCM(RSCMType.OBJ), count)
+
+        public fun fromPersonal(player: Player, coords: CoordGrid, obj: ItemServerType, count: Int): Obj =
+            fromPersonal(player, coords, obj.id, count)
+
+        public fun fromPersonal(player: Player, coords: CoordGrid, obj: InvObj): Obj =
+            fromPersonal(player, coords, obj.id, obj.count)
+
+        private fun fromPersonal(player: Player, coords: CoordGrid, obj: Int, count: Int): Obj =
+            Obj(
+                coords = coords,
+                entity = ObjEntity(obj, count, ObjScope.Private.id),
+                creationCycle = player.currentMapClock,
+                receiverId = player.observerId(),
+                ownerId = player.observerId(),
+                personalReceiverId = checkNotNull(player.uuid) { "`uuid` must be set for personal rewards." },
+                worldType = player.worldType,
+            )
 
         public fun fromServer(
             clock: MapClock,
             coords: CoordGrid,
             obj: String,
             count: Int,
+            worldType: WorldType? = null,
         ): Obj {
-            return fromServer(clock, coords, obj.asRSCM(RSCMType.OBJ), count)
+            return fromServer(clock, coords, obj.asRSCM(RSCMType.OBJ), count, worldType)
         }
 
-        public fun fromServer(clock: MapClock, coords: CoordGrid, obj: InvObj): Obj {
-            return fromServer(clock, coords, obj.id, obj.count)
+        public fun fromServer(clock: MapClock, coords: CoordGrid, obj: InvObj, worldType: WorldType? = null): Obj {
+            return fromServer(clock, coords, obj.id, obj.count, worldType)
         }
 
-        private fun fromServer(clock: MapClock, coords: CoordGrid, obj: Int, count: Int): Obj {
+        private fun fromServer(clock: MapClock, coords: CoordGrid, obj: Int, count: Int, worldType: WorldType?): Obj {
             val entity = ObjEntity(obj, count, ObjScope.Temp.id)
-            return Obj(coords, entity, clock.cycle, NULL_OBSERVER_ID)
+            return Obj(coords, entity, clock.cycle, NULL_OBSERVER_ID, worldType = worldType)
         }
 
         private fun Player.observerId(): Long {

@@ -8,7 +8,6 @@ import org.rsmod.api.account.character.CharacterMetadataList
 import org.rsmod.api.account.persistence.GamePersistenceRscmKeys
 import org.rsmod.api.db.DatabaseConnection
 import org.rsmod.game.entity.Player
-import org.rsmod.game.inv.Inventory
 
 private typealias CharacterInventory = CharacterInventoryData.Inventory
 
@@ -91,8 +90,36 @@ constructor(private val applier: CharacterInventoryApplier) : CharacterDataStage
         return inventories
     }
 
-    override fun save(connection: DatabaseConnection, player: Player, characterId: Int) {
-        val persistentInvs = player.invMap.values.filter { it.type.scope == InvScope.Perm }
+    override fun capture(player: Player): CharacterInventorySaveData {
+        val inventories = player.invMap.values.filter { it.type.scope == InvScope.Perm }
+            .sortedBy { it.internalName }.map { inventory ->
+                val objs = inventory.indices.mapNotNull { slot ->
+                    inventory[slot]?.let { slot to CharacterObj(GamePersistenceRscmKeys.encodeObjKey(it.id), it.count, it.vars) }
+                }.toMap()
+                CharacterInventorySaveData.Inventory(inventory.internalName, inventory.size, java.util.Map.copyOf(objs))
+            }
+        return CharacterInventorySaveData(java.util.List.copyOf(inventories))
+    }
+
+    override fun restore(player: Player, data: CharacterDataStage.SaveData) {
+        val saved = (data as CharacterInventorySaveData).inventories
+        val keys = saved.mapTo(HashSet()) { it.key }
+        for (inventory in player.invMap.values.toList()) {
+            if (inventory.type.scope != InvScope.Perm) continue
+            if (inventory.internalName !in keys) {
+                player.invMap.remove(inventory.internalName)
+            } else {
+                for (slot in inventory.indices) inventory[slot] = null
+            }
+        }
+        val loaded = saved.map { inventory ->
+            CharacterInventory(player.characterId, GamePersistenceRscmKeys.encodeInvTypeKey(inventory.key), inventory.key, inventory.objs.toMutableMap())
+        }
+        applier.apply(player, CharacterInventoryData(loaded))
+    }
+
+    override fun save(connection: DatabaseConnection, data: CharacterDataStage.SaveData, characterId: Int) {
+        val persistentInvs = (data as CharacterInventorySaveData).inventories
         deleteStaleInventories(connection, characterId, persistentInvs)
 
         val delete =
@@ -111,17 +138,17 @@ constructor(private val applier: CharacterInventoryApplier) : CharacterDataStage
         delete.use { delete ->
             upsert.use { upsert ->
                 for (inventory in persistentInvs) {
-                    val invTypeKey = GamePersistenceRscmKeys.encodeInvTypeKey(inventory.internalName)
+                    val invTypeKey = GamePersistenceRscmKeys.encodeInvTypeKey(inventory.key)
 
                     val parent = ensureInventoryRow(connection, characterId, invTypeKey)
                     if (parent == null) {
                         val message =
-                            "Fatal error fetching inventory row for: ${inventory.type} (player=$player)"
+                            "Fatal error fetching inventory row for: ${inventory.key} (character=$characterId)"
                         throw IllegalStateException(message)
                     }
 
-                    for (i in inventory.indices) {
-                        if (inventory[i] == null) {
+                    for (i in 0 until inventory.capacity) {
+                        if (inventory.objs[i] == null) {
                             delete.setInt(1, parent.characterId)
                             delete.setString(2, parent.invDbKey)
                             delete.setInt(3, i)
@@ -129,13 +156,13 @@ constructor(private val applier: CharacterInventoryApplier) : CharacterDataStage
                         }
                     }
 
-                    for (i in inventory.indices) {
-                        val obj = inventory[i]
+                    for (i in 0 until inventory.capacity) {
+                        val obj = inventory.objs[i]
                         if (obj != null) {
                             upsert.setInt(1, parent.characterId)
                             upsert.setString(2, parent.invDbKey)
                             upsert.setInt(3, i)
-                            upsert.setString(4, GamePersistenceRscmKeys.encodeObjKey(obj.id))
+                            upsert.setString(4, obj.objKey)
                             upsert.setInt(5, obj.count)
                             upsert.setInt(6, obj.vars)
                             upsert.addBatch()
@@ -151,7 +178,7 @@ constructor(private val applier: CharacterInventoryApplier) : CharacterDataStage
     private fun deleteStaleInventories(
         connection: DatabaseConnection,
         characterId: Int,
-        inventories: Collection<Inventory>,
+        inventories: Collection<CharacterInventorySaveData.Inventory>,
     ) {
         // Important: This function assumes `inventory_objs` references `inventories` with
         // `ON DELETE CASCADE`, so deleting a parent inventory also deletes its associated
@@ -169,7 +196,7 @@ constructor(private val applier: CharacterInventoryApplier) : CharacterDataStage
             deleteStaleInventories.use {
                 it.setInt(1, characterId)
                 inventories.forEachIndexed { index, inv ->
-                    it.setString(2 + index, GamePersistenceRscmKeys.encodeInvTypeKey(inv.internalName))
+                    it.setString(2 + index, GamePersistenceRscmKeys.encodeInvTypeKey(inv.key))
                 }
                 it.executeUpdate()
             }

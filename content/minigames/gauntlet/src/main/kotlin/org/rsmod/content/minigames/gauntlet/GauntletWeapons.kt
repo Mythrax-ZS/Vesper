@@ -54,8 +54,9 @@ class GauntletWeapons @Inject constructor() : WeaponMap {
             val proj = manager.spawnProjectile(this, target, BOW_TRAVEL, "projanim.arrow")
             val (serverDelay, clientDelay) = proj.durations
             val damage = manager.rollRangedDamage(this, target, attack)
-            manager.giveCombatXp(this, target, attack, damage)
-            manager.queueRangedHit(this, target, null, damage, clientDelay, serverDelay)
+            val hit = manager.queueRangedHit(this, target, null, damage, clientDelay, serverDelay)
+            val xpDamage = if (target is Npc) hit.damage else damage
+            manager.giveCombatXp(this, target, attack, xpDamage)
             manager.continueCombat(this, target)
         }
     }
