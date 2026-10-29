@@ -68,14 +68,14 @@ Flow for the ap/op handlers:
 For spells, rune checks (`canCastSpell`) happen **before** `canAttack`, matching official
 ordering.
 
-`PvNCombat.attackMelee` (ranged and staff follow the same shape):
+`PvNCombat.attackMelee` (ranged follows the same physical XP policy):
 
 1. If the player is still on attack delay → `continueCombat` and return.
 2. Set the next attack delay from the weapon speed *before* any specialisation runs.
 3. If a weapon special is armed → `activateMeleeSpecial`; then shield specials.
 4. If `WeaponRegistry` has a specialised melee weapon for the right-hand obj → call it.
-5. Otherwise default: roll damage (accuracy + max hit), give xp, play weapon fx, queue the hit,
-   and `continueCombat`.
+5. Otherwise default: roll damage (accuracy + max hit), play weapon fx, queue the hit,
+   award XP from its modified damage, and `continueCombat`.
 
 Special attacks and specialised weapons that return `true` own the rest of the attack: they
 must explicitly re-engage (call `opnpc2` / `continueCombat`) or `stopCombat`.
@@ -83,6 +83,12 @@ must explicitly re-engage (call `opnpc2` / `continueCombat`) or `stopCombat`.
 Damage is not applied immediately. `queueMeleeHit` etc. enqueue a `queue.hit` on the target;
 `NpcHitScript` / `PlayerHitScript` process it on a later tick (see
 [Game cycle and tick processing](../architecture/game-cycle.md)).
+
+Ranged launch calculations and queued weapon/ammunition metadata are captured
+before ammunition consumption, so the final arrow or thrown weapon keeps its
+equipment bonuses. Venator and Tumeken's Shadow similarly validate charges first
+and defer depletion until their paid shot/cast has been queued. Misses and splashes
+still pay their normal ammunition or charge cost.
 
 `NvPCombatScript` and the retaliation scripts handle NPCs attacking players and auto-retaliate.
 NPC-side combat behaviour for bosses is covered in

@@ -61,6 +61,10 @@ jobs:
 
       # The scheduled run is now the only regular one, so it also refreshes the
       # wiki section cache.
+      - name: Test report classification and check mode
+        if: steps.check.outputs.run == 'true'
+        run: node --test tools/progress/content-progress.test.mjs
+
       - name: Build progress report
         if: steps.check.outputs.run == 'true'
         run: |
@@ -69,6 +73,7 @@ jobs:
           else
             node tools/progress/content-progress.mjs
           fi
+          node tools/progress/content-progress.mjs --check
 
       - name: Commit changes
         if: steps.check.outputs.run == 'true'

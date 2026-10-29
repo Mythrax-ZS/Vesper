@@ -1,24 +1,8 @@
 package org.rsmod.tools.wiki.dumping
 
-import kotlin.math.floor
-
-internal fun combatAchievementClueDenominator(baseDenominator: Int): Int =
-    floor(baseDenominator - baseDenominator * 0.05).toInt()
-
 internal data class RingOfWealthClueRate(
     val wealthDenominator: Int,
     val requiresWilderness: Boolean,
-)
-
-internal data class ClueTertiaryRollModifier(
-    val requireRingOfWealth: Boolean = false,
-    val excludeRingOfWealth: Boolean = false,
-    val requireWilderness: Boolean = false,
-)
-
-internal data class ClueTertiaryRollExport(
-    val denominator: Int,
-    val modifier: ClueTertiaryRollModifier = ClueTertiaryRollModifier(),
 )
 
 private val RING_OF_WEALTH_NOTE = Regex("""ring\s*of\s*wealth""", RegexOption.IGNORE_CASE)
@@ -44,45 +28,25 @@ private val EXACT_RARITY_NOTE = Regex("""exact\s+rarity\s+is""", RegexOption.IGN
 internal fun isHandledTransformRateNote(note: String): Boolean =
     note.contains("Combat Achievements", ignoreCase = true) ||
         parseRingOfWealthClueRate(note) != null ||
+        (RING_OF_WEALTH_NOTE.containsMatchIn(note) &&
+            Regex("""doubl(?:e|es|ed|ing)""", RegexOption.IGNORE_CASE).containsMatchIn(note)) ||
         EXACT_RARITY_NOTE.containsMatchIn(note)
 
-internal fun ResolvedDropEntry.hasCombatAchievementClueRateNote(): Boolean =
-    wikiNotes.transformRate.any { it.contains("Combat Achievements", ignoreCase = true) }
+/** Only ordinary clue scroll rewards receive the shared runtime rate modifiers. */
+internal fun ResolvedDropEntry.isClueScrollRate(): Boolean =
+    !obj.contains("casket") && (
+        Regex("""^clue scroll \((beginner|easy|medium|hard|elite|master)\)$""", RegexOption.IGNORE_CASE)
+            .matches(wikiName.trim()) || obj.removePrefix("obj.").startsWith("trail_clue_")
+    )
 
-internal fun ResolvedDropEntry.ringOfWealthClueRate(): RingOfWealthClueRate? =
-    wikiNotes.transformRate.firstNotNullOfOrNull(::parseRingOfWealthClueRate)
-
-internal fun ResolvedDropEntry.exportClueDenominator(baseDenominator: Int): Int {
-    if (!hasCombatAchievementClueRateNote()) {
-        return baseDenominator
-    }
-    val normalized = obj.removePrefix("obj.").lowercase()
-    if ("beginner" in normalized) {
-        return baseDenominator
-    }
-    return combatAchievementClueDenominator(baseDenominator)
+/** No placeholder can safely encode an unfinished kill-step or other clue eligibility rule. */
+internal fun ResolvedDropEntry.unresolvedClueConditions(): List<String> {
+    val clueReward = isClueScrollRate() ||
+        (obj.contains("casket") && wikiNotes.condition.any { it.contains("clue", ignoreCase = true) })
+    if (!clueReward) return emptyList()
+    return wikiNotes.condition.filterNot(::isHandledTransformRateNote)
 }
 
 /** Transform-rate wiki footnotes that still need manual implementation in Kotlin output. */
 internal fun ResolvedDropEntry.unhandledTransformRateNotes(): List<String> =
     wikiNotes.transformRate.filterNot(::isHandledTransformRateNote)
-
-internal fun ResolvedDropEntry.expandClueTertiaryExports(): List<ClueTertiaryRollExport> {
-    val outOf = outOf ?: rollDenominator ?: return emptyList()
-    val baseDenominator = exportClueDenominator(outOf)
-    val wealth = ringOfWealthClueRate() ?: return listOf(ClueTertiaryRollExport(baseDenominator))
-    return listOf(
-        ClueTertiaryRollExport(
-            denominator = baseDenominator,
-            modifier = ClueTertiaryRollModifier(excludeRingOfWealth = true),
-        ),
-        ClueTertiaryRollExport(
-            denominator = wealth.wealthDenominator,
-            modifier =
-                ClueTertiaryRollModifier(
-                    requireRingOfWealth = true,
-                    requireWilderness = wealth.requiresWilderness,
-                ),
-        ),
-    )
-}

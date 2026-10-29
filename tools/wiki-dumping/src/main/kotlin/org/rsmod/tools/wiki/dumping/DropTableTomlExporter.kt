@@ -22,13 +22,17 @@ object DropTableTomlExporter {
     fun isSimpleForTomlExport(spec: GeneratedDropTableSpec): Boolean = tomlExportBlockers(spec).isEmpty()
 
     fun tomlExportBlockers(spec: GeneratedDropTableSpec): List<String> {
+        val normalized = spec.normalizeSingletonCluePreRolls()
         val blockers = mutableListOf<String>()
         if (!spec.hasDropContent() && !spec.hasBrimstoneKeyRollOnly()) {
             blockers += "no drop content"
         }
-        spec.preRollSeparateRolls.forEach { roll ->
+        normalized.preRollSeparateRolls.forEach { roll ->
             if (roll.entries.isEmpty()) {
                 blockers += "pre-roll separate roll ${roll.accessNumerator}/${roll.accessDenominator} has no entries"
+            }
+            if (roll.entries.any { it.isClueScrollRate() }) {
+                blockers += "nested clue pre-roll requires Kotlin to preserve roll order and runtime modifiers"
             }
             roll.entries.filterNot { it.isSimpleTomlEntry() }.forEach { entry ->
                 blockers += "pre-roll separate entry not TOML-simple: ${entry.obj.ifBlank { entry.wikiName }}"
@@ -55,7 +59,7 @@ object DropTableTomlExporter {
         spec.guaranteed.filterNot { it.isSimpleTomlEntry() }.forEach { entry ->
             blockers += "guaranteed entry not TOML-simple: ${entry.obj}"
         }
-        spec.preRoll.forEach { entry ->
+        normalized.preRoll.forEach { entry ->
             if (!entry.isSimpleTomlEntry()) {
                 blockers += "pre-roll entry not TOML-simple: ${entry.obj}"
             }
@@ -108,7 +112,8 @@ object DropTableTomlExporter {
         }
 
         val separateRolls = spec.separateRolls.map { it.toTomlSeparateRoll() }
-        val preRollSeparateRolls = spec.preRollSeparateRolls.map { it.toTomlSeparateRoll() }
+        val normalized = spec.normalizeSingletonCluePreRolls()
+        val preRollSeparateRolls = normalized.preRollSeparateRolls.map { it.toTomlSeparateRoll() }
         val tertiaryEntries = spec.tertiary.filter { !it.brimstoneCombatRoll }
         val brimstoneKeyRoll = spec.tertiary.any { it.brimstoneCombatRoll }
         val brimstoneKeyRollKonarBonus = spec.tertiary.any { it.brimstoneKonarBonus }
@@ -118,7 +123,7 @@ object DropTableTomlExporter {
             npcs = spec.npcRscmKeys,
             areas = spec.areaRscmKeys.takeIf { it.isNotEmpty() } ?: emptyList(),
             guaranteed = spec.guaranteed.map { it.toTomlGuaranteedEntry() },
-            preRoll = spec.preRoll.map { it.toTomlChanceEntry() },
+            preRoll = normalized.preRoll.map { it.toTomlChanceEntry() },
             preRollSeparateRolls = preRollSeparateRolls,
             main =
                 if (mainEntries.isEmpty() && separateRolls.isEmpty()) {
@@ -131,7 +136,7 @@ object DropTableTomlExporter {
                         separateRolls = separateRolls,
                     )
                 },
-            tertiary = tertiaryEntries.flatMap { it.toTomlChanceEntries() },
+            tertiary = tertiaryEntries.map { it.toTomlChanceEntry() },
             brimstoneKeyRoll = brimstoneKeyRoll,
             brimstoneKeyRollKonarBonus = brimstoneKeyRollKonarBonus,
             notes = buildTomlExportNotes(spec),
@@ -143,6 +148,24 @@ object DropTableTomlExporter {
         output.parent.createDirectories()
         output.writeText(DropTableTomlWriter.write(table))
     }
+}
+
+/** Flatten only the leading singleton groups: moving a clue ahead of another roll changes odds. */
+private fun GeneratedDropTableSpec.normalizeSingletonCluePreRolls(): GeneratedDropTableSpec {
+    val prefix = preRollSeparateRolls.takeWhile { it.entries.size == 1 }
+    if (prefix.none { it.entries.single().isClueScrollRate() }) return this
+    val flattened = prefix.map { roll ->
+        roll.entries.single().copy(
+            weight = roll.accessNumerator,
+            outOf = roll.accessDenominator,
+            rollDenominator = null,
+            boosted = roll.boosted,
+        )
+    }
+    return copy(
+        preRoll = preRoll + flattened,
+        preRollSeparateRolls = preRollSeparateRolls.drop(prefix.size),
+    )
 }
 
 object DropTableTomlOutputLayout {
@@ -165,6 +188,8 @@ private fun ResolvedDropEntry.isSimpleTomlEntry(): Boolean = tomlEntryBlockers()
 
 private fun ResolvedDropEntry.tomlEntryBlockers(): List<String> {
     val blockers = mutableListOf<String>()
+    unresolvedClueConditions().forEach { blockers += "unresolved clue eligibility: $it" }
+    if (wikiNotes.questRequirements.size > 1) blockers += "multiple quest conditions require Kotlin"
     if (!isNothing && obj.isBlank()) {
         blockers += "missing obj"
     }
@@ -180,7 +205,9 @@ private fun ResolvedDropEntry.tomlEntryBlockers(): List<String> {
     wikiNotes.transformRate.filterNot(::isHandledTransformRateNote).forEach { note ->
         blockers += "transform rate: ${note.take(80)}"
     }
-    if (wikiNotes.hasCondition && !hasSupportedTomlCondition()) {
+    val unresolvedCondition = if (isClueScrollRate()) unresolvedClueConditions().isNotEmpty()
+        else wikiNotes.hasCondition
+    if (unresolvedCondition && !hasSupportedTomlCondition()) {
         blockers += "condition: ${wikiNotes.condition.joinToString().take(80)}"
     }
     return blockers
@@ -234,32 +261,17 @@ private fun ResolvedDropEntry.chanceDenominator(): Int? = outOf ?: rollDenominat
 private fun ResolvedDropEntry.toTomlChanceEntry(): TomlChanceEntry =
     TomlChanceEntry(
         numerator = weight ?: 1,
-        denominator =
-            exportClueDenominator(
-                chanceDenominator() ?: error("Chance entry '${obj}' is missing outOf."),
-            ),
+        denominator = chanceDenominator() ?: error("Chance entry '${obj}' is missing outOf."),
         boosted = boosted,
         obj = obj,
         count = formatTomlCount(),
         shouldDropLootingBag = requiresLootingBagCondition(),
         shouldDropBrimstoneKey = requiresBrimstoneKeyCondition(),
-        clueScrollBox = isClueScrollBoxTransform(),
+        clueScrollBox = isClueScrollRate() || isClueScrollBoxTransform(),
+        clueRateModifiers = isClueScrollRate(),
         quest = wikiNotes.questRequirements.firstOrNull()?.questKey,
         questMode = wikiNotes.questRequirements.firstOrNull()?.toTomlQuestMode(),
     )
-
-private fun ResolvedDropEntry.toTomlChanceEntries(): List<TomlChanceEntry> {
-    val base = toTomlChanceEntry()
-    val wealth = ringOfWealthClueRate() ?: return listOf(base)
-    return listOf(
-        base.copy(excludeRingOfWealth = true),
-        base.copy(
-            denominator = wealth.wealthDenominator,
-            requireRingOfWealth = true,
-            requireWilderness = wealth.requiresWilderness,
-        ),
-    )
-}
 
 private fun ResolvedDropEntry.isClueScrollBoxTransform(): Boolean =
     wikiNotes.transformItem.any { CLUE_SCROLL_BOX_TRANSFORM_NOTE.containsMatchIn(it) }

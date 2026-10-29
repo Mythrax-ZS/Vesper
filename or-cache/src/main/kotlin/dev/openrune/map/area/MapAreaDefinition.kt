@@ -55,14 +55,18 @@ public data class MapAreaDefinition(
                 }
             }
 
+            val presentAreas = ShortArraySet(mapSquareAreas)
+            presentAreas.addAll(zoneAreas.keys)
+            presentAreas.addAll(coordAreas.keys)
+
             val flippedIncludes = Short2ObjectOpenHashMap<ShortSet>()
-            for (area in mapSquareAreas) {
+            for (area in presentAreas) {
                 val refs = includesByArea[area] ?: continue
                 flippedIncludes[area] = ShortArraySet(refs)
             }
 
             val flippedExcludes = Short2ObjectOpenHashMap<ShortSet>()
-            for (area in mapSquareAreas) {
+            for (area in presentAreas) {
                 val refs = excludesByArea[area] ?: continue
                 flippedExcludes[area] = ShortArraySet(refs)
             }

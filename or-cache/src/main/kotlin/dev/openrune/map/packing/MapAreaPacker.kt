@@ -30,13 +30,21 @@ public object MapAreaPacker {
     }
 
     public fun encodeCacheMapArea(cache: Cache) {
-        val areas = loadAndCollect()
+        encodeCacheMapArea(cache, emptyList())
+    }
+
+    public fun encodeCacheMapArea(cache: Cache, extraDirectories: List<Path>) {
+        val areas = loadAndCollect(listOf(areaDir) + extraDirectories)
         MapAreaEncoder.encodeAll(cache, areas)
     }
 
-    private fun loadAndCollect(): Map<MapSquareKey, MapAreaDefinition> {
-        val files = listTomlFiles(areaDir)
-        return files.flatMap(::loadAndCollect).mergeToMap()
+    internal fun loadAndCollect(directories: List<Path>): Map<MapSquareKey, MapAreaDefinition> {
+        val files = directories.flatMap(::listTomlFiles)
+            .map { it.toRealPath() }
+            .distinct()
+            .sorted()
+        val mapAreas = files.flatMap(::loadMapAreas)
+        return toAreaConfigList(collectAreas(mapAreas), mapAreas).mergeToMap()
     }
 
     private fun List<MapAreaEntry>.mergeToMap(): Map<MapSquareKey, MapAreaDefinition> {
@@ -47,12 +55,6 @@ public object MapAreaPacker {
         return merged
     }
 
-    private fun loadAndCollect(path: Path): List<MapAreaEntry> {
-        val mapAreas = loadMapAreas(path)
-        val areas = collectAreas(mapAreas)
-        return toAreaConfigList(areas, mapAreas)
-    }
-
     private fun loadMapAreas(path: Path): List<TomlMapArea> {
         return toml.decode<TomlMapAreaFile>(path).area
     }
@@ -61,20 +63,15 @@ public object MapAreaPacker {
         polygonArea: PolygonArea,
         mapAreas: List<TomlMapArea>,
     ): List<MapAreaEntry> {
+        val entriesById = mapAreas.groupBy { it.area_id.asRSCM().toShort() }
         val includesById =
-            mapAreas.associate { area ->
-                val id = area.area_id.asRSCM().toShort()
-                val includes = area.includes.map { it.asRSCM().toShort() }.toShortArray()
-
-                id to includes
+            entriesById.mapValues { (_, entries) ->
+                entries.flatMap { it.includes }.map { it.asRSCM().toShort() }.distinct().toShortArray()
             }
 
         val excludesById =
-            mapAreas.associate { area ->
-                val id = area.area_id.asRSCM().toShort()
-                val excludes = area.excludes.map { it.asRSCM().toShort() }.toShortArray()
-
-                id to excludes
+            entriesById.mapValues { (_, entries) ->
+                entries.flatMap { it.excludes }.map { it.asRSCM().toShort() }.distinct().toShortArray()
             }
 
         return polygonArea.mapSquares.map { (square, polygon) ->

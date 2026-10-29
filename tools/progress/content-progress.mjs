@@ -4,8 +4,7 @@
 // What OSRS has  : wiki categories for the feature lists, osrs-dumps/dump.npc for npcs
 // What we've got : content/ module folders, plus gameval symbols referenced in content/
 //
-// Status is added / not added on purpose. Anything finer would be claiming a
-// level of parity with the wiki that nothing here can actually check.
+// This is a source-presence report, not a parity or release-readiness score.
 //
 // Runs fully offline from committed data. `--fetch-wiki` refreshes wiki-cache.json.
 //
@@ -19,6 +18,10 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const args = new Set(process.argv.slice(2))
+if (args.has('--check') && args.has('--fetch-wiki')) {
+  process.stderr.write('--check cannot be combined with --fetch-wiki.\n')
+  process.exit(2)
+}
 const P = (...p) => path.join(ROOT, ...p)
 
 const START = '<!-- content-progress:start -->'
@@ -28,7 +31,7 @@ const END = '<!-- content-progress:end -->'
 const NS = ['npc', 'loc', 'obj', 'content', 'varbit', 'varp', 'inv', 'seq', 'spotanim', 'param', 'enum', 'dbtable', 'dbrow', 'component', 'interface', 'timer', 'queue', 'headbar', 'stat', 'category']
 const RSCM_RE = new RegExp('\\b(' + NS.join('|') + ')\\.([a-z0-9_]+)', 'g')
 
-const RED = '🔴', GREEN = '🟢'
+const RED = '🔴', AMBER = '🟡', GREEN = '🟢'
 
 // Wiki section headings that are article furniture, not game features.
 const SECTION_NOISE = new Set([
@@ -115,6 +118,8 @@ function listModules() {
       path: rel(dir),
       name: rel(dir).replace(/^content\//, ''),
       files: main.length,
+      runtimeFiles: dir.split(path.sep).includes('pack') ? 0
+        : main.filter((f) => BEHAVIOUR.test(fs.readFileSync(f, 'utf8'))).length,
       loc,
       todo,
       tests: tests.length,
@@ -137,7 +142,7 @@ function loadDropTables() {
  * table and a collection log entry long before anyone scripts the fight, so
  * counting these marks Cerberus and Corporeal Beast as done when they are not.
  */
-const NOT_IMPLEMENTATION = /^content\/drops\/|collection-log\/.*gamevals\.toml$/
+const NOT_IMPLEMENTATION = /^content\/(drops|other\/pets)\/|\/src\/(test|integration)\/|collection-log\/.*gamevals\.toml$/
 
 /**
  * A file that does something with an npc rather than just naming it. Without
@@ -297,26 +302,28 @@ function scoreFeature(feature, ctx) {
   }
 
   const hasDropTable = ctx.dropTables.has(norm(feature.name))
-  const hasModule = !!mod && loc > 0
+  const hasModule = subModules.some((m) => m.runtimeFiles > 0)
   const hasSymbols = covered > 0 || tagCovered > 0
-  const added = feature.engine ? true : hasModule || hasSymbols
+  const hasEngine = feature.engine && walk(P(feature.engine), (n) => n.endsWith('.kt'))
+    .some((f) => f.includes(path.sep + 'src' + path.sep + 'main' + path.sep))
+  const supportingPaths = (feature.supportingPaths ?? []).filter((p) => fs.existsSync(P(p)))
+  const added = !!hasEngine || hasModule || (!feature.requireRuntime && hasSymbols)
+  const supporting = !added && (loc > 0 || hasSymbols || hasDropTable || supportingPaths.length > 0)
 
-  // Detail goes in the note. The status stays binary because anything finer
-  // would be claiming a level of parity we cannot actually check.
-  // Deliberately no ratios here. "2/129 npcs" next to a 5,000 line module reads
-  // as a completeness score, and that is the parity claim we are avoiding.
   const parts = []
-  if (feature.engine) parts.push('in `' + feature.engine + '`')
-  if (hasModule) parts.push(loc.toLocaleString() + ' loc')
-  if (!hasModule && hasSymbols) parts.push('no module, code in ' + [...foundIn].slice(0, 2).join(', '))
+  if (hasEngine) parts.push('engine code in `' + feature.engine + '`')
+  if (hasModule) parts.push('runtime code detected · ' + loc.toLocaleString() + ' lines including support code')
+  if (!hasModule && loc > 0) parts.push('scaffold/support code; no runtime handler detected')
+  if (!hasModule && hasSymbols) parts.push((feature.requireRuntime ? 'supporting references in ' : 'behavior references in ') + [...foundIn].slice(0, 2).join(', '))
+  if (supportingPaths.length) parts.push(feature.supportNote ?? 'supporting code in ' + supportingPaths.map((p) => '`' + p + '`').join(', '))
   if (!added && mod && loc === 0) parts.push('empty module, last touched ' + (lastCommit ?? 'never'))
-  if (!added && hasDropTable) parts.push('drop table done')
-  if (!parts.length) parts.push(added ? 'added' : 'nothing yet')
+  if (!added && hasDropTable) parts.push('drop table present; encounter unverified')
+  if (!parts.length) parts.push(added ? 'runtime code detected' : 'no implementation detected')
 
   return {
     ...feature,
     added,
-    status: added ? GREEN : RED,
+    status: added ? GREEN : supporting ? AMBER : RED,
     note: parts.join(' · '),
     loc, denom, covered, tagDenom, tagCovered,
     sections: (wiki[feature.wiki]?.sections ?? []).filter((s) => !isNoise(s)),
@@ -370,16 +377,16 @@ function renderTables(categories) {
       const cold = notStarted.filter((f) => !f.hasDropTable)
       const list = (fs) => fs.map((f) => '[' + f.name + '](' + wikiUrl(f.wiki) + ')').join(' · ')
       L.push('<details>')
-      L.push('<summary>' + RED + ' <b>' + notStarted.length + ' not started</b></summary>')
+      L.push('<summary>' + RED + ' <b>' + notStarted.length + ' without detected runtime</b></summary>')
       L.push('')
       if (withDrops.length) {
-        L.push('**Drop table already done (' + withDrops.length + ')** — needs the encounter scripting.')
+        L.push('**Drop table present (' + withDrops.length + ')** — encounter and rewards remain unverified.')
         L.push('')
         L.push(list(withDrops))
         L.push('')
       }
       if (cold.length) {
-        L.push('**Nothing yet (' + cold.length + ')**')
+        L.push('**No runtime detected (' + cold.length + ')**')
         L.push('')
         L.push(list(cold))
         L.push('')
@@ -395,7 +402,7 @@ function renderModules(modules) {
   const L = ['### All content modules', '']
   L.push('Found the same way `settings.gradle.kts` finds them: any dir with a `build.gradle.kts`.')
   L.push('')
-  L.push('| Module | Files | Lines | Tests | TODO | Last touched |')
+  L.push('| Module | Main files | Lines | Test files | TODO files | Last touched |')
   L.push('|---|---:|---:|---:|---:|---|')
   for (const m of modules) {
     L.push('| `' + m.name + '` | ' + m.files + ' | ' + m.loc.toLocaleString() + ' | ' + m.tests + ' | ' + m.todo + ' | ' + (m.lastCommit ?? '—') + ' |')
@@ -405,12 +412,13 @@ function renderModules(modules) {
 }
 
 function renderMechanics(categories) {
-  const mech = categories.flatMap((c) => c.features).filter((f) => f.sections.length && f.status !== GREEN)
+  const mech = categories.flatMap((c) => c.features).filter((f) => f.sections.length)
   if (!mech.length) return ''
   const L = ['### Sub-features and mechanics', '']
   L.push('Pulled from wiki section headings. A lot of this has no cache symbol to match against')
   L.push('(run energy, failure rates, formulas), so the entity scan cannot see it at all. Listed')
-  L.push('here so it at least shows up. Nothing is ticked until someone claims it.')
+  L.push('here for every skill, including those with runtime code. These remain unverified;')
+  L.push('source presence does not complete the checklist.')
   L.push('')
   for (const f of mech) {
     L.push('<details>')
@@ -427,7 +435,9 @@ function renderMechanics(categories) {
 function injectReadme(block) {
   const file = P('README.md')
   const text = fs.readFileSync(file, 'utf8')
-  if (!text.includes(START) || !text.includes(END)) return { text, changed: false, missing: true }
+  const start = text.indexOf(START), end = text.indexOf(END)
+  if (start < 0 || end <= start || text.indexOf(START, start + START.length) >= 0
+      || text.indexOf(END, end + END.length) >= 0) return { text, changed: false, missing: true }
   // Keep whatever line endings the file already uses.
   const eol = text.includes('\r\n') ? '\r\n' : '\n'
   const body = (START + '\n' + block + '\n' + END).replace(/\r?\n/g, eol)
@@ -484,7 +494,7 @@ const pages = wiki.pages ?? {}
 const aliases = spec.aliases ?? {}
 const ctx = { modules, implRefs, npcSymbols, npcsByName, dropTables, wiki: pages }
 const categories = spec.categories.map((c) => {
-  if (c.features) return { name: c.name, features: c.features.map((f) => scoreFeature(f, ctx)) }
+  if (c.features) return { name: c.name, features: c.features.map((f) => scoreFeature({ requireRuntime: c.requireRuntime, ...f }, ctx)) }
   // Category-driven group: every wiki entry becomes a feature, matched to a module by name.
   const members = wiki.categories?.[c.wikiCategory] ?? []
   return {
@@ -497,7 +507,7 @@ const categories = spec.categories.map((c) => {
 })
 const summary = summarise(categories)
 
-const legend = GREEN + ' added · ' + RED + ' not added'
+const legend = GREEN + ' runtime code detected · ' + AMBER + ' supporting code/data only · ' + RED + ' no implementation detected'
 // A single percentage would weight one quest boss the same as all of Agility,
 // so show it per category instead.
 const headline = categories
@@ -505,15 +515,15 @@ const headline = categories
     + '/' + c.features.length + '**')
   .join(' · ')
 
-fs.writeFileSync(P('PROGRESS.md'), [
+const progress = [
   '# Content progress',
   '',
   '_Generated by `tools/progress/content-progress.mjs` — do not edit by hand._',
   '',
-'The feature lists come from the wiki. Whether something is added comes from `content/`,',
-  'either a module for it or its gameval symbols referenced somewhere in the code, so it',
-  'still counts if it was written somewhere unexpected. Added does not mean it matches the',
-  'wiki, only that it exists.',
+  'The feature lists come from the configured manifest and cached wiki categories.',
+  'Counts show runtime source presence, never completed features or verified OSRS parity.',
+  'Skill shopkeepers, test fixtures and cache-only scaffolds do not count as skill runtimes.',
+  'Behavioral references for other categories remain heuristic; inspect their actual scope.',
   '',
   legend,
   '',
@@ -530,7 +540,7 @@ fs.writeFileSync(P('PROGRESS.md'), [
   '',
   'Feature lists, images and section headings come from the [OSRS Wiki](https://oldschool.runescape.wiki/),',
   'used under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/).',
-].join('\n') + '\n')
+].join('\n') + '\n'
 
 // Headline and a link only. The readme is already long and the detail belongs
 // in PROGRESS.md, this is here so people know the report exists.
@@ -541,21 +551,25 @@ const readmeBlock = [
   headline,
   '',
   'Full breakdown in **[PROGRESS.md](PROGRESS.md)**, including every content module and',
-  'the bosses that already have drop tables and only need the encounter writing.',
+  'supporting data and unverified mechanics. Counts measure runtime source presence, not parity.',
   '',
 ].join('\n')
 
 const readme = injectReadme(readmeBlock)
-if (readme.missing) {
-  process.stderr.write('! README.md has no ' + START + ' marker — skipping README injection.\n')
-} else if (args.has('--check')) {
-  if (readme.changed) {
-    process.stderr.write('README.md is stale — run the generator and commit.\n')
+const progressFile = P('PROGRESS.md')
+const progressChanged = !fs.existsSync(progressFile) || fs.readFileSync(progressFile, 'utf8') !== progress
+if (args.has('--check')) {
+  const stale = [progressChanged && 'PROGRESS.md', (readme.changed || readme.missing) && 'README.md'].filter(Boolean)
+  if (stale.length) {
+    process.stderr.write(stale.join(', ') + ' stale or missing — run the generator.\n')
     process.exit(1)
   }
-} else if (readme.changed) {
-  fs.writeFileSync(P('README.md'), readme.text)
+} else {
+  if (progressChanged) fs.writeFileSync(progressFile, progress)
+  if (readme.missing) process.stderr.write('! README.md needs one ordered pair of content-progress markers — skipping README injection.\n')
+  else if (readme.changed) fs.writeFileSync(P('README.md'), readme.text)
 }
 
-process.stderr.write('PROGRESS.md written: ' + summary.added + ' added, '
-  + summary.notAdded + ' not added, of ' + summary.total + ' features\n')
+process.stderr.write('Content report ' + (args.has('--check') ? 'verified' : 'generated') + ': '
+  + summary.added + ' with runtime code, ' + summary.notAdded + ' without detected runtime, of '
+  + summary.total + ' features\n')

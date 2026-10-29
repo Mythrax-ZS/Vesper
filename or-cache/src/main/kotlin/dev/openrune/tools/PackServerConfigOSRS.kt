@@ -11,6 +11,7 @@ import dev.openrune.cache.util.getFiles
 import dev.openrune.codec.osrs.*
 import dev.openrune.codec.osrs.impl.*
 import dev.openrune.definition.Definition
+import dev.openrune.definition.codec.ItemCodec
 import dev.openrune.definition.opcode.OpcodeDefinitionCodec
 import dev.openrune.definition.type.HealthBarType
 import dev.openrune.definition.type.InventoryType
@@ -34,6 +35,8 @@ import dev.openrune.types.InventoryServerType.Companion.pack
 import dev.openrune.types.varp.VarpServerType
 import java.io.File
 import java.nio.file.Path
+import java.security.MessageDigest
+import java.util.HexFormat
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -335,6 +338,16 @@ class PackServerConfig(
             // Merged types are rebuilt over the client archive they overlay, so its checksum is part of
             // the fingerprint: repacking an npc on the live side changes the server npc rows too.
             val baseArchive = library.index(CONFIGS).archives().firstOrNull { it.id == packType.archive }
+            val fingerprints = mutableMapOf("base-archive" to "${baseArchive?.crc}:${baseArchive?.revision}")
+            if (packType.table == "item") {
+                // Item conversion can change while every TOML input and native archive stays equal.
+                for (type in listOf(ItemCodec::class.java, ItemServerCodec::class.java, ItemServerType::class.java)) {
+                    val resource = "/${type.name.replace('.', '/')}.class"
+                    val bytes = checkNotNull(type.getResourceAsStream(resource)) { "Missing codec bytecode: $resource" }
+                        .use { it.readBytes() }
+                    fingerprints[type.name] = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes))
+                }
+            }
             incremental.run(
                 task = this,
                 scope = packType.table,
@@ -348,7 +361,7 @@ class PackServerConfig(
                     ),
                 ),
                 extraDeps = sharedInputs,
-                extraFingerprints = mapOf("base-archive" to "${baseArchive?.crc}:${baseArchive?.revision}"),
+                extraFingerprints = fingerprints,
             ) { packCache, _ ->
                 ensureManagers()
                 packType.pack(this, packCache, parsed, packType.table)

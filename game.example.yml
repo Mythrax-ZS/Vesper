@@ -1,6 +1,6 @@
 # Game values
 # You want to edit these to fit your game.
-name: "OpenRune"
+name: "Vesper"
 game-port: 43594
 revision: 241
 environment: "LIVE"
@@ -27,7 +27,7 @@ gameplay:
   # Where new accounts start the "Level-up pop-up notifications" setting. false starts it at
   # "Disabled": no level-up interface, but the message, fireworks and jingle still play. true starts
   # it at "Show level only", as on live. Players can change it in the settings either way.
-  level-up-popups: false
+  level-up-popups: true
   # Log players out when their client reports them idle (its AFK timer, as on live). false keeps
   # idle players logged in.
   idle-logout: true
@@ -38,10 +38,10 @@ gameplay:
     # Lost items go to a gravestone the player can reclaim; false drops them on the floor instead.
     enabled: true
   quest-requirements:
-    # Bypass quest gates by default. Use "respect-progress" for saved quest progress,
-    # or "virtual-completions" to unlock selected quests for league-style profiles.
+    # Require saved quest progress. Incomplete quest implementations remain locked.
+    # Use "virtual-completions" only for explicitly customised world profiles.
     # Sleeping Giants persists completion when either bypass policy completes it.
-    mode: "assume-completed"
+    mode: "respect-progress"
     virtual-completions: []
     virtual-lines: []
 

@@ -167,7 +167,7 @@ private fun buildServerCache(packTasks: List<CacheTask>, packs: PluginPacks) {
             File("../.data/raw-cache/server"),
             extraDirectories = packs.configDirectories(),
         ),
-        MapPackers(),
+        MapPackers(packs.mapAreaDirectories().map(File::toPath)),
     )
 
     newCacheTool(TaskType.SERVER_CACHE_BUILD, serverOnly + serverTasks).initialize()

@@ -3,6 +3,8 @@ package org.rsmod.tools.wiki.dumping
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.deleteIfExists
+import kotlin.io.path.exists
+import kotlin.io.path.readLines
 import kotlin.io.path.writeText
 
 /** Writes wiki dump output: TOML for simple tables, Kotlin only for tables that need it. */
@@ -38,6 +40,11 @@ object DropTableExportWriter {
         log: DropDumpLog,
         onKotlinWritten: ((Path) -> Unit)? = null,
     ): PageExportResult {
+        val existing = DropTableOutputLayout.resolveMonsterOutputFile(kotlinRoot, wikiPage)
+        if (existing.exists() && existing.readLines().any { it.startsWith("// Hand-maintained drop table:") }) {
+            log.warn("$wikiPage uses a hand-maintained drop table; skipping Kotlin/TOML export: $existing")
+            return PageExportResult(kotlinFile = existing, tomlFiles = emptySet())
+        }
         val split = splitSpecs(specs, tomlExport)
         for (spec in split.kotlin) {
             val blockers = DropTableTomlExporter.tomlExportBlockers(spec)

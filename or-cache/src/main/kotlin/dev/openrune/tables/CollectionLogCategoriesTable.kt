@@ -397,6 +397,7 @@ object CollectionLogCategoriesTable {
         row("dbrow.collection_log_category_beginner_treasure_trails") {
             column(STRUCT_ID, 593)
             columnRSCM(COMPLETED_VARBIT, "varbit.collection_clues_beginner_completed")
+            columnRSCM(COUNT_VARP_1, "varp.completed_clues5")
         }
 
         row("dbrow.collection_log_category_easy_treasure_trails") {

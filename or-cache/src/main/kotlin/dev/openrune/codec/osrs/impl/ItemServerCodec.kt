@@ -115,7 +115,12 @@ class ItemServerCodec(
 
         cost = item.cost
         name = item.name
-        weight = item.weight
+        // The upstream native codec reads signed opcode 75 as an unsigned short.
+        weight = if (item.weight in 32768.0..65535.0 && item.weight % 1.0 == 0.0) {
+            item.weight - 65536.0
+        } else {
+            item.weight
+        }
         stockmarket = item.stockMarket
         tradeable = item.tradeable
         category = item.category

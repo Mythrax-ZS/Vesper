@@ -93,16 +93,33 @@ shutdown. For an existing character it:
 For a new account it inserts the account and character rows (display name taken from the
 account) using the lazily computed password hash.
 
+A mode remains a first visit until its first successful save records `last_login`. Loading may
+create an empty progress row, but cancelling that load does not consume first-visit initialization.
+
 Back on the game thread each segment is applied to the new `Player` by its `Applier` before the
 player is registered to the world; an applier exception terminates that login.
 
 ## Saving
 
-`AccountManager.save(player, callback)` queues an `AccountSaveRequest`. `AccountSavingService`
-saves in one transaction: `CharacterAccountRepository.save(...)` (account row, varps, attrs,
-presence) and then `pipeline.save(connection, player, characterId)` for every pipeline. Failures
-increment save attempts and are retried; on shutdown remaining requests are flushed within a
-timeout.
+`AccountManager.save(player, callback)` captures a detached `CharacterSaveSnapshot` on the game
+thread before queuing its request. Inventory slots, item variables, stats, permanent varps and
+serialized persistent attributes belong to that snapshot. The writer never reads gameplay values
+from the live player. `capture(player)` and `save(player, snapshot, callback)` support an explicit
+checkpoint; the latter rejects a checkpoint that no longer matches the player at enqueue time.
+
+`AccountSavingService` pins the snapshot's world-type schema and saves main metadata plus each
+`pipeline.save(connection, snapshotData, characterId)` in one transaction. Failed requests retry
+the same values. A retry superseded by a newer committed save in the same mode cannot overwrite
+that save. A retry for a different mode may still save its own progression, but cannot replace
+shared identity already written by a newer request. Ordering state is retained while requests for
+that character remain outstanding and released after their final callbacks.
+
+The live player reference is retained for callback identity only. Callbacks run on the writer
+thread: autosave and world-type switching enqueue completion records for the game thread.
+`restore(player, snapshot)` restores persisted state for failed-switch recovery; it is not a
+snapshot of coroutines, temporary attributes or other live runtime objects. That recovery forces
+a disconnect so ordinary login can reconstruct runtime state. If restoration fails, further saves
+are rejected with `InvalidState`, preserving the durable checkpoint.
 
 ## Autosave
 
@@ -110,14 +127,21 @@ timeout.
 
 - any player with a modified **Perm-scope** inventory triggers a background save;
 - mutations of persistent attributes (via `AttributeMap.persistenceMutationSink`) and other
-  `PlayerPersistenceHints` trigger a save for the player currently being processed;
+  `PlayerPersistenceHints` mark the player dirty; capture waits until tick end so intermediate
+  inventory-transaction states are not saved;
 - every 500 cycles (~5 minutes) every eligible player is saved;
-- overlapping requests are coalesced per player while a save is in flight.
+- overlapping requests are coalesced per player while a save is in flight; subsequent mutations
+  remain dirty and produce another snapshot after completion, even if inventory update flags
+  have already been cleared;
+- suspended or invalidated persistence is not captured. Failed saves retain dirty state with a
+  retry delay; callbacks never capture player state from the writer thread.
 
 ## Extending what is saved
 
 Prefer varps/varbits (persisted automatically when their lifetime is permanent) — see
 [Inventories, vars and player state](../gameplay/inventories-and-player-state.md). For a new kind
-of persisted data, implement `CharacterDataStage.Pipeline` (`append` + `save`), a `Segment` and
-an `Applier`, and bind the pipeline with `addSetBinding<CharacterDataStage.Pipeline>(...)` as
-`CharacterModule` does for inventories and stats.
+of persisted data, implement `CharacterDataStage.Pipeline` (`append`, `capture`, `save`, `restore`),
+a load `Segment`, an immutable value-based `SaveData`, and an `Applier`. Bind the pipeline with
+`addSetBinding<CharacterDataStage.Pipeline>(...)` as `CharacterModule` does for inventories and
+stats. `capture` and `restore` run on the game thread; `save` must use only its captured data.
+Existing external save pipelines need rebuilding for this API. This changes no client protocol.

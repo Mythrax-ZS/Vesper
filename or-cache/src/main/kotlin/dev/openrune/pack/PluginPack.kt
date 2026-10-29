@@ -27,6 +27,8 @@ abstract class PluginPack {
 
     fun interfaceDirectory(): File? = resourceDirectory(INTERFACES)
 
+    fun mapAreaDirectory(): File? = resourceDirectory(MAP_AREAS)
+
     open fun dbTables(): List<DBTable> = emptyList()
 
     open fun interfaces(): List<InterfaceType> = emptyList()
@@ -66,5 +68,6 @@ abstract class PluginPack {
         const val SPRITES = "sprites"
         const val CS2 = "cs2"
         const val INTERFACES = "interfaces"
+        const val MAP_AREAS = "map/area"
     }
 }
