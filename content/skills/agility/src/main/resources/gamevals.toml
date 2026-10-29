@@ -1,0 +1,56 @@
+[gamevals.dbtable]
+agility_courses = 61001
+agility_obstacles = 61002
+agility_mark_spawns = 61004
+
+[gamevals.dbrow]
+agility_gnome = 61200
+agility_draynor = 61201
+agility_gnome_log = 61202
+agility_gnome_net_up_2471 = 61203
+agility_gnome_net_up_2473 = 61204
+agility_gnome_net_up_2475 = 61205
+agility_gnome_branch_up = 61206
+agility_gnome_rope = 61207
+agility_gnome_branch_down_west = 61208
+agility_gnome_branch_down_south = 61209
+agility_gnome_branch_down_north = 61210
+agility_gnome_net_over_2483 = 61211
+agility_gnome_net_over_2485 = 61212
+agility_gnome_net_over_2487 = 61213
+agility_gnome_pipe_west = 61214
+agility_gnome_pipe_east = 61215
+agility_draynor_wall_up = 61216
+agility_draynor_rope_west = 61217
+agility_draynor_rope_south = 61218
+agility_draynor_narrow_wall = 61219
+agility_draynor_wall_over = 61220
+agility_draynor_gap = 61221
+agility_draynor_crate = 61222
+agility_mark_draynor_start = 61300
+agility_mark_draynor_diango = 61301
+agility_mark_draynor_slayer = 61302
+agility_mark_draynor_ned = 61303
+
+[gamevals.varp]
+agility_lap_course = 63500
+agility_lap_step = 63501
+agility_recovery_start = 63502
+agility_recovery_end = 63503
+agility_mark_next_minute = 63530
+agility_mark_last_tick = 63531
+agility_mark_draynor_start_count = 63532
+agility_mark_draynor_start_lifetime = 63533
+agility_mark_draynor_diango_count = 63534
+agility_mark_draynor_diango_lifetime = 63535
+agility_mark_draynor_slayer_count = 63536
+agility_mark_draynor_slayer_lifetime = 63537
+agility_mark_draynor_ned_count = 63538
+agility_mark_draynor_ned_lifetime = 63539
+endurance_stamina_enhanced = 63540
+
+[gamevals.timer]
+agility_marks = 63500
+
+[gamevals.currency]
+mark_of_grace = 65532

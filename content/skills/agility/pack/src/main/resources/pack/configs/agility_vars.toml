@@ -1,0 +1,69 @@
+[[varp]]
+id = "varp.agility_lap_course"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_lap_step"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_recovery_start"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_recovery_end"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_next_minute"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_last_tick"
+scope = "Temp"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_start_count"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_start_lifetime"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_diango_count"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_diango_lifetime"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_slayer_count"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_slayer_lifetime"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_ned_count"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_mark_draynor_ned_lifetime"
+scope = "Perm"
+transmit = "Never"

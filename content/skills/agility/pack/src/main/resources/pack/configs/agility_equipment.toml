@@ -1,0 +1,59 @@
+# Current wearable rings; the old Activate-only ring is a discontinued native item.
+[[item]]
+id = "obj.ring_of_endurance_nocharges"
+inherit = "obj.ring_of_endurance_nocharges"
+[item.params]
+"param.charged_variant" = "obj.ring_of_endurance"
+"param.statreq1_skill" = "stat.agility"
+"param.statreq1_level" = 70
+
+[[item]]
+id = "obj.ring_of_endurance"
+inherit = "obj.ring_of_endurance"
+[item.params]
+"param.uncharged_variant" = "obj.ring_of_endurance_nocharges"
+"param.statreq1_skill" = "stat.agility"
+"param.statreq1_level" = 70
+
+[[item]]
+id = "obj.skillcape_agility"
+inherit = "obj.skillcape_agility"
+contentGroup = "content.skill_cape"
+transformlink = "obj.skillcape_agility_worn"
+
+[[item]]
+id = "obj.skillcape_agility_worn"
+inherit = "obj.skillcape_agility_worn"
+transformlink = "obj.skillcape_agility"
+transformtemplate = "obj.template_for_transform"
+[item.params]
+"param.graceful_restore_rate" = 300
+
+[[item]]
+id = "obj.skillcape_agility_trimmed"
+inherit = "obj.skillcape_agility_trimmed"
+contentGroup = "content.skill_cape"
+transformlink = "obj.skillcape_agility_trimmed_worn"
+
+[[item]]
+id = "obj.skillcape_agility_trimmed_worn"
+inherit = "obj.skillcape_agility_trimmed_worn"
+transformlink = "obj.skillcape_agility_trimmed"
+transformtemplate = "obj.template_for_transform"
+[item.params]
+"param.graceful_restore_rate" = 300
+
+# Combat/cosmetic max capes do not retain the Agility cape's graceful bonus.
+[[item]]
+id = "obj.skillcape_max_worn"
+inherit = "obj.skillcape_max_worn"
+contentGroup = "content.max_cape"
+transformlink = "obj.skillcape_max"
+transformtemplate = "obj.template_for_transform"
+[item.params]
+"param.graceful_restore_rate" = 300
+
+[[varp]]
+id = "varp.endurance_stamina_enhanced"
+scope = "Perm"
+transmit = "Never"
