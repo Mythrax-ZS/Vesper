@@ -10,6 +10,8 @@ import org.rsmod.api.death.PlayerDeathStorageHook
 import org.rsmod.api.death.PlayerGraveHook
 import org.rsmod.api.death.PlayerRespawnHook
 import org.rsmod.api.death.PvPAttackValidateHook
+import org.rsmod.api.death.PvPContextAuthorizationHook
+import org.rsmod.api.death.PvPContextPermission
 import org.rsmod.api.death.PvPPlayerHitHook
 import org.rsmod.api.death.PvPSkullHook
 import org.rsmod.api.death.PvPSpecialAttackHook
@@ -27,6 +29,8 @@ public class DeathDropHooksModule : PluginModule() {
         newSetBinding<PlayerGraveHook>()
         newSetBinding<PlayerRespawnHook>()
         newSetBinding<PvPAttackValidateHook>()
+        newSetBinding<PvPContextPermission>()
+        addSetBinding<PvPAttackValidateHook>(PvPContextAuthorizationHook::class.java)
         newSetBinding<PvPSkullHook>()
         newSetBinding<PvPPlayerHitHook>()
         newSetBinding<PvPSpecialAttackHook>()

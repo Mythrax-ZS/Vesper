@@ -27,7 +27,9 @@ public class WildernessTeleportHook @Inject constructor() : PlayerTeleportValida
             return "You cannot teleport to a minigame from the Wilderness."
         }
 
-        if (player.vars["varbit.teleblock_cycles"] > 0) {
+        // Values 1..100 represent immunity after a previous block; only values above 100
+        // represent an active Tele Block in the native client protocol.
+        if (player.vars["varbit.teleblock_cycles"] > TELEBLOCK_IMMUNITY_OFFSET) {
             return "A teleport block has been cast on you."
         }
 
@@ -70,6 +72,7 @@ public class WildernessTeleportHook @Inject constructor() : PlayerTeleportValida
         public val LAST_PVP_OFFENSIVE_SPEC_TICK_ATTR: AttributeKey<Int> = AttributeKey()
 
         private const val STANDARD_MAX_WILDERNESS_LEVEL = 20
+        private const val TELEBLOCK_IMMUNITY_OFFSET = 100
         private const val MEMBER_MAX_WILDERNESS_LEVEL = 30
         private const val PVP_SPEC_TELEPORT_BLOCK_TICKS = 3
     }

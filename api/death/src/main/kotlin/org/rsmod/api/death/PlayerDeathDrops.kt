@@ -140,8 +140,8 @@ constructor(
         )
     }
 
-    public fun spawnRemains(coords: CoordGrid, handling: PlayerDeathHandling) {
-        val obj = Obj.fromServer(mapClock, coords, InvObj(BONES_OBJ, 1))
+    public fun spawnRemains(player: Player, coords: CoordGrid, handling: PlayerDeathHandling) {
+        val obj = Obj.fromServer(mapClock, coords, InvObj(BONES_OBJ, 1), worldType = player.worldType)
         objRepo.add(obj, handling.dropDuration, handling.revealDelay)
     }
 
@@ -229,7 +229,7 @@ constructor(
                 effectiveReceiver != null && effectiveReceiver !== player ->
                     Obj.fromPvp(effectiveReceiver, player, item)
                 effectiveReceiver != null -> Obj.fromOwner(effectiveReceiver, coords, item)
-                else -> Obj.fromServer(mapClock, coords, item)
+                else -> Obj.fromServer(mapClock, coords, item, worldType = player.worldType)
             }
         objRepo.add(obj, dropParams.duration, dropParams.reveal)
     }

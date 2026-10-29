@@ -6,7 +6,10 @@ public fun CoordGrid.wildernessLevel(areaChecker: AreaChecker): Int {
     if (!isInWilderness(areaChecker)) {
         return -1
     }
-    val y = z
+    val normalized = areaChecker.normalizedCoords(this)
+    val x = normalized.x
+    val y = normalized.z
+    val level = normalized.level
     return when {
         level == 0 && x in 2944..3392 && y in 3520..4351 -> ((y - 3520) shr 3) + 1
         level == 0 && x in 3008..3071 && y in 10112..10175 -> ((y - 9920) shr 3) - 1

@@ -3,6 +3,7 @@ package org.rsmod.content.areas.wilderness
 import jakarta.inject.Inject
 import kotlin.math.abs
 import org.rsmod.api.area.checker.AreaChecker
+import org.rsmod.api.area.checker.isInWilderness
 import org.rsmod.api.area.checker.wildernessLevel
 import org.rsmod.api.death.LAST_PVP_HIT_TICK_ATTR
 import org.rsmod.api.death.PvPAttackValidateHook
@@ -11,24 +12,25 @@ import org.rsmod.api.death.PvPPlayerHitHook
 import org.rsmod.api.death.PvPSkullHook
 import org.rsmod.api.player.isInPvpCombat
 import org.rsmod.api.player.subjectPronoun
-import org.rsmod.content.areas.wilderness.WildernessAreaScript.Companion.canPvp
+import org.rsmod.content.areas.wilderness.WildernessAreaScript.Companion.hasWildernessOptOut
 import org.rsmod.game.entity.Player
 
 public class WildernessPvPHook @Inject constructor(private val areaChecker: AreaChecker) :
     PvPAttackValidateHook, PvPSkullHook, PvPPlayerHitHook {
 
     override fun validate(attacker: Player, target: Player): PvPAttackValidateResult {
-        if (!attacker.canPvp()) {
+        if (!attacker.coords.isInWilderness(areaChecker)) {
             return PvPAttackValidateResult.Pass
         }
 
-        if (areaChecker.inArea("area.ferox_enclave", target.coords)
-            && target.vars["varbit.teleblock_cycles"] <= 0
-            && attacker.vars["varbit.teleblock_cycles"] <= 0
-        ) {
-            return PvPAttackValidateResult.Deny(
-                "You cannot fight another player whilst next to the Enclave, please move further out.",
-            )
+        if (attacker.hasWildernessOptOut()) {
+            return PvPAttackValidateResult.Deny("You have disabled Wilderness player combat.")
+        }
+        if (target.hasWildernessOptOut()) {
+            return PvPAttackValidateResult.Deny("That player has disabled Wilderness player combat.")
+        }
+        if (!target.coords.isInWilderness(areaChecker)) {
+            return PvPAttackValidateResult.Deny("That player is not in the wilderness.")
         }
 
         if (!attacker.isSkulled()
@@ -38,10 +40,6 @@ public class WildernessPvPHook @Inject constructor(private val areaChecker: Area
             return PvPAttackValidateResult.Deny(
                 "You cannot attack this target as it would result in you getting skulled.",
             )
-        }
-
-        if (attacker.canPvp() && !target.canPvp()) {
-            return PvPAttackValidateResult.Deny("That player is not in the wilderness.")
         }
 
         val level = attacker.coords.wildernessLevel(areaChecker)
@@ -62,7 +60,7 @@ public class WildernessPvPHook @Inject constructor(private val areaChecker: Area
     }
 
     override fun onPlayerAttack(attacker: Player, target: Player) {
-        if (!attacker.canPvp()) {
+        if (!isWildernessCombat(attacker, target)) {
             return
         }
 
@@ -80,7 +78,7 @@ public class WildernessPvPHook @Inject constructor(private val areaChecker: Area
     }
 
     override fun onPlayerHit(attacker: Player, target: Player, damage: Int) {
-        if (!attacker.canPvp()) {
+        if (!isWildernessCombat(attacker, target)) {
             return
         }
         target.attr[LAST_PVP_HIT_TICK_ATTR] = target.currentMapClock
@@ -103,6 +101,12 @@ public class WildernessPvPHook @Inject constructor(private val areaChecker: Area
             attacker.refreshSkullIcon()
         }
     }
+
+    private fun isWildernessCombat(attacker: Player, target: Player): Boolean =
+        !attacker.hasWildernessOptOut() &&
+            !target.hasWildernessOptOut() &&
+            attacker.coords.isInWilderness(areaChecker) &&
+            target.coords.isInWilderness(areaChecker)
 
     private fun wouldSkull(player: Player, target: Player): Boolean {
         val targetPacked = target.uid.packed

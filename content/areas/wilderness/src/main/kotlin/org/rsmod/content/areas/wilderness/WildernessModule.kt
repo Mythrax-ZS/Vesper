@@ -4,13 +4,16 @@ import org.rsmod.api.death.NpcDeathKillHook
 import org.rsmod.api.death.PlayerDeathCleanupHook
 import org.rsmod.api.death.PlayerDeathHook
 import org.rsmod.api.death.PvPAttackValidateHook
+import org.rsmod.api.death.PvPContextPermission
 import org.rsmod.api.death.PvPPlayerHitHook
 import org.rsmod.api.death.PvPSkullHook
 import org.rsmod.api.death.PvPSpecialAttackHook
 import org.rsmod.api.player.hook.PlayerGroundItemDropHook
 import org.rsmod.api.player.hook.PlayerInvUpdateHook
 import org.rsmod.api.player.hook.PlayerObjTakeValidateHook
+import org.rsmod.api.player.hook.PlayerPostTickHook
 import org.rsmod.api.player.hook.PlayerTeleportValidateHook
+import org.rsmod.api.spells.runes.BlightedRunePackPermission
 import org.rsmod.plugin.module.PluginModule
 
 public class WildernessModule : PluginModule() {
@@ -18,6 +21,9 @@ public class WildernessModule : PluginModule() {
         addSetBinding<PlayerDeathHook>(WildernessDeathHook::class.java)
         addSetBinding<PlayerDeathCleanupHook>(WildernessDeathCleanupHook::class.java)
         addSetBinding<PvPAttackValidateHook>(WildernessPvPHook::class.java)
+        addSetBinding<PvPContextPermission>(WildernessPvPPermission::class.java)
+        addSetBinding<BlightedRunePackPermission>(WildernessBlightedRunePackPermission::class.java)
+        addSetBinding<PlayerPostTickHook>(BlightedRunePackSync::class.java)
         addSetBinding<PvPSkullHook>(WildernessPvPHook::class.java)
         addSetBinding<PvPPlayerHitHook>(WildernessPvPHook::class.java)
         addSetBinding<PvPSpecialAttackHook>(WildernessSpecialAttackHook::class.java)

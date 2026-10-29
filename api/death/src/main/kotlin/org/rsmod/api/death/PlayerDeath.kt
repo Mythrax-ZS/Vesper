@@ -104,7 +104,7 @@ constructor(
         val emptied = storageHooks.flatMap { it.empty(player, context.isPvpDeath) }
         val result = drops.withLost(drops.selectDrops(player, context, handling), emptied)
         drops.applyDrops(player, result, handling, deathCoords)
-        drops.spawnRemains(deathCoords, handling)
+        drops.spawnRemains(player, deathCoords, handling)
 
         player.attr.remove(DEATH_KILLER_ATTR)
         player.attr.remove(DEATH_CAUSE_ATTR)

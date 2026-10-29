@@ -1,0 +1,13 @@
+# The isolated native bank and linked god-cape chamber occupy map square 39,73, plane 0.
+[[area]]
+name = "Mage Arena bank"
+area_id = "area.mage_arena_bank"
+levels = [0]
+
+[[area.polygons]]
+vertices = [
+    [2496, 4672],
+    [2496, 4735],
+    [2559, 4735],
+    [2559, 4672],
+]

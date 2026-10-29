@@ -1,9 +1,7 @@
 package org.rsmod.api.area.checker
 
-import dev.openrune.map.MapSingletons
 import dev.openrune.rscm.RSCM.asRSCM
 import dev.openrune.rscm.RSCMType
-import dev.openrune.types.aconverted.AreaType
 import it.unimi.dsi.fastutil.shorts.ShortArrayList
 import it.unimi.dsi.fastutil.shorts.ShortOpenHashSet
 import jakarta.inject.Inject
@@ -23,7 +21,7 @@ public class AreaChecker @Inject constructor(
         visited.clear()
 
         val target = area.asRSCM(RSCMType.AREA).toShort()
-        val normalized = coords.normalized()
+        val normalized = normalizedCoords(coords)
 
         areaIndex.putAreas(normalized, areaBuffer)
 
@@ -61,10 +59,11 @@ public class AreaChecker @Inject constructor(
         return false
     }
 
-    private fun CoordGrid.normalized(): CoordGrid =
-        if (RegionRegistry.inWorkingArea(this)) {
-            regions.normalizeCoords(this)
+    /** Returns the source coordinate of a copied zone, or [CoordGrid.NULL] for an unmapped copy. */
+    public fun normalizedCoords(coords: CoordGrid): CoordGrid =
+        if (RegionRegistry.inWorkingArea(coords)) {
+            regions.normalizeCoords(coords)
         } else {
-            this
+            coords
         }
 }
