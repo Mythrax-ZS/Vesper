@@ -1,0 +1,94 @@
+[[varp]]
+id = "varp.vesper_beginner_clue_row"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_clue_length"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_clue_completed_steps"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_clue_generation"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_charlie_task"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_hotcold_target"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_hotcold_distance"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.vesper_beginner_hotcold_coord"
+scope = "Perm"
+transmit = "Never"
+
+# Native skill-challenge rows contain text and NPC targets, but no requested item column.
+[[enum]]
+id = "enum.treasure_trails_beginner_charlie"
+isServerOnly = true
+keyType = "DBROW"
+valueType = "OBJ"
+
+[enum.values]
+"dbrow.cluehelper_skillchallenge_beginner_0" = "obj.trout"
+"dbrow.cluehelper_skillchallenge_beginner_1" = "obj.pike"
+"dbrow.cluehelper_skillchallenge_beginner_2" = "obj.raw_herring"
+"dbrow.cluehelper_skillchallenge_beginner_3" = "obj.raw_trout"
+"dbrow.cluehelper_skillchallenge_beginner_4" = "obj.iron_ore"
+"dbrow.cluehelper_skillchallenge_beginner_5" = "obj.iron_dagger"
+"dbrow.cluehelper_skillchallenge_beginner_6" = "obj.leather_armour"
+"dbrow.cluehelper_skillchallenge_beginner_7" = "obj.leather_chaps"
+
+[[enum]]
+id = "enum.treasure_trails_beginner_maps"
+isServerOnly = true
+keyType = "DBROW"
+valueType = "INTERFACE"
+
+[enum.values]
+"dbrow.cluehelper_map_beginner_0" = "interface.trail_map01"
+"dbrow.cluehelper_map_beginner_1" = "interface.trail_map02"
+"dbrow.cluehelper_map_beginner_2" = "interface.trail_map03"
+"dbrow.cluehelper_map_beginner_3" = "interface.trail_map06"
+"dbrow.cluehelper_map_beginner_4" = "interface.trail_map11"
+
+# Delivery journal only; the native reward inventory remains the display container.
+[[inventory]]
+id = "inv.vesper_beginner_reward_pending"
+size = 12
+scope = "Perm"
+stack = "Normal"
+protect = false
+
+[[inventory]]
+id = "inv.vesper_beginner_reward_display"
+size = 12
+scope = "Temp"
+stack = "Always"
+protect = false
+
+[[enum]]
+id = "enum.treasure_trails_beginner_cases"
+isServerOnly = true
+keyType = "OBJ"
+valueType = "INT"
+
+[enum.values]
+"obj.scroll_case_beginner_minor" = 50
+"obj.scroll_case_beginner_major" = 100

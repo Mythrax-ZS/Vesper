@@ -1,0 +1,97 @@
+[gamevals.varp]
+vesper_beginner_clue_row = 63510
+vesper_beginner_clue_length = 63511
+vesper_beginner_clue_completed_steps = 63512
+vesper_beginner_clue_generation = 63513
+vesper_beginner_charlie_task = 63514
+vesper_beginner_hotcold_target = 63515
+vesper_beginner_hotcold_distance = 63516
+vesper_beginner_hotcold_coord = 63517
+
+[gamevals.enum]
+treasure_trails_beginner_maps = 61003
+treasure_trails_beginner_cases = 61005
+treasure_trails_beginner_charlie = 61007
+
+[gamevals.inv]
+vesper_beginner_reward_pending = 63510
+vesper_beginner_reward_display = 63511
+
+[gamevals.dbtable]
+treasure_trails_beginner_rewards = 61005
+
+[gamevals.dbrow]
+beginner_reward_mole_slippers = 61600
+beginner_reward_frog_slippers = 61601
+beginner_reward_bear_slippers = 61602
+beginner_reward_demon_slippers = 61603
+beginner_reward_jester_cape = 61604
+beginner_reward_shoulder_parrot = 61605
+beginner_reward_monk_robetop_t = 61606
+beginner_reward_monk_robebottom_t = 61607
+beginner_reward_amulet_of_defence_t = 61608
+beginner_reward_sandwich_lady_hat = 61609
+beginner_reward_sandwich_lady_top = 61610
+beginner_reward_sandwich_lady_bottom = 61611
+beginner_reward_rune_scimitar_ornament_kit_guthix = 61612
+beginner_reward_rune_scimitar_ornament_kit_saradomin = 61613
+beginner_reward_rune_scimitar_ornament_kit_zamorak = 61614
+beginner_reward_black_2h_sword = 61615
+beginner_reward_black_axe = 61616
+beginner_reward_black_battleaxe = 61617
+beginner_reward_black_chainbody = 61618
+beginner_reward_black_dagger = 61619
+beginner_reward_black_full_helm = 61620
+beginner_reward_black_kiteshield = 61621
+beginner_reward_black_longsword = 61622
+beginner_reward_black_mace = 61623
+beginner_reward_black_med_helm = 61624
+beginner_reward_black_pickaxe = 61625
+beginner_reward_black_platebody = 61626
+beginner_reward_black_plateskirt = 61627
+beginner_reward_black_platelegs = 61628
+beginner_reward_black_sq_shield = 61629
+beginner_reward_black_scimitar = 61630
+beginner_reward_black_sword = 61631
+beginner_reward_black_warhammer = 61632
+beginner_reward_shortbow = 61633
+beginner_reward_longbow = 61634
+beginner_reward_oak_shortbow = 61635
+beginner_reward_oak_longbow = 61636
+beginner_reward_iron_pickaxe = 61637
+beginner_reward_staff_of_air = 61638
+beginner_reward_staff_of_water = 61639
+beginner_reward_staff_of_earth = 61640
+beginner_reward_staff_of_fire = 61641
+beginner_reward_steel_full_helm = 61642
+beginner_reward_steel_platebody = 61643
+beginner_reward_steel_platelegs = 61644
+beginner_reward_steel_plateskirt = 61645
+beginner_reward_steel_longsword = 61646
+beginner_reward_steel_dagger = 61647
+beginner_reward_steel_axe = 61648
+beginner_reward_steel_battleaxe = 61649
+beginner_reward_leather_cowl = 61650
+beginner_reward_leather_armour = 61651
+beginner_reward_leather_chaps = 61652
+beginner_reward_leather_vambraces = 61653
+beginner_reward_hardleather_body = 61654
+beginner_reward_bluewizhat = 61655
+beginner_reward_wizards_robe = 61656
+beginner_reward_blackwizhat = 61657
+beginner_reward_black_robe = 61658
+beginner_reward_airrune = 61659
+beginner_reward_mindrune = 61660
+beginner_reward_waterrune = 61661
+beginner_reward_earthrune = 61662
+beginner_reward_firerune = 61663
+beginner_reward_bodyrune = 61664
+beginner_reward_chaosrune = 61665
+beginner_reward_naturerune = 61666
+beginner_reward_lawrune = 61667
+beginner_reward_bronze_arrow = 61668
+beginner_reward_iron_arrow = 61669
+beginner_reward_shrimp = 61670
+beginner_reward_sardine = 61671
+beginner_reward_herring = 61672
+beginner_reward_cabbage = 61673
