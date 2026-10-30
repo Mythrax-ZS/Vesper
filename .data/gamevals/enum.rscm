@@ -198,3 +198,5 @@ vampyre_slayer_hammers=63560
 npc_flat_armour=64403
 blighted_spell_sacks=61009
 vengeance_recoil_immune=61012
+ge_guide_price=60000
+ge_buy_limit=60001
