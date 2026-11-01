@@ -35,7 +35,7 @@ OpenRune Server adheres to OSRS protocols, giving you the freedom to connect any
 
 ## 📊 Content progress
 
-Skills **21/24** · Bosses **23/169** · Raids **0/4** · Minigames **2/52**
+Skills **21/24** · Bosses **23/179** · Raids **0/4** · Minigames **2/46**
 
 Full breakdown in **[PROGRESS.md](PROGRESS.md)**, including every content module and
 supporting data and unverified mechanics. Counts measure runtime source presence, not parity.

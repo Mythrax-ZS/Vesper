@@ -971,7 +971,7 @@
       "image": "https://oldschool.runescape.wiki/images/thumb/Dessous.png/48px-Dessous.png?bd2c8"
     },
     "Gadderanks": {
-      "image": "https://oldschool.runescape.wiki/images/thumb/Gadderanks.png/48px-Gadderanks.png?63d5a"
+      "image": "https://oldschool.runescape.wiki/images/thumb/Gadderanks.png/48px-Gadderanks.png?aac4f"
     },
     "Lowerniel Drakan": {
       "image": "https://oldschool.runescape.wiki/images/thumb/Lowerniel_Drakan.png/48px-Lowerniel_Drakan.png?b887a"
@@ -1491,7 +1491,44 @@
         "References"
       ],
       "sourceRevision": 15366653,
-      "fetched": "2026-10-30"
+      "fetched": "2026-10-30",
+      "image": "https://oldschool.runescape.wiki/images/Sailing_icon.png?ebfec"
+    },
+    "Bork": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Bork.png/48px-Bork.png?67f06"
+    },
+    "Archive Guardian": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Archive_Guardian.png/48px-Archive_Guardian.png?c881d"
+    },
+    "Dagon'hai Elder": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Dagon%27hai_Elder.png/48px-Dagon%27hai_Elder.png?bc5b7"
+    },
+    "Dagon'hai Monk": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Dagon%27hai_Monk_%28staff%29.png/48px-Dagon%27hai_Monk_%28staff%29.png?bc5b7"
+    },
+    "Ezekiel": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Ezekiel.png/48px-Ezekiel.png?bc5b7"
+    },
+    "Dreadnoth the Jellied": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Dreadnoth_the_Jellied.png/48px-Dreadnoth_the_Jellied.png?bc5b7"
+    },
+    "Moia": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Moia.png/48px-Moia.png?bc5b7"
+    },
+    "The Smorks": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/The_Smorks.png/48px-The_Smorks.png?bc5b7"
+    },
+    "Ocellus": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Ocellus.png/48px-Ocellus.png?6fd2f"
+    },
+    "Games Zone": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Games_Zone.png/48px-Games_Zone.png?edf24"
+    },
+    "Barracuda Trials": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/The_Tempor_Tantrum.png/48px-The_Tempor_Tantrum.png?0ab4e"
+    },
+    "Xarth": {
+      "image": "https://oldschool.runescape.wiki/images/thumb/Xarth.png/48px-Xarth.png?bc5b7"
     }
   },
   "categories": {
@@ -1504,6 +1541,7 @@
       "Alchemical Hydra",
       "Amoxliatl",
       "Araxxor",
+      "Archive Guardian",
       "Arrg",
       "Artio",
       "Arzinian Avatar of Magic",
@@ -1518,6 +1556,7 @@
       "Black golem",
       "Blood Moon",
       "Blue Moon",
+      "Bork",
       "Bouncer",
       "Bouncer (ghost)",
       "Branda the Fire Queen",
@@ -1541,6 +1580,8 @@
       "Dagannoth Rex",
       "Dagannoth Supreme",
       "Dagannoth mother",
+      "Dagon'hai Elder",
+      "Dagon'hai Monk",
       "Damis",
       "Dawn",
       "Delrith",
@@ -1550,6 +1591,7 @@
       "Dessous",
       "Dharok the Wretched",
       "Doom of Mokhaiotl",
+      "Dreadnoth the Jellied",
       "Duke Sucellus",
       "Dusk",
       "Eclipse Moon",
@@ -1557,6 +1599,7 @@
       "Elidinis' Warden",
       "Elvarg",
       "Evil spirit",
+      "Ezekiel",
       "Fareed",
       "Flambeed",
       "Gadderanks",
@@ -1595,6 +1638,7 @@
       "Maggot King",
       "Me",
       "Melzar the Mad",
+      "Moia",
       "Moons of Peril",
       "Moss Guardian",
       "Muttadile",
@@ -1602,6 +1646,7 @@
       "Nezikchened",
       "Nylocas Vasilias",
       "Obor",
+      "Ocellus",
       "Penance Queen",
       "Pestilent Bloat",
       "Phantom Muspah",
@@ -1636,6 +1681,7 @@
       "The Maiden of Sugadinti",
       "The Mimic",
       "The Nightmare",
+      "The Smorks",
       "The Untouchable",
       "The Whisperer",
       "Thermonuclear smoke devil",
@@ -1661,6 +1707,7 @@
       "Wrathmaw",
       "Xamphur",
       "Xarpus",
+      "Xarth",
       "Yama",
       "Zalcano",
       "Zebak",
@@ -1674,29 +1721,26 @@
     ],
     "Category:Minigames": [
       "Barbarian Assault",
+      "Barracuda Trials",
       "Blast Furnace",
       "Bounty Hunter",
       "Brimhaven Agility Arena",
       "Burthorpe Games Room",
       "Castle Wars",
-      "Chompy bird hunting",
       "Clan Wars",
-      "Dorgesh-Kaan market trading",
       "Duel Arena",
       "Emir's Arena",
-      "Farming contracts",
       "Fishing Trawler",
       "Fortis Colosseum",
+      "Games Zone",
       "Giants' Foundry",
       "Gnome Ball",
       "Gnome Restaurant",
-      "Golem crafting",
       "Guardians of the Rift",
       "Hallowed Sepulchre",
       "Impetuous Impulses",
       "Inferno",
       "Intelligence Gathering",
-      "Keldagrim tasks",
       "Last Man Standing",
       "Mage Arena",
       "Mage Training Arena",
@@ -1705,15 +1749,12 @@
       "Mess",
       "Nightmare Zone",
       "Pest Control",
-      "Pete Kayer's Challenges",
       "Pyramid Plunder",
       "Rat Pits",
       "Rogues' Den",
       "Shades of Mort'ton (minigame)",
       "Sorceress's Garden",
       "Soul Wars",
-      "Stealing artefacts",
-      "Stealing valuables",
       "Tai Bwo Wannai Cleanup",
       "Tears of Guthix (minigame)",
       "Temple Trekking",
@@ -1727,5 +1768,5 @@
       "Volcanic Mine"
     ]
   },
-  "fetched": "2026-10-25"
+  "fetched": "2026-11-01"
 }
